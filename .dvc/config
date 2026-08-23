@@ -1,5 +1,4 @@
 [core]
-    remote = aws-bucket
-['remote "aws-bucket"']
-    url = s3://brain-tumor-mri-scans
-    allow_anonymous_login = true
+    remote = public
+['remote "public"']
+    url = https://brain-tumor-mri-scans.s3.us-east-1.amazonaws.com
