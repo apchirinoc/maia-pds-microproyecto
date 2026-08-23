@@ -1,0 +1,5 @@
+particion,clase,numero_imagenes,porcentaje_dataset
+sin_particion,glioma,1621,23.0813
+sin_particion,meningioma,1645,23.423
+sin_particion,pituitary,1757,25.0178
+sin_particion,healthy,2000,28.4779

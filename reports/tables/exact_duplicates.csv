@@ -1,0 +1,301 @@
+sha256,numero_archivos,clases,particiones,entre_clases,entre_particiones,rutas_relativas
+019d4bcbb9950c5024b160c1b3b6cce57f81b9655fb3994c4c746901290b3bb5,5,healthy,sin_particion,False,False,healthy/0146.jpg | healthy/0447.jpg | healthy/0715.jpg | healthy/1759.jpg | healthy/1994.jpg
+022901652a4cbded66c787ce4dca14da2da1b66daccd02d6ec2421c0e89850c4,2,meningioma,sin_particion,False,False,meningioma/0647.jpg | meningioma/1452.jpg
+03cbc7410cde2c57928e04c7183fb2b26e4d7e64a962b20f9d91136fb063ef35,2,healthy,sin_particion,False,False,healthy/1133.jpg | healthy/1443.jpg
+04f5c86f3d1cd94de353840f423b66dda0c971b981d5d0abc1bb68ba1ab0e688,2,healthy,sin_particion,False,False,healthy/0132.jpg | healthy/1607.jpg
+0523596d37bfbf1caa9b3375760895e99069a75a4f709e76dd8c80227b74fb0c,2,meningioma,sin_particion,False,False,meningioma/0399.jpg | meningioma/1629.jpg
+0609971dac1a5f1f02fffb7edc989b4e0ef85c0b7a7e5732a46fdb8ed39879b6,5,meningioma,sin_particion,False,False,meningioma/0278.jpg | meningioma/1101.jpg | meningioma/1333.jpg | meningioma/1556.jpg | meningioma/1637.jpg
+06c9002e070e3c2f87205e5132d3f50f58486c142d6b6b13f3f76102d2423915,2,healthy,sin_particion,False,False,healthy/0619.jpg | healthy/0925.jpg
+073543a383a399175e7bec67364b52cecae61722ebb06dae02b7c739c42a58ca,2,healthy,sin_particion,False,False,healthy/1334.jpg | healthy/1932.jpg
+0797a735faad223c03644f447cbb569141d289b65ffa806323736c015a910911,2,healthy,sin_particion,False,False,healthy/1423.jpg | healthy/1893.jpg
+07c240bce3612de9eee615ea9ec705fa03e98e9902cde5e5f7cdc7ae1874e68a,2,meningioma,sin_particion,False,False,meningioma/1538.jpg | meningioma/1574.jpg
+07d7a245c45cd58599dff57f8832d99020fee22fe600d829448517ab1c2c0edd,2,healthy,sin_particion,False,False,healthy/0114.jpg | healthy/1924.jpg
+086028d58b5020c1e9f5dd47a702c7df534c5ec3728d4740efffe3d4e66ab56e,2,healthy,sin_particion,False,False,healthy/1362.jpg | healthy/1646.jpg
+086cd15f4d7005c7214cb62713a24903072f1dfaf36f31e974d8da6d11f50951,3,healthy,sin_particion,False,False,healthy/0419.jpg | healthy/0998.jpg | healthy/1917.jpg
+0a5cc523c34fe5db5c47bed8e5356ed2bb3a2c95001bb69ae07bc6e0d8549c5b,2,meningioma,sin_particion,False,False,meningioma/0596.jpg | meningioma/1366.jpg
+0a767051df74afb4b52d6fe6df2d113fb1cd415997a0b3ee4e6d61ce1f31debf,3,healthy,sin_particion,False,False,healthy/0128.jpg | healthy/1398.jpg | healthy/1711.jpg
+0db2bc068dd4dcc32204eb2aff65e8305b2af1730a0e8c16b84a891826618faa,3,healthy,sin_particion,False,False,healthy/0120.jpg | healthy/0736.jpg | healthy/1705.jpg
+0fe981fc5a73ee74841e7dac55abf12285bc00058d2067a8757516b378adfa46,2,meningioma,sin_particion,False,False,meningioma/1183.jpg | meningioma/1412.jpg
+0fedfaa0ead4ed282117ca25ef4fd0fe3d1200dea8b429514749c64ab1cc2bd7,2,healthy,sin_particion,False,False,healthy/0480.jpg | healthy/1886.jpg
+114479139e7f58820711981fc44a2080d2716b0ce240c7f1f03cac2edbe62871,2,meningioma,sin_particion,False,False,meningioma/1462.jpg | meningioma/1532.jpg
+1173fbe11f41ebe83f6c041be73844f704bbb10b8a51aed70fd0f0545baf95ac,2,healthy,sin_particion,False,False,healthy/0719.jpg | healthy/1169.jpg
+1185efde12452c591a36864676c9d6b79974c49f77604c108f87032322c071f6,2,healthy,sin_particion,False,False,healthy/0761.jpg | healthy/1604.jpg
+11ab9708afbaee0f50e6613d8a39bdda5a2c3960e6d2845b734f17c2d53d1597,2,meningioma,sin_particion,False,False,meningioma/1290.jpg | meningioma/1613.jpg
+1238dd02ab7ea56c9aca53bfc8098b28bdd258964f94c23f7c2fe8331f8447c7,2,healthy,sin_particion,False,False,healthy/0376.jpg | healthy/0956.jpg
+13993ae5aee1a60f7a159ad4a8cc0e58de6943d63fc68d24e99770c8b4fb6f29,2,healthy,sin_particion,False,False,healthy/1087.jpg | healthy/1358.jpg
+14ee382ed10d7627881d63d988b3b229c6db2a0c08caffccf6bbe96e6566824d,2,healthy,sin_particion,False,False,healthy/0308.jpg | healthy/0530.jpg
+15bfe7dccefdb4e1d4bbd6703e865c2f31d0c2705fa284be9d10fe087197341b,2,meningioma,sin_particion,False,False,meningioma/1066.jpg | meningioma/1550.jpg
+1638de7b9074d581e3c6ff9e99895d733cc16fe9f8fcce184819114c207329bf,2,meningioma,sin_particion,False,False,meningioma/1115.jpg | meningioma/1383.jpg
+173c0ec141b7ea932aa63051ff3b99dae653b2941436ce807a364166e529a7b5,2,meningioma,sin_particion,False,False,meningioma/0275.jpg | meningioma/1440.jpg
+17b0d63ce3011c863289b706d97e55d80b854a9e7a16845b9ac5060258eb2a96,2,healthy,sin_particion,False,False,healthy/0058.jpg | healthy/0873.jpg
+180b5aeb440f2b9159c18b3a779899a6bb7468620b189aba07542316455dc2a2,2,healthy,sin_particion,False,False,healthy/0414.jpg | healthy/1567.jpg
+18de84b935d9051bea791917aa52166f9facf0d64e227e6c650f1a705fc47262,3,healthy,sin_particion,False,False,healthy/1022.jpg | healthy/1029.jpg | healthy/1595.jpg
+1976d625804f9db125ca067602f5e7e59f4f31aa8f126e9ac370dd035284d11a,2,healthy,sin_particion,False,False,healthy/1236.jpg | healthy/1536.jpg
+19e338a9044bf8854e6d49361e906099f8e0d76a6e174856be65f908d27a203f,2,meningioma,sin_particion,False,False,meningioma/1218.jpg | meningioma/1384.jpg
+1a00cefe0367a5ac602022ed5ca69d4ffeb579b9b04164fbfe45689455e9d00c,2,meningioma,sin_particion,False,False,meningioma/0102.jpg | meningioma/1522.jpg
+1a47de2c97d0c4e90de5e54eaf740ff7c8885cbb29fab713e6289dfd03f2e4e0,2,healthy,sin_particion,False,False,healthy/0254.jpg | healthy/1775.jpg
+1a997c713c520bfd8dc6a8f9f5940a6a97a3370d5834bc43925d09e52a9cace3,2,meningioma,sin_particion,False,False,meningioma/1247.jpg | meningioma/1507.jpg
+1b0cca9b76cfbfcdd8e47c1f41b36b2bbd4f1ffd234158e51ce6fc8a8c4cd97c,2,healthy,sin_particion,False,False,healthy/0231.jpg | healthy/0265.jpg
+1b37add34083b66095be469bf00ac4147e50fd104d9438a8380ad025e247d5a7,2,meningioma,sin_particion,False,False,meningioma/0237.jpg | meningioma/1446.jpg
+1c1ef5d4bbe2c57f44524ec5314bbd337f0933d9fa0bfef06c60833f8c24e145,2,meningioma,sin_particion,False,False,meningioma/1302.jpg | meningioma/1511.jpg
+1cc8588e83276bfe1fb5500c98fcbcc8cd6717bb5f555bbbcdb13c9d3254c82e,2,healthy,sin_particion,False,False,healthy/0696.jpg | healthy/1077.jpg
+1d7a3883d310b4b5738baff21acab9945a7c1efa5060b2cca5328e6c4dad46c6,5,healthy,sin_particion,False,False,healthy/1249.jpg | healthy/1426.jpg | healthy/1565.jpg | healthy/1748.jpg | healthy/1878.jpg
+1e35d463b8b5c6ee06177f7300007c4e0e79325eaca543fe6dde0d8678dab494,2,healthy,sin_particion,False,False,healthy/1351.jpg | healthy/1714.jpg
+1e6ca6a52fdc6cbfe7e2f450c7a0ecfa597c513925f5090ac2ed3cf44dbc548f,2,healthy,sin_particion,False,False,healthy/1318.jpg | healthy/1814.jpg
+1f35b6c4139f69158a5334fc626d4f008cbbe02f1caa4af5967ca264be4c6b02,2,healthy,sin_particion,False,False,healthy/0664.jpg | healthy/0690.jpg
+1fccd3a6a43116639b074edb8091a79dc1c69e70d874e5b37b7de9b26a006646,3,healthy,sin_particion,False,False,healthy/0060.jpg | healthy/0983.jpg | healthy/1562.jpg
+20358acdad9b04e54aa571ad962e01b07a076f7ec246baa61145efae23a4f382,2,meningioma,sin_particion,False,False,meningioma/0876.jpg | meningioma/1551.jpg
+20600c52c0a41dc676ac0435414278d23db2b5eb1a0af130b867337a5ad18a33,2,healthy,sin_particion,False,False,healthy/0097.jpg | healthy/0409.jpg
+21f080b45d38a69d9cb30641b5e838eff20e98ffa4ac52a7a6ef1506b71f1080,3,healthy,sin_particion,False,False,healthy/0006.jpg | healthy/0271.jpg | healthy/1173.jpg
+22ff6a21c5f8a5d6b2a8b05576f31f60d769c72dafdab7ea31a76c3921f0d735,2,meningioma,sin_particion,False,False,meningioma/1060.jpg | meningioma/1344.jpg
+23433f3c35c0851fa0baf17eed5dd7b37b43e0de141367605ac1f9a5167b2b50,2,pituitary,sin_particion,False,False,pituitary/1153.jpg | pituitary/1593.jpg
+236cf2aafcf3c2beb9a1d6c549fed4861f3fa7f547c5b8e66b17d8ac4aff54bb,3,healthy,sin_particion,False,False,healthy/0562.jpg | healthy/1163.jpg | healthy/1992.jpg
+26d16c6acf76ce47636eab6a453d8f98866df391c968bbf08094d498a5f28616,2,meningioma,sin_particion,False,False,meningioma/0379.jpg | meningioma/1475.jpg
+2774d4bfc07ab3e95904fd2c35f7114f558a0c1ac037312c6dd1e3f7f139804f,2,meningioma,sin_particion,False,False,meningioma/0179.jpg | meningioma/1588.jpg
+2b96b104354d5a90670bc2507b5d8cec2668b740583c932bde61002c5a17a238,2,healthy,sin_particion,False,False,healthy/0056.jpg | healthy/0741.jpg
+2bbaf6e622e4c511aedb092c587572320d6ba81769cacd2c4c034c952003d5de,2,healthy,sin_particion,False,False,healthy/0049.jpg | healthy/1016.jpg
+2bea75c4cf3784d22054aff5f05a00024794c6bdffca77dc5f7b58e6aad55af4,6,healthy,sin_particion,False,False,healthy/0641.jpg | healthy/0755.jpg | healthy/1526.jpg | healthy/1624.jpg | healthy/1849.jpg | healthy/1959.jpg
+2c9915f083ce8a9440dba1c008f758c4eefedef6a3cb1cb3fad41c89c46832b6,2,healthy,sin_particion,False,False,healthy/0739.jpg | healthy/1376.jpg
+2cc9121dabd99e4bb51d1dcb44d3460c6db3771a08c307366cefeb17411b96bc,2,pituitary,sin_particion,False,False,pituitary/0900.jpg | pituitary/1096.jpg
+2d296bf433e0149619862f8f421412b5f6b79d7a972b08c8d7223dfb93da738b,2,healthy,sin_particion,False,False,healthy/0829.jpg | healthy/1176.jpg
+2d9555995431153584b7e06c2b73d366351a8b39f4425f07e07c4b773051ba1e,2,healthy,sin_particion,False,False,healthy/0405.jpg | healthy/0919.jpg
+2e8c8b9435f020b77e62863dae0c8cd7e041971c61a0ad721871cf1ca8feb445,2,meningioma,sin_particion,False,False,meningioma/0995.jpg | meningioma/1460.jpg
+30afbbfe0449e0abb12cfc66c3313ed6116b27df116273b8776889558cc0667c,3,healthy,sin_particion,False,False,healthy/0784.jpg | healthy/1219.jpg | healthy/1811.jpg
+30c9e9af6f909b8f3825c02760d74a733fc6ff243c816ecbc93fb929b7cbb79e,2,meningioma,sin_particion,False,False,meningioma/0351.jpg | meningioma/1591.jpg
+3145d8f3e2608dbed19e76563291b3e8ab4a1cb9825beceda75eef1273627775,2,meningioma,sin_particion,False,False,meningioma/0834.jpg | meningioma/1596.jpg
+324e785ad7cefc22a008c64b043dbb6483006e9ba64575feb6f9eabe5f60e748,3,healthy,sin_particion,False,False,healthy/1237.jpg | healthy/1383.jpg | healthy/1885.jpg
+3417074c8e7cba2822aa2cb287f01da6890657b5f3aabd6a0eee96583060f2b7,2,healthy,sin_particion,False,False,healthy/1497.jpg | healthy/1550.jpg
+352161435f0c95a4abb26956862851a26b20afdda8f40538abb252f5a3da118f,2,healthy,sin_particion,False,False,healthy/0296.jpg | healthy/0906.jpg
+358bd5c6eab5a2a878a3ce82445476cb0fd0b4df36e9e4223e251ba2bc289f20,3,healthy,sin_particion,False,False,healthy/0586.jpg | healthy/0637.jpg | healthy/1204.jpg
+36108456d028f806e4798e28080f5325730cdd8e5f731587a68e76abd9162307,2,healthy,sin_particion,False,False,healthy/0520.jpg | healthy/0938.jpg
+37803672a17c35f55b04e52301cc17a4575b0b3b38b744ea41add1a3a12bd311,2,healthy,sin_particion,False,False,healthy/0294.jpg | healthy/1660.jpg
+37b5e9326a23ee9157418bf91dad961397ce6011d8db6d29ef1590533c9b0c01,3,healthy,sin_particion,False,False,healthy/0270.jpg | healthy/0513.jpg | healthy/1325.jpg
+3b830f8d3ec4095be7b296ad035ea20d8f3bddc300ed0a46629876ff5cdaf70d,3,healthy,sin_particion,False,False,healthy/0477.jpg | healthy/0798.jpg | healthy/1116.jpg
+3b9509fcf311ad8ed94dbd5a5ab3110e2d8449457f536dddb9296262b5367f15,3,healthy,sin_particion,False,False,healthy/0717.jpg | healthy/0884.jpg | healthy/1623.jpg
+3bf1c320f9b9baa5e406b7ebbac26d121e4f04f715df7110a9838e4dd38b8af1,2,healthy,sin_particion,False,False,healthy/0267.jpg | healthy/1478.jpg
+3d43e7c55d4e3f998e5062bd655e218354d82064ca7e2970d49bb261c46b9e2b,2,meningioma,sin_particion,False,False,meningioma/0629.jpg | meningioma/1571.jpg
+3d833e4abc681f5e5be3497c9c9e02dcc714045f91143d5f802043b15eed6af9,2,healthy,sin_particion,False,False,healthy/0836.jpg | healthy/1401.jpg
+3d9335d7799d278070526eb4104159bab1666a314af8708156411eb2ca4c823a,2,meningioma,sin_particion,False,False,meningioma/0273.jpg | meningioma/1627.jpg
+3e229cefee42727d1ad0b64004bcd9480a51079bc67d348df1575ba26c4b8d59,5,healthy,sin_particion,False,False,healthy/0150.jpg | healthy/0196.jpg | healthy/0665.jpg | healthy/0887.jpg | healthy/1455.jpg
+3f47340ce2a8a478a0d03777ff3f3f7cd3f7a435167a6172773d883142eb96eb,2,meningioma,sin_particion,False,False,meningioma/0764.jpg | meningioma/1581.jpg
+403ddf19cbc83a9ec27c0258d3eef1d635098e9ca5bdf1491f4784ea0cee08ee,2,meningioma,sin_particion,False,False,meningioma/0944.jpg | meningioma/1414.jpg
+40b75f4b3aab36d9a1076ad41d9555dfe142ff00e2e8169aaf96977a8ef22cc0,3,healthy,sin_particion,False,False,healthy/0788.jpg | healthy/1189.jpg | healthy/1680.jpg
+411062cc37cc0eb4ef9efc8ad6ee1639721777e28f46b0bc111b934c7995a0fb,2,healthy,sin_particion,False,False,healthy/0011.jpg | healthy/1780.jpg
+417dc897773b616f9814ec96690984b8baed7ce6e5aebc47e7cf13cd5210c041,3,healthy,sin_particion,False,False,healthy/0593.jpg | healthy/1174.jpg | healthy/1896.jpg
+41afa888fa3fd23b1a8e1f0044a93f0fa10acbc87c83a968dfdd739dec33c194,6,healthy,sin_particion,False,False,healthy/0021.jpg | healthy/0035.jpg | healthy/0615.jpg | healthy/0662.jpg | healthy/1099.jpg | healthy/1115.jpg
+4220152a69c6e7c6f83368a4d609cd7f6b9506b0ef0032bc91535b75d6c0aca8,2,healthy,sin_particion,False,False,healthy/0714.jpg | healthy/0875.jpg
+43a8b41ad8a829ee49c51c4f76fea3eba44669a6082611849f792ad24c8c204f,2,meningioma,sin_particion,False,False,meningioma/0987.jpg | meningioma/1569.jpg
+43de13fb37ec720b99b4382845b2b2b8b8377fadcd3957f9123a621cb43a9147,2,meningioma,sin_particion,False,False,meningioma/0608.jpg | meningioma/1428.jpg
+4578766c42c6dc32c00d7d7c324c1828d1d8d167224bcbf324eae655db68c68a,2,healthy,sin_particion,False,False,healthy/0090.jpg | healthy/1659.jpg
+46331fb1ba4137782bd0575c5ab2569d264170530f8763b50fe22c81fefd54bd,2,healthy,sin_particion,False,False,healthy/0119.jpg | healthy/1580.jpg
+471d50427cb560eaa2e8b5438eedf3c5b40e6a671a5e2e4e237f05483dadf7e4,3,healthy,sin_particion,False,False,healthy/0291.jpg | healthy/0434.jpg | healthy/1144.jpg
+474002eb36e68a0636137db066ba0cb6b63ad24c8f9033ec4bed8e90c2013d78,2,healthy,sin_particion,False,False,healthy/1495.jpg | healthy/1897.jpg
+4a1d7e77d2384aa18d80e0435320f3d57fb6b79c884c4e97c296d016ef636743,5,healthy,sin_particion,False,False,healthy/0234.jpg | healthy/0617.jpg | healthy/0753.jpg | healthy/1776.jpg | healthy/1818.jpg
+4ae52b1a1462855edeceb6e3ee69b8dde30bfd8c9d85c62a9bec68c6ff072768,2,meningioma,sin_particion,False,False,meningioma/0213.jpg | meningioma/1536.jpg
+4b11ba0620d40df6813304234ca06ba1b917dc0e8b9336ef3159e61bb9d1b812,2,healthy,sin_particion,False,False,healthy/1168.jpg | healthy/1367.jpg
+4c0ff0f462ffa19b4ef6330bc26fbd1067a38a2167bc72f113b1ca74af1c15f7,2,healthy,sin_particion,False,False,healthy/0907.jpg | healthy/0960.jpg
+4d5b26f58bd450bb49128ba6aadc0c6f87cde52c573ae265d1c7b870c61686b2,2,meningioma,sin_particion,False,False,meningioma/1001.jpg | meningioma/1566.jpg
+4e6df9762e888e4cd4e431ab3ba753adb1b706f0de51eaca7266b21b333f565d,2,meningioma,sin_particion,False,False,meningioma/0986.jpg | meningioma/1621.jpg
+4f00944479dea754eec3180be02244f70cd8b94d37f26087179ace877178d298,2,meningioma,sin_particion,False,False,meningioma/0498.jpg | meningioma/1442.jpg
+522208a47b435e5ce8332710e4fe72888f6a633b8af9ccc628b93bfc8f6d08ff,2,healthy,sin_particion,False,False,healthy/0576.jpg | healthy/1337.jpg
+523d3555f70b90ed4af90c9e38cf66e493cca97f6089c36173ade49c6d3e817c,2,meningioma,sin_particion,False,False,meningioma/1300.jpg | meningioma/1424.jpg
+55229488139accf6005a398f4969f4e7aa8195f04e4caf0ec0327f3162dde942,5,healthy,sin_particion,False,False,healthy/0257.jpg | healthy/1126.jpg | healthy/1190.jpg | healthy/1791.jpg | healthy/1871.jpg
+55b2f64ba70b6e788688309427bb1a2bf26013549e568e625903cba3f21e9e64,2,healthy,sin_particion,False,False,healthy/0243.jpg | healthy/0744.jpg
+561b593545e3456b58aaaed887e90d3f73c3548b14ff9e07d6b6aa2ff08151ae,2,meningioma,sin_particion,False,False,meningioma/0352.jpg | meningioma/1612.jpg
+565793c3e74af5d9a0ca038eb1b0d32b82847e8eb76f09e498876f1e14a29a50,2,healthy,sin_particion,False,False,healthy/0247.jpg | healthy/1261.jpg
+56d35cd65c9118abb0d8bd141668429ec090d088a06f1d34ea67f56af183a2bf,2,meningioma,sin_particion,False,False,meningioma/1331.jpg | meningioma/1368.jpg
+571d22026c0694d1f1d0b98bbcac5526061b7cc5945fdfc6d5836134dd3821ab,2,healthy,sin_particion,False,False,healthy/0328.jpg | healthy/0776.jpg
+57dd40bc7a19e94c6b6e696c74d9d25840cc921127393dc361b309fbf0d27750,2,healthy,sin_particion,False,False,healthy/0444.jpg | healthy/0886.jpg
+585f7c8129dd61e14e9cd322b3db3fe94aec838507845cedb8962ed23864ac6a,2,healthy,sin_particion,False,False,healthy/0844.jpg | healthy/0994.jpg
+589e6c32c18d0979c5aa7257fa96ce1c0c29a2cddcb3b8484a9c64a34b1330d7,3,healthy,sin_particion,False,False,healthy/1320.jpg | healthy/1601.jpg | healthy/1803.jpg
+58a30b569c2ccea2c036461ed5d11aa12de56ff3194e7e8a5b155c9bed09c379,2,meningioma,sin_particion,False,False,meningioma/1255.jpg | meningioma/1519.jpg
+5a3be01c7a560b55acd2e759e5aec0492563c80e8ead8374b5cbc5b0c81bbfe4,2,healthy,sin_particion,False,False,healthy/1301.jpg | healthy/1702.jpg
+5c5ad24ec1804c1a2c3db3e6931c167fbf8b1c0c501ef9397483b39aafe99394,2,healthy,sin_particion,False,False,healthy/0076.jpg | healthy/1192.jpg
+5c7d4f37cf7de6125c8180ca7b12777794543eed102e4d85271604d9ef13cb7e,2,healthy,sin_particion,False,False,healthy/0052.jpg | healthy/1393.jpg
+5e4b973a5500787c0c7e13cd7a0a04f3e9ea758535d08c6dbec81def322b9c1e,2,meningioma,sin_particion,False,False,meningioma/0200.jpg | meningioma/1625.jpg
+5ee5c79a100d43c75af29059bb8aacab59959f7f48b7ccece44fc33f19c5ecc3,4,healthy,sin_particion,False,False,healthy/0646.jpg | healthy/0912.jpg | healthy/1082.jpg | healthy/1382.jpg
+5f26104124a38ccf1bfe53d0a4cb382f2954455e12767c481b754d9730bc347d,2,meningioma,sin_particion,False,False,meningioma/1335.jpg | meningioma/1593.jpg
+6088f5a1e24ca2916f338985daebf1d8dcc0478ba27f9c066c79743ff147da06,3,healthy,sin_particion,False,False,healthy/0050.jpg | healthy/0502.jpg | healthy/1338.jpg
+6461b445e0fb9180ced25190714902590435d86fea0e0e0afc9e32cfd4dad251,2,meningioma,sin_particion,False,False,meningioma/0852.jpg | meningioma/1422.jpg
+64714964cb18401b6c7b0c643700bbed6404dc2bc8116dee153291204a2b6c53,2,healthy,sin_particion,False,False,healthy/0536.jpg | healthy/0982.jpg
+6649f65f366da05e2462c0c406e7eb2ba0a6344775d745b4a69b58f7956ac16a,2,healthy,sin_particion,False,False,healthy/0055.jpg | healthy/0607.jpg
+6884d0d4d2f6e7080c8f6f75ff482715157c3b84e52ac281e42872d8d8210b82,3,healthy,sin_particion,False,False,healthy/0778.jpg | healthy/1323.jpg | healthy/1613.jpg
+69bf86eb8c95d45cfb354164eb46dc728ba0435e24f8e408f60636a904080eae,2,meningioma,sin_particion,False,False,meningioma/0215.jpg | meningioma/1606.jpg
+6a3ebe28b40078c38f0ffbcf81dc37ee3123d9f8c098b0a794b39f325cf93fad,3,healthy,sin_particion,False,False,healthy/0260.jpg | healthy/1458.jpg | healthy/1892.jpg
+6b5fcdb33b28c2249bfbb0a8209f63e40b448e018cef5744b409e4602ad4d89e,2,meningioma,sin_particion,False,False,meningioma/0388.jpg | meningioma/1358.jpg
+6b80beb7120f26429d84deb099bab08d66aae1a24359b195b99b19f00a8572e6,2,meningioma,sin_particion,False,False,meningioma/0563.jpg | meningioma/1527.jpg
+6c24fa4314b8b58de047dd2a012879b63da8e1584be4c0a99ce3a3223e9463bf,2,meningioma,sin_particion,False,False,meningioma/0630.jpg | meningioma/1487.jpg
+6c35fce674276beb83d3e9a24c48dfc503fb08d8e48c8a8b5264d189c84568ba,2,healthy,sin_particion,False,False,healthy/1515.jpg | healthy/1804.jpg
+6dcd92e27c5d92eb314911f78dc324833ee023da93fc0452d257664cb62c0eaa,2,healthy,sin_particion,False,False,healthy/0733.jpg | healthy/1970.jpg
+6e0fd33ed2e686d2263bd4021bc832e34358a2c28c8d20edd45d00bf28d8a7df,3,healthy,sin_particion,False,False,healthy/0074.jpg | healthy/0808.jpg | healthy/1854.jpg
+6e65f6ac076893f99da63ae82f43b446811cb17c7e32dbb37dcdff7f1db0b9d0,2,healthy,sin_particion,False,False,healthy/0566.jpg | healthy/1317.jpg
+6e70c4aa31dbf8353b9f9ab559aeb3640465ee4b202abb983507fb1983498a81,2,meningioma,sin_particion,False,False,meningioma/0499.jpg | meningioma/1520.jpg
+7025e1c1b1037237918f8f808858e459d7b633ff3c7100ff9bbe43163109f9ad,2,healthy,sin_particion,False,False,healthy/0372.jpg | healthy/0478.jpg
+703fd49c2714c0bcb3a4eb180a41acd97df54ce933813b321e01a8b6dd0ce280,2,healthy,sin_particion,False,False,healthy/0718.jpg | healthy/0927.jpg
+70407c09806e743a3c0d78a1e956f7a6c5300f4f45675d477aad9d32f8831e84,2,pituitary,sin_particion,False,False,pituitary/0272.jpg | pituitary/1110.jpg
+7090480a5d3cf027fd2726e6449f75e80e34cc92c60944f7ceb0bd45531b9cd4,2,healthy,sin_particion,False,False,healthy/0654.jpg | healthy/0758.jpg
+721f2f0e769eea7c10358323829ee6cde0dfa2b48ead9ed0c005612d9e35a6da,2,healthy,sin_particion,False,False,healthy/1011.jpg | healthy/1984.jpg
+735219e2579bde16d0460aab9898bb31a88c30d9d0e2e315f99c5c5002c52a11,2,healthy,sin_particion,False,False,healthy/0202.jpg | healthy/0389.jpg
+73b850aceb75650cf799e9ddcea0cb637dcd8a7a2deb9d4cc1a80698d09efc69,2,healthy,sin_particion,False,False,healthy/1015.jpg | healthy/1532.jpg
+75fce59afad0f3bae97de8a704b1c1e29e3d90cccd1ea20c05541fde1977d1d6,2,healthy,sin_particion,False,False,healthy/1250.jpg | healthy/1966.jpg
+7685d9e5d78cadc53749246017add57b334352dc2b89c3901618484be5bf954c,2,meningioma,sin_particion,False,False,meningioma/0740.jpg | meningioma/1512.jpg
+77921ffec177440ded62732b76714f1be62e60df71ebd853f1ec8f1ecc2298b1,3,healthy,sin_particion,False,False,healthy/1339.jpg | healthy/1591.jpg | healthy/1786.jpg
+7a62aa058ba43c2e1ffbae5f35985493709413aab02fbc23dbcd04496f71cf4b,2,meningioma,sin_particion,False,False,meningioma/0221.jpg | meningioma/1631.jpg
+7d5394d70748b7652e5e95b0af03403751c7a83f956c8c0c5bd80b68abb6e2b7,2,meningioma,sin_particion,False,False,meningioma/0300.jpg | meningioma/1373.jpg
+7e661c18e007fdff48b831f85c74dbc1f19b87fc0a51e3ed4b2dd256360df2a1,3,healthy,sin_particion,False,False,healthy/0240.jpg | healthy/0640.jpg | healthy/1907.jpg
+81c3c07f42893147e9b745619c2e962c7622f6464f506024aaf3cd3e1abb78b0,3,healthy,sin_particion,False,False,healthy/0945.jpg | healthy/1260.jpg | healthy/1509.jpg
+81c4db4eb40f29f03efc36a9770d963ee9b738266ef3ca6bd8fa3db06e275fee,3,healthy,sin_particion,False,False,healthy/0849.jpg | healthy/0853.jpg | healthy/1078.jpg
+81d4861d3ddea2cef9ae3b05eb4d74e2f3a683ae12759709d5f3bbb00a4b4cf2,2,healthy,sin_particion,False,False,healthy/1157.jpg | healthy/1544.jpg
+81db423a4414e9ecfaabf064178c6e98965b0d6efd3437b64215a7d6bf561d37,2,meningioma,sin_particion,False,False,meningioma/1026.jpg | meningioma/1426.jpg
+81e7d3b8d1865917af20c7d74fdd5b6a725f726ff33427292322d12ba72cd5cf,2,meningioma,sin_particion,False,False,meningioma/0912.jpg | meningioma/1444.jpg
+81e8810f7309ac9b6b9548f7f434d305248d1512fa0f6fbe18fbe9166115119f,2,healthy,sin_particion,False,False,healthy/1098.jpg | healthy/1180.jpg
+82446f1d6dedf21d5a3db1af4db2ada47435cc0ad7f75f55ce32b6af6b1169ca,5,healthy,sin_particion,False,False,healthy/0186.jpg | healthy/0694.jpg | healthy/1138.jpg | healthy/1615.jpg | healthy/1957.jpg
+82d7ab9b8a1dd3f32e3f96aa70b6bf239a7cb2b36abdb7317139763b1bf7c72d,5,healthy,sin_particion,False,False,healthy/0062.jpg | healthy/0479.jpg | healthy/0539.jpg | healthy/1738.jpg | healthy/1995.jpg
+83333576b0351d2387ad5dd71846451f27ff74e21dbc5fdf4ecc6701da2b0c44,2,meningioma,sin_particion,False,False,meningioma/0010.jpg | meningioma/1515.jpg
+83355b1184cb28b58178fe36c2736aa9886513b6579894194b1fc8503815a273,2,healthy,sin_particion,False,False,healthy/1314.jpg | healthy/1706.jpg
+8476bab58567c4aa60f8fe7472b0272e5d82f9cd44b60c62724b9866be3ab323,2,healthy,sin_particion,False,False,healthy/1150.jpg | healthy/1743.jpg
+8685ef472671948f84b81c01c6b410983ba9a46736c5285666f9f95833b59d0b,2,healthy,sin_particion,False,False,healthy/0027.jpg | healthy/0524.jpg
+86922c0b6ef10fc3352de0e80bffdca9d0e14759471cba2bb8ff119ff9722a63,3,healthy,sin_particion,False,False,healthy/0488.jpg | healthy/0975.jpg | healthy/1986.jpg
+86e9aa159cbf2fb4b349af67643d7de0d6bb49aac4ac0d3df897e4c5bdbbcc1f,2,healthy,sin_particion,False,False,healthy/0469.jpg | healthy/0802.jpg
+87a89ad481500d3c3ac476ec75c9484a0555a324d55cafc97dee14994bb428d8,2,pituitary,sin_particion,False,False,pituitary/0278.jpg | pituitary/0459.jpg
+89c01d556fc0d65a0df1b6222c3926459c8b20e40009be5d3aabb80dd09351df,2,healthy,sin_particion,False,False,healthy/1205.jpg | healthy/1821.jpg
+89f99ef20b764b382c02224bd8686e7e82767577decdd47b4238310a443525b4,2,healthy,sin_particion,False,False,healthy/0633.jpg | healthy/1938.jpg
+8bc40e15148f209f8f125b55b9552dcdcbf82d415bc77ec3037c9ddbf8fc0f93,2,healthy,sin_particion,False,False,healthy/0332.jpg | healthy/1795.jpg
+8c1ca0055b94ee3d264ffc18366bad808239d9e75e679e6025b2f376c2195e24,3,healthy,sin_particion,False,False,healthy/0462.jpg | healthy/0627.jpg | healthy/1692.jpg
+8c2a1557d5e953d7e91ef973a2b545890f43d351284b62dd43ed6ba24a7132a5,2,healthy,sin_particion,False,False,healthy/0449.jpg | healthy/0596.jpg
+8d90163c55d8bf01d03a25f773b64b0125d491a42c67a8f0122b3a2fae9ae1bb,2,healthy,sin_particion,False,False,healthy/0171.jpg | healthy/0742.jpg
+8d91cda6da8bb8d45b8158d9acf244f5c38e55d6cea34b3a66ff63b48c9b0e2e,2,healthy,sin_particion,False,False,healthy/0369.jpg | healthy/1630.jpg
+8e227288854e3268a5fe1e285351c635b8cb5666eb31a533a97d6d856e8a0c3c,2,healthy,sin_particion,False,False,healthy/0070.jpg | healthy/1046.jpg
+8ea36d5a118a25c443bcffaae8fc5db1ebc74ed83311386d7b38da7cd96f65d4,2,meningioma,sin_particion,False,False,meningioma/0957.jpg | meningioma/1362.jpg
+8f98d246a1e0fb244986a28fbfc8a53110eeb12c8aaf6dfff59c73577251c063,2,healthy,sin_particion,False,False,healthy/1084.jpg | healthy/1415.jpg
+903311aa928ff3ea3724a9116b4eebd48d2eff609e2ec6492b50b0ee90bcbdad,2,meningioma,sin_particion,False,False,meningioma/0671.jpg | meningioma/1470.jpg
+905ee5bdb301a14cf5c26a32738746c221a95005860d253c95883f9a3fb5b1eb,2,healthy,sin_particion,False,False,healthy/0644.jpg | healthy/0790.jpg
+918c7e9a332651e7e590da19d1fa0c0e0d344249b3cb22fd55ee52cccc206cac,2,meningioma,sin_particion,False,False,meningioma/0453.jpg | meningioma/1531.jpg
+929e9124fc2de2ca58db7fb3b8e054d51adb49bb12bbb67a44b7deab935b7ee7,2,healthy,sin_particion,False,False,healthy/0115.jpg | healthy/0173.jpg
+95db43f940810b348ce53f696660273828e22e7c24840a7439628d3405370167,2,healthy,sin_particion,False,False,healthy/1040.jpg | healthy/1704.jpg
+9666ffb449f1ce60cede67cef76657d1cce03f64e07bb414f0c8954727d35cad,2,healthy,sin_particion,False,False,healthy/0334.jpg | healthy/0898.jpg
+96b6d95824b5e6780c6f1888d405f26d2fd6bbf8acbd1e35ed573ea844a2b87e,2,meningioma,sin_particion,False,False,meningioma/0894.jpg | meningioma/1529.jpg
+96b91a2a0d7ad1ba4caeea55b40c99fbd3f89bd1ddbc093ea629cc932de82e11,2,healthy,sin_particion,False,False,healthy/0959.jpg | healthy/1164.jpg
+971bec3c9659ed7dc2e7da2da808fa1ff090fc7c0840a36edebd41aa4727e73a,2,pituitary,sin_particion,False,False,pituitary/0306.jpg | pituitary/1649.jpg
+9c3c0d1fded61989aabc9c3aede4c3442789070ade059631ba94477337c50982,2,healthy,sin_particion,False,False,healthy/1298.jpg | healthy/1469.jpg
+9c453efc4aa6e2e0f120d24741021d382e1057d0fc8a1f4e1f9d3d06ed106242,3,healthy,sin_particion,False,False,healthy/0047.jpg | healthy/0667.jpg | healthy/1143.jpg
+9ce4905d89a4c91f9e8be73761116aa537a47dc69d205e7bbb72a6ef59a3c1a0,2,meningioma,sin_particion,False,False,meningioma/1205.jpg | meningioma/1409.jpg
+9e712519fb587c65e8753c3102a0f472cfba16a080d0a354aece1c2ba1dd2b0d,2,meningioma,sin_particion,False,False,meningioma/1146.jpg | meningioma/1453.jpg
+9f8141a64490f5689a89ac6d5c5e6a842b820c677d0aef6cba4fc6167cf2ad2d,2,meningioma,sin_particion,False,False,meningioma/0086.jpg | meningioma/1427.jpg
+9f88883893c894662f9ef9f7a3fb8076a229ff97c7b6a7315d18ede10458f048,2,glioma,sin_particion,False,False,glioma/1525.jpg | glioma/1579.jpg
+9f88da1f6f74e66eb77cabf2ae0df2ddc8b8f3f9a513bb79f2261593f0163b44,2,meningioma,sin_particion,False,False,meningioma/1166.jpg | meningioma/1541.jpg
+9fac4c3992544254c4577082f609081710b696605828bb1b38e6e3291be8e0f6,2,meningioma,sin_particion,False,False,meningioma/1065.jpg | meningioma/1609.jpg
+a122fcb23c4e86406f5128723f1dd7c1b18caefd3d12c19fba7ee3a970fa8592,2,healthy,sin_particion,False,False,healthy/0197.jpg | healthy/1186.jpg
+a1e3f6468cd1f1154223d68df2aaa2dcb938ca4e5aab46d29954c740fc5c8cd5,2,pituitary,sin_particion,False,False,pituitary/0369.jpg | pituitary/1035.jpg
+a217253eb035a136b65116601b716b4a85d3b0d8ee2a4daad6cc1eee2c959e20,2,meningioma,sin_particion,False,False,meningioma/0921.jpg | meningioma/1408.jpg
+a2dee35463bd71d2342e769f055d3a9beaea17a4ff2e7827074033d79ea616dd,2,meningioma,sin_particion,False,False,meningioma/0347.jpg | meningioma/1483.jpg
+a30ad70c239b0a588fceeeeb2ac6692421ac6f161cfa5b80a6e5f7c958ed7bf8,3,healthy,sin_particion,False,False,healthy/0126.jpg | healthy/0805.jpg | healthy/1719.jpg
+a393c253021228dcdeb6bdc5d7ac5da149d767ea05d4007583701973ae6f24bb,3,healthy,sin_particion,False,False,healthy/0354.jpg | healthy/1191.jpg | healthy/1830.jpg
+a40b07ddfe8f17293ff0642d49ffa3568ecb56efae27e538ce1c187ca8bf6440,5,healthy,sin_particion,False,False,healthy/0431.jpg | healthy/0580.jpg | healthy/0879.jpg | healthy/1696.jpg | healthy/1853.jpg
+a4e1e28d89a2e6934299e56b5512dcdf7a20adb5848731fef41712df1952da4f,3,meningioma,sin_particion,False,False,meningioma/0792.jpg | meningioma/0897.jpg | meningioma/1598.jpg
+a51de1b4e6e429d6383891fb2b6d9180395c0f7af940cb03a34b1559a46e388c,2,meningioma,sin_particion,False,False,meningioma/1249.jpg | meningioma/1374.jpg
+a6fabcf490482c4d626ca4654bc7bab70dc1bc7bdea0023b121704a9de590aa1,2,healthy,sin_particion,False,False,healthy/1079.jpg | healthy/1669.jpg
+a8d6537624f97efa14234b2b85a5264ce5044f20de279ff1117a6926201e8e29,2,meningioma,sin_particion,False,False,meningioma/0762.jpg | meningioma/1461.jpg
+aaa4db16e8544fa6bbc777e3326f868961f487f0bd0c647204e688af6e152d5f,2,healthy,sin_particion,False,False,healthy/0820.jpg | healthy/1451.jpg
+ab44e5912ffe9a3b7ea6f7caefe7554af00ae4090d65a0860642e8e46c74fd3e,2,meningioma,sin_particion,False,False,meningioma/0433.jpg | meningioma/1387.jpg
+ac9581bb1aa9a8e2996fabe163a29ab41d65febc584ef345ff4efc25bdbe566d,2,healthy,sin_particion,False,False,healthy/0858.jpg | healthy/1516.jpg
+b01965f30fbc8a63b160f480c797282a7d1019c34bbe2c5b31002711d0f4aac3,2,meningioma,sin_particion,False,False,meningioma/1190.jpg | meningioma/1268.jpg
+b05daedea346403baec3d653399e379c7fd9daf1934489862a5eee03af893ecc,2,healthy,sin_particion,False,False,healthy/0930.jpg | healthy/1914.jpg
+b46638c21fee9153cd136495c84988d58262ad8664b233264ede18438a1bcd7d,2,healthy,sin_particion,False,False,healthy/0821.jpg | healthy/0827.jpg
+b5f638ed4cdb3a5bbbf8c8fbdc69adb1704653a41e5af6ca5cdcd1e7f33103b8,2,meningioma,sin_particion,False,False,meningioma/0781.jpg | meningioma/1485.jpg
+b6614905ea2026b955474ee66494788807ef5bcb53164958ed6afb60b2c02439,2,meningioma,sin_particion,False,False,meningioma/0138.jpg | meningioma/1340.jpg
+b676f8ab259436fb61551ef6ab7848bde2e49c9f7873cf5367a2ecafa6362d3b,2,meningioma,sin_particion,False,False,meningioma/0212.jpg | meningioma/1391.jpg
+b67bcaf5356ae8a16b99497f81b8f26d334c3d2343c3471f2b78153a6411ea41,2,healthy,sin_particion,False,False,healthy/0216.jpg | healthy/0295.jpg
+b71419b621d05ce9f3cbf443f617801a0ae5350226170c58d9da62bbb352369e,2,healthy,sin_particion,False,False,healthy/0221.jpg | healthy/0732.jpg
+b77c1b93a39b51c2496230574a217f4a4519a52ab601a67cdd64165cff5a8463,2,healthy,sin_particion,False,False,healthy/1406.jpg | healthy/1964.jpg
+b834d4a4c3a540a525b6859714476560ac4bf328df6d7c609716245231969822,2,meningioma,sin_particion,False,False,meningioma/0971.jpg | meningioma/1584.jpg
+b969c53fc94f4534eb9aec416fb1aeecdf7dba9620c4c336b4e331f8dbf5d1ee,2,healthy,sin_particion,False,False,healthy/0961.jpg | healthy/1801.jpg
+bba3f57152cab6f2ab3fe15e5d8f29a74cfdde97bdf8f6e054430480a77cc1c2,2,healthy,sin_particion,False,False,healthy/1500.jpg | healthy/1812.jpg
+bc224c1b7a9995add543f96fba86f77a0e9fa43a69684dbf8de8416ae9d68206,2,pituitary,sin_particion,False,False,pituitary/0667.jpg | pituitary/0904.jpg
+bda4b36311286695bfb32104d12f9719af29ee4aa73ffe7d2f4ff6bf2741c06e,2,pituitary,sin_particion,False,False,pituitary/0478.jpg | pituitary/1530.jpg
+be6fd2772d2dcb02e2603c4239cc95d079352d5fac8786b3b82075741f909144,3,healthy,sin_particion,False,False,healthy/0064.jpg | healthy/0426.jpg | healthy/0680.jpg
+be7b49be95a65f2d97460aefd45bb462519b8a38de22e6195ba1ffdfd8c64c40,3,healthy,sin_particion,False,False,healthy/0572.jpg | healthy/0890.jpg | healthy/1654.jpg
+be9bc08c2bcff4afaaa7a7920974478de355a10a2747a5dc30002ab0d959382c,2,meningioma,sin_particion,False,False,meningioma/0476.jpg | meningioma/1490.jpg
+bff23741bb39be6501243765b37a35d229ee3808365e39e4992e7dbf5d3d7a15,2,healthy,sin_particion,False,False,healthy/0273.jpg | healthy/1384.jpg
+c18d546cf239efa106541930930ae02819ef6602515fe2e5e6f3385e6faad1ba,2,healthy,sin_particion,False,False,healthy/1128.jpg | healthy/1182.jpg
+c38182002eabbc51a667801a75cd5cf675b63697e76918e4002992b438bebcbe,2,meningioma,sin_particion,False,False,meningioma/0713.jpg | meningioma/1526.jpg
+c3d60c2c98e3fb4119bf8fa2f7f12d7a89663b2a96337b2750959bca46a42fd8,3,healthy,sin_particion,False,False,healthy/0420.jpg | healthy/0630.jpg | healthy/1778.jpg
+c4de8da8d5173cc584269e859ea8ddbb1a3b3e769fb969123e7731a466b85451,2,healthy,sin_particion,False,False,healthy/0218.jpg | healthy/1506.jpg
+c56a58f00e01294164b4d0aff44eaa9d56229d446c54a82d9d5a6533e586a8f8,2,healthy,sin_particion,False,False,healthy/0087.jpg | healthy/0184.jpg
+c5cb25ced2933323e0d8a8038656b07a28e14cba72163410830b6c44d87bf6e5,2,pituitary,sin_particion,False,False,pituitary/1370.jpg | pituitary/1753.jpg
+c63efacd581fdc8b0681f2604f72b45ff599ae853fd18590c30781d488c8f4ce,2,meningioma,sin_particion,False,False,meningioma/0808.jpg | meningioma/1545.jpg
+c674898fc7f4408a45ca719642bcde715f4fd2a143052337e1f71e31bd2795ab,4,healthy,sin_particion,False,False,healthy/0258.jpg | healthy/0358.jpg | healthy/0567.jpg | healthy/1335.jpg
+c79956b72131a078b5704ab2b389dc1d81b7b97fd1bb3740ec9137b4f7944336,3,meningioma,sin_particion,False,False,meningioma/0341.jpg | meningioma/1503.jpg | meningioma/1605.jpg
+c7a9ef026600f623c0c25d0a3f3d98f17e8c14188a67337ad81a0a13349fb7b3,4,pituitary,sin_particion,False,False,pituitary/0110.jpg | pituitary/0951.jpg | pituitary/1209.jpg | pituitary/1735.jpg
+c88e74e3442a633974f992da6de49321d47e672b625aab7af4141b6c22ed905b,2,healthy,sin_particion,False,False,healthy/1142.jpg | healthy/1997.jpg
+c9eda74916a99e59d058837b4c4fea3b2cd6d6856796c4f5f21a7f0e783cbb11,2,meningioma,sin_particion,False,False,meningioma/0591.jpg | meningioma/1607.jpg
+cad7374db95d3ffff840c15a786efdad173b3ab9a09ba57ef903368e65a27e18,2,meningioma,sin_particion,False,False,meningioma/0712.jpg | meningioma/1429.jpg
+cad9d81581e0f71115a68dceb14dca3ba9651808982e158162e6fa05f4425460,9,healthy,sin_particion,False,False,healthy/0512.jpg | healthy/1271.jpg | healthy/1295.jpg | healthy/1332.jpg | healthy/1525.jpg | healthy/1716.jpg | healthy/1757.jpg | healthy/1826.jpg | healthy/1951.jpg
+cb7f2ba7eb0afda7765adf1a28c6ec8f39ab4f92629a320a302c675c6c6dc9d6,2,meningioma,sin_particion,False,False,meningioma/0645.jpg | meningioma/1604.jpg
+cda243521fb6d96701461c8e742882b63b2a2674e36c23cc4e952d5539dd3202,2,meningioma,sin_particion,False,False,meningioma/0672.jpg | meningioma/1382.jpg
+cdfcc7d19045d05cb237f209f0b2a7fbc9a8a33e2556ba872486bb3cd13e8ab6,2,meningioma,sin_particion,False,False,meningioma/1043.jpg | meningioma/1434.jpg
+cfa90ad96a819921843c4870424312c5a97e7c5a3fcc8365ddb070c112e09189,3,healthy,sin_particion,False,False,healthy/1289.jpg | healthy/1427.jpg | healthy/1511.jpg
+d09c3ac1ce9ac31034cb57b845ad93ac7fe5a25e972236ed8d0787843662d211,2,pituitary,sin_particion,False,False,pituitary/0350.jpg | pituitary/0360.jpg
+d0fc1e5eda46df294bd213a99de7496bcaa7ba27d27639ab7aa130075dbaa761,2,meningioma,sin_particion,False,False,meningioma/0136.jpg | meningioma/1381.jpg
+d1c45b9d180d93cfb5647072712d3fcdd80edc1f48b252755946fb5e1e5431e4,3,healthy,sin_particion,False,False,healthy/0013.jpg | healthy/1308.jpg | healthy/1908.jpg
+d2fe353b425e1abbcb8b1ea42968549c38dd4cfae250b2e9885de559f04aa782,2,healthy,sin_particion,False,False,healthy/0490.jpg | healthy/0720.jpg
+d3ceb301cefcfc0551da93d2ea171c65e2638f823e9059e94f4c5c1882d9fedc,2,healthy,sin_particion,False,False,healthy/0125.jpg | healthy/1975.jpg
+d494b648fc8d6317e58e806b88128551fef09605e8d95551632a59200b283d65,2,meningioma,sin_particion,False,False,meningioma/1201.jpg | meningioma/1502.jpg
+d5b528c5f9f42e7f389312940e21b72971113a7e8db30580cc80b47925ae1bfe,5,healthy,sin_particion,False,False,healthy/0472.jpg | healthy/0871.jpg | healthy/1110.jpg | healthy/1856.jpg | healthy/1998.jpg
+d5bf7b5f48c1fe39ce89010cbab447b664ee8a6b4e991889068e28ca74094ac4,2,meningioma,sin_particion,False,False,meningioma/0031.jpg | meningioma/1549.jpg
+d67491c93aa69c07055f976aaebc855649fd8cf02a92c2658911a239a23fc70c,2,meningioma,sin_particion,False,False,meningioma/1285.jpg | meningioma/1343.jpg
+d6ac7e598bbec2cd1e53134defa85786b55a87711ebb031ec2428e2e3569addb,2,meningioma,sin_particion,False,False,meningioma/0810.jpg | meningioma/1476.jpg
+d6de25a08382dbc154067bc07c6279cb01b39f026b78c327327b6c18179c2680,2,healthy,sin_particion,False,False,healthy/0547.jpg | healthy/0851.jpg
+d7d7b98f3570751c77b9b54c2e5a0f93b979c54501dd18b62e1f9ae27cb2164c,2,meningioma,sin_particion,False,False,meningioma/0896.jpg | meningioma/1350.jpg
+d8b5cab6ab083204b4b03f6541c1407058e766ad0fc6d67abc904f6e78fc059f,2,meningioma,sin_particion,False,False,meningioma/0696.jpg | meningioma/1398.jpg
+d9469972b92bf0022ed182420ce5be05c764a35600fb833dd39bc862a952d439,2,healthy,sin_particion,False,False,healthy/0191.jpg | healthy/0211.jpg
+d9d7039dbbc91aead28d64f9e1a11ee102e54bc38fd3fa8f9cb94cb6d9e1a112,2,healthy,sin_particion,False,False,healthy/1009.jpg | healthy/1952.jpg
+da12d06dbf23020611f0231caebffb6ae6132b55eae16ee5b6557f40dae8ea4e,2,meningioma,sin_particion,False,False,meningioma/0423.jpg | meningioma/1421.jpg
+dacb79a24ed6e4e0dab53c2fd35f87ad7d71a22846d7009203a990a74342463d,3,healthy,sin_particion,False,False,healthy/0174.jpg | healthy/0236.jpg | healthy/1763.jpg
+db34dd1fc9909f11114228ea037d9240c48e3432015de59926494d805178eb99,2,meningioma,sin_particion,False,False,meningioma/1027.jpg | meningioma/1494.jpg
+dc9b00544e03bfdd8f8f260db5c4be86e314616321bb93046a7b869e702d6090,2,healthy,sin_particion,False,False,healthy/0651.jpg | healthy/0775.jpg
+dd3f676178815fcd6848d157aef85f91c127bfe56410d7b11e2b89aac4871df2,2,healthy,sin_particion,False,False,healthy/0292.jpg | healthy/1588.jpg
+ddc1089ebb6b5e7c0c29f99efd4a2b1689ed7b640e964bc2745d1e4b11908549,2,meningioma,sin_particion,False,False,meningioma/0701.jpg | meningioma/1365.jpg
+e00e58c0dc4d89f7dcb413cef78545ad64954793c0dc950ce9b01b846385d9a1,2,healthy,sin_particion,False,False,healthy/0208.jpg | healthy/1773.jpg
+e120827347b28c2b5b7e26fcc034a4f63070706b877398873a5ca8e20616a4e2,2,meningioma,sin_particion,False,False,meningioma/0928.jpg | meningioma/1406.jpg
+e12a24b5637d6a27649e8ead06f307303e1855f300916e1b9b5caf92aef4ce00,2,healthy,sin_particion,False,False,healthy/0727.jpg | healthy/1225.jpg
+e14e381edac8d6a1ecd4898f2f3557d96b3b8c4ed2b0ebb83696a2405c05eb00,2,healthy,sin_particion,False,False,healthy/0284.jpg | healthy/1257.jpg
+e16fa12a53a3421aa88c39635c573502546d01c0a070650dea94e998949c44f2,7,healthy,sin_particion,False,False,healthy/0107.jpg | healthy/0624.jpg | healthy/0978.jpg | healthy/1370.jpg | healthy/1749.jpg | healthy/1887.jpg | healthy/1953.jpg
+e1a4e41d6f9d1501f35e1c85d6b2ae79ea57b190f40e9f65a0fea14f28b39dc1,3,healthy,sin_particion,False,False,healthy/0551.jpg | healthy/0785.jpg | healthy/1920.jpg
+e286484fe1aa96c3c4ec62c83e23312ee7a64a266cfb251c97932aee23855c36,2,meningioma,sin_particion,False,False,meningioma/0236.jpg | meningioma/1377.jpg
+e3091b2bf36b6f323d09732d891d90c2da5ef849c9aaf5ed67d762ed288036bb,3,healthy,sin_particion,False,False,healthy/0597.jpg | healthy/1410.jpg | healthy/1641.jpg
+e3f866c1ccc735d265c3b5694854ebce8b355e8c8730425a0a612cf5f11b746d,3,healthy,sin_particion,False,False,healthy/0608.jpg | healthy/0783.jpg | healthy/1589.jpg
+e6127534da482a06a38a07e95238d8bd47c4fc08950198947ce859acb4523747,2,healthy,sin_particion,False,False,healthy/0913.jpg | healthy/1729.jpg
+e85171c9c9d2ac2c4478d238a9827929ab9cfdda8c6469aeaed39104b96b34ee,2,pituitary,sin_particion,False,False,pituitary/1055.jpg | pituitary/1079.jpg
+e893c757cc0dc819b6e07525e5d844e6d65d152415c89dedc2a55cde88668688,4,meningioma,sin_particion,False,False,meningioma/0528.jpg | meningioma/0644.jpg | meningioma/1348.jpg | meningioma/1524.jpg
+e8ebdec02cc131ef0cd3182fb45b72213496881bd39d9e88b002a9d883040f2d,2,meningioma,sin_particion,False,False,meningioma/0450.jpg | meningioma/1378.jpg
+e90dda073876f5717c5aa1929172ae3e6f0de924d8d748065bab8eaefb04efbe,2,meningioma,sin_particion,False,False,meningioma/0492.jpg | meningioma/1488.jpg
+e9dbee572fe88e691f20a3ecb469f3859dc15a2748df9335a7984f3c9b608479,2,meningioma,sin_particion,False,False,meningioma/0421.jpg | meningioma/1599.jpg
+eab95063b9182449bab377cde831c820b2234aef8dc167b8b855e1190deffe8c,9,healthy,sin_particion,False,False,healthy/0204.jpg | healthy/0227.jpg | healthy/0508.jpg | healthy/0856.jpg | healthy/1199.jpg | healthy/1766.jpg | healthy/1789.jpg | healthy/1870.jpg | healthy/1880.jpg
+ead1d476ec98a72953ddd2d3725ea1687b5b7deb1ab920836ae094f7c922fde6,2,meningioma,sin_particion,False,False,meningioma/0246.jpg | meningioma/1561.jpg
+eaddf44800aacf1a26d25ee5e2098c4a6192f5aa03058e2cb8305f918cc1e4de,2,meningioma,sin_particion,False,False,meningioma/1087.jpg | meningioma/1401.jpg
+eaecef03f9b8b51201338cbfbbbba7b08194360e079ddab11f50da0c78b76f5e,2,meningioma,sin_particion,False,False,meningioma/0234.jpg | meningioma/1514.jpg
+ed6a1c776429e6f3ab416ff5bac65ed46b2651ffa49a4c9c71f2eed4e08e057c,2,healthy,sin_particion,False,False,healthy/0193.jpg | healthy/0364.jpg
+ee4d017fc7d19ddcd060bd4a8e997cbbf8c87ff5d485aa6ed675fed9ef1fc65f,2,meningioma,sin_particion,False,False,meningioma/0089.jpg | meningioma/1396.jpg
+ee597063b2c00a36f9dbdc499631f2dc206a4b59e01d43f85565a1ba3e79db99,2,healthy,sin_particion,False,False,healthy/0476.jpg | healthy/1053.jpg
+ee6d9fa5cd440abed984bd8f772da62c0cd737d047537d22f2e21a3dea5d3bfc,3,pituitary,sin_particion,False,False,pituitary/0196.jpg | pituitary/1058.jpg | pituitary/1450.jpg
+f0394d0950a14ac7f8f3475c183455135083f74dc3d119487e6b344d3e10471b,2,meningioma,sin_particion,False,False,meningioma/0069.jpg | meningioma/1393.jpg
+f040faa9c38c40b44d80522cc10f7d4f623a0c882a2ba3626eebd1531a178207,3,healthy,sin_particion,False,False,healthy/0724.jpg | healthy/1329.jpg | healthy/1816.jpg
+f0f28ffac59db679e90daf0b9ba63bda807d54a56c9ba6604f9cbc986d49f09d,2,pituitary,sin_particion,False,False,pituitary/0142.jpg | pituitary/0496.jpg
+f1dee0ca2a5ae7b1732ae7c21ad1e8e6a9743e615b7f7419a9ec521f91032fdf,2,healthy,sin_particion,False,False,healthy/0266.jpg | healthy/0357.jpg
+f34673e426541476934da0342c6b1d3b8234e10cb375e85083a087ac0a3f459f,2,meningioma,sin_particion,False,False,meningioma/0066.jpg | meningioma/1458.jpg
+f39737bad11978780a3f3c1108f7929fdb7d17eee8cd4b442cf9b513af8190f1,2,healthy,sin_particion,False,False,healthy/0104.jpg | healthy/0395.jpg
+f58f596c68bd218ae3afc40d73e1ad8693ddb6ea569a3300f37392f37f2f7ee0,2,healthy,sin_particion,False,False,healthy/1062.jpg | healthy/1287.jpg
+f5e026d258192d5820b52519ae72a54071ffe4ec9c3693a5f1a86fb8306d5f30,11,healthy,sin_particion,False,False,healthy/0709.jpg | healthy/1041.jpg | healthy/1266.jpg | healthy/1319.jpg | healthy/1385.jpg | healthy/1488.jpg | healthy/1606.jpg | healthy/1709.jpg | healthy/1756.jpg | healthy/1796.jpg | healthy/1991.jpg
+f66f0ba822a2f5ebaed1dcd51081d8efb5c934b3f8fdbbf884eb8f23b032e707,2,meningioma,sin_particion,False,False,meningioma/0060.jpg | meningioma/1390.jpg
+f67f023b059b41ae743ae3f51f6f81d61b613cca344998df924031f137a33552,2,meningioma,sin_particion,False,False,meningioma/0561.jpg | meningioma/1477.jpg
+f69fc4ab017b247f1d116a2f4caa0c3f95774e02b14ebf097b6a83646ba37f5e,2,healthy,sin_particion,False,False,healthy/1172.jpg | healthy/1697.jpg
+f791cd1db528d2a8247174db3b5a852b84665c2ed575d65f689dbf74bbd3a8b5,6,healthy,sin_particion,False,False,healthy/0039.jpg | healthy/0089.jpg | healthy/0156.jpg | healthy/0353.jpg | healthy/0598.jpg | healthy/1673.jpg
+f7dfd338241357fb5f14576d8d7db9e3ff98bbef5eb9dcc519dd5dbdb5a9ae6d,2,healthy,sin_particion,False,False,healthy/0656.jpg | healthy/0903.jpg
+f8bbe34b8bc6208d1d273155b94a2ad35a4ef365da5a43eb616838a6c4b35aa6,2,healthy,sin_particion,False,False,healthy/0388.jpg | healthy/1535.jpg
+f951c5f2c60f861e7a134345767c8cd0b8b86eddd74563e6598537552768cf25,2,meningioma,sin_particion,False,False,meningioma/0783.jpg | meningioma/1528.jpg
+f9c6f1e0bfb469e77e98698c684614af4ec299554de7cbe9220ff8d52558a3d8,2,meningioma,sin_particion,False,False,meningioma/0899.jpg | meningioma/1237.jpg
+fc980e9c6356f09508b523c4dad23164377f3734f438f8ae3e5aab39c75f7df4,2,meningioma,sin_particion,False,False,meningioma/0830.jpg | meningioma/1425.jpg
+fda9cded663ef3593467ca7d3d453437b663448e0222eed5b068a205d4c5d907,3,healthy,sin_particion,False,False,healthy/0723.jpg | healthy/0779.jpg | healthy/1800.jpg
+fdc18e35e530b4f7c52a916a7602be6b1e617501448fc3539942661b655166bb,3,healthy,sin_particion,False,False,healthy/0537.jpg | healthy/1127.jpg | healthy/1728.jpg
+fe0fdde5d807c93b9ccd0f10a4befc9d1286e543de343b04a2a6bbb726a4317d,5,healthy,sin_particion,False,False,healthy/0144.jpg | healthy/0600.jpg | healthy/1450.jpg | healthy/1614.jpg | healthy/1632.jpg
