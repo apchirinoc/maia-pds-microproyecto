@@ -2,3 +2,4 @@
     remote = aws-bucket
 ['remote "aws-bucket"']
     url = s3://brain-tumor-mri-scans
+    allow_anonymous_login = true
