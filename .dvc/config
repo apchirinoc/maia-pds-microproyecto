@@ -1,0 +1,4 @@
+[core]
+    remote = aws-bucket
+['remote "aws-bucket"']
+    url = s3://brain-tumor-mri-scans

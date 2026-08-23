@@ -1,0 +1,5 @@
+outs:
+- md5: bcf6a4d84ff610fcf6dedaa42ac13685
+  size: 247703652
+  hash: md5
+  path: brain-tumor-mri-scans.zip
