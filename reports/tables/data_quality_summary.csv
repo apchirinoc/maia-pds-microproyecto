@@ -1,0 +1,15 @@
+metrica,valor,detalle
+archivos_totales,7023,Todos los archivos encontrados
+archivos_de_imagen,7023,Archivos con extensión esperada o reconocidos por Pillow
+imagenes_legibles,7023,Imágenes verificadas y decodificadas por Pillow
+archivos_vacios,0,Tamaño igual a 0 bytes
+imagenes_no_legibles,0,Archivos candidatos que Pillow no pudo verificar o decodificar
+extensiones_no_esperadas,0,"Extensiones distintas de .jpg, .jpeg y .png"
+clases_esperadas_vacias,0,Ninguna
+clases_no_esperadas,0,Ninguna
+dimensiones_atipicas,1574,"Área en log2 fuera de 1,5 IQR; si IQR=0, área distinta de la moda"
+grupos_duplicados_exactos,300,Grupos con el mismo SHA-256
+archivos_en_grupos_duplicados,726,Incluye el original y sus copias dentro de cada grupo
+copias_redundantes_exactas,426,Archivos que sobran al conservar una copia por cada SHA-256
+grupos_duplicados_entre_clases,0,Mismo SHA-256 asociado con más de una clase
+grupos_duplicados_entre_particiones,0,No evaluable: el dataset no contiene particiones
