@@ -36,3 +36,25 @@ La fuente original de los datos se obtuvo de: [Brain Tumor (MRI Scans)](https://
     ```bash
     (.venv) $ unzip -d data/ data/brain-tumor-mri-scans.zip
     ```
+
+## Estructura del proyecto
+
+El repositorio está organizado de la siguiente manera:
+
+- `data/`: datos y referencias necesarias para la ejecución del proyecto.
+- `notebooks/`: notebooks utilizados para exploración, análisis y experimentación.
+- `prototype/`: implementación del prototipo de clasificación.
+- `api/`: componentes asociados a la exposición del modelo mediante una API.
+- `web/`: interfaz o componentes web del prototipo.
+- `reports/`: resultados, análisis y documentación generada.
+- `scripts/`: scripts auxiliares para procesamiento y ejecución.
+- `tests/`: pruebas del proyecto.
+
+## Flujo general de ejecución
+
+1. Descargar los datos mediante DVC.
+2. Instalar las dependencias del proyecto.
+3. Ejecutar los notebooks de exploración y preparación de datos.
+4. Ejecutar o entrenar el modelo desde los componentes definidos en `prototype/`.
+5. Revisar los resultados y reportes generados.
+6. Ejecutar las pruebas disponibles en `tests/`.
