@@ -22,5 +22,7 @@ COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 COPY --from=build /app/dist /usr/share/nginx/html
 EXPOSE 80
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s \
-  CMD wget -qO- http://localhost/health || exit 1
+  # 127.0.0.1 y no localhost: dentro del contenedor «localhost» puede
+  # resolverse a ::1, donde nginx no escucha (listen 80 es IPv4).
+  CMD wget -qO- http://127.0.0.1/nginx-health || exit 1
 CMD ["nginx", "-g", "daemon off;"]

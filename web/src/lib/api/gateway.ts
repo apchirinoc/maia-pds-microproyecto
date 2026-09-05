@@ -95,6 +95,16 @@ async function sondear(): Promise<InstantaneaBackend> {
     const salud = await pedirConTiempoLimite('/health', env.healthTimeoutMs)
     if (!salud.ok) throw new ErrorDeConexion(`/health respondió ${salud.status}`)
 
+    // No basta con un 200: hay que comprobar que quien responde es NUESTRA API.
+    // Con `VITE_API_BASE_URL=/` la sonda va al propio origen, y el nginx que
+    // sirve la interfaz también expone un `/health` para su propia liveness.
+    // Sin esta comprobación el frontend se creía conectado, no caía a datos
+    // simulados, y las peticiones a /api/v1/* recibían el index.html de la SPA.
+    const cuerpo = await salud.json().catch(() => null)
+    if (cuerpo === null || (cuerpo as { status?: string }).status !== 'ok') {
+      throw new ErrorDeConexion('La respuesta de /health no procede de la API')
+    }
+
     const latenciaMs = Math.round(performance.now() - inicio)
 
     let info: InfoBackend | null = null

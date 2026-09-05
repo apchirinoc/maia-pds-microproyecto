@@ -2,11 +2,13 @@ import {
   createContext,
   useCallback,
   useContext,
+  useEffect,
   useMemo,
   useState,
   type ReactNode,
 } from 'react'
 import type { AdminSession } from '@/types/auth'
+import { alExpirarSesion } from '@/lib/api/client'
 import { getStoredSession, login as loginRequest, logout as logoutRequest } from '@/services/auth.service'
 
 interface AuthContextValue {
@@ -24,6 +26,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<AdminSession | null>(() => getStoredSession())
   const [isAuthenticating, setIsAuthenticating] = useState(false)
   const [error, setError] = useState<string | null>(null)
+
+  // Si el servidor rechaza la sesión, se descarta también en el cliente. De lo
+  // contrario la interfaz se cree autenticada y las vistas protegidas quedan
+  // vacías en vez de llevar al usuario a iniciar sesión.
+  useEffect(
+    () =>
+      alExpirarSesion(() => {
+        window.localStorage.removeItem('brainneuroscan.session')
+        setSession(null)
+      }),
+    [],
+  )
 
   const login = useCallback(async (username: string, password: string) => {
     setIsAuthenticating(true)

@@ -23,6 +23,25 @@ export function obtenerToken(): string | null {
   return window.localStorage.getItem(CLAVE_TOKEN)
 }
 
+const oyentesSesionExpirada = new Set<() => void>()
+
+/**
+ * Avisa cuando el servidor rechaza la sesión.
+ *
+ * Sin esto, un token caducado dejaba las vistas protegidas vacías: la interfaz
+ * seguía creyéndose autenticada porque la sesión estaba en `localStorage`, y
+ * cada consulta fallaba con 401 en silencio.
+ */
+export function alExpirarSesion(oyente: () => void): () => void {
+  oyentesSesionExpirada.add(oyente)
+  return () => oyentesSesionExpirada.delete(oyente)
+}
+
+function notificarSesionExpirada(): void {
+  borrarToken()
+  for (const avisar of oyentesSesionExpirada) avisar()
+}
+
 interface OpcionesPeticion extends Omit<RequestInit, 'body'> {
   /** Cuerpo JSON; se serializa y se le pone la cabecera correspondiente. */
   json?: unknown
@@ -77,15 +96,35 @@ async function ejecutar(ruta: string, opciones: OpcionesPeticion): Promise<Respo
 export async function apiFetch<T>(ruta: string, opciones: OpcionesPeticion = {}): Promise<T> {
   const respuesta = await ejecutar(ruta, opciones)
   if (!respuesta.ok) {
+    if (respuesta.status === 401 && opciones.autenticada === true) {
+      notificarSesionExpirada()
+    }
     throw new ErrorDeApi(respuesta.status, await extraerDetalle(respuesta))
   }
   if (respuesta.status === 204) return undefined as T
-  return (await respuesta.json()) as T
+
+  // Un 200 que no es JSON no viene de la API: lo típico es un proxy o un
+  // servidor de estáticos devolviendo el index.html de la SPA. Se trata como
+  // falta de conexión para que el llamador caiga a los datos simulados en vez
+  // de dejar la pantalla en blanco con un error de análisis.
+  const tipo = respuesta.headers.get('Content-Type') ?? ''
+  if (!tipo.includes('json')) {
+    throw new ErrorDeConexion(`La API respondió ${tipo || 'sin tipo'} en lugar de JSON`)
+  }
+
+  try {
+    return (await respuesta.json()) as T
+  } catch (error) {
+    throw new ErrorDeConexion(error)
+  }
 }
 
 export async function apiFetchBlob(ruta: string, opciones: OpcionesPeticion = {}): Promise<Blob> {
   const respuesta = await ejecutar(ruta, opciones)
   if (!respuesta.ok) {
+    if (respuesta.status === 401 && opciones.autenticada === true) {
+      notificarSesionExpirada()
+    }
     throw new ErrorDeApi(respuesta.status, await extraerDetalle(respuesta))
   }
   return respuesta.blob()

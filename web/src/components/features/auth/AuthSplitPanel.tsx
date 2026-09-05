@@ -19,7 +19,7 @@ export function AuthSplitPanel() {
       {/*
         Aviso de estado real del proyecto. Sustituye a los distintivos
         «ISO 13485 · HIPAA-ready · GDPR», que afirmaban un cumplimiento sin
-        ningún control que lo respaldara. Ver docs/gobierno/evaluacion-riesgo-modelo.md
+        ningún control que lo respaldara. Ver arquitectura/gobierno/evaluacion-riesgo-modelo.md
         (riesgos R-02 y R-06): afirmar conformidad sin evidencia es en sí mismo
         un riesgo de gobierno. No reintroducir sin un documento que lo sustente.
       */}
