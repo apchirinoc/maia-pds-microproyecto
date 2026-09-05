@@ -1,0 +1,267 @@
+{
+  "common": {
+    "appName": "BrainNeuroScan",
+    "loading": "Loading…",
+    "retry": "Retry",
+    "errorTitle": "We couldn't load this data",
+    "save": "Save",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "back": "Back",
+    "search": "Search",
+    "disclaimer": "NeuroScan · research prototype. Not for clinical use.",
+    "datasetCredit": "Dataset: Brain Tumor MRI · Kaggle",
+    "simulatedData": "Simulated data",
+    "simulatedInference": "Simulated inference",
+    "backend": {
+      "online": "Connected to backend",
+      "offline": "No backend · simulated data",
+      "checking": "Checking connection…",
+      "sourceApi": "API",
+      "sourceMock": "Simulated",
+      "retry": "Retry connection",
+      "lastCheck": "Last check: {{time}}"
+    }
+  },
+  "classes": {
+    "glioma": "Glioma",
+    "meningioma": "Meningioma",
+    "pituitary": "Pituitary",
+    "healthy": "Healthy"
+  },
+  "nav": {
+    "panel": "Dashboard",
+    "analyze": "Analyze image",
+    "signIn": "Sign in",
+    "signOut": "Sign out",
+    "restrictedArea": "Restricted area",
+    "admin": "Admin",
+    "models": "Models",
+    "history": "History",
+    "apiDocs": "View API documentation"
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System"
+  },
+  "dashboard": {
+    "title": "Brain tumour classification by MRI",
+    "subtitle": "Brain tumour classification · Glioma · Meningioma · Pituitary · Healthy",
+    "analyzeCta": "Analyze an image →",
+    "kpi": {
+      "trainingImages": "Dataset images",
+      "modelAccuracy": "Model accuracy",
+      "userPredictions": "User predictions",
+      "activeCountries": "Active countries",
+      "thisMonth": "this month",
+      "continents": "continents"
+    },
+    "trainingDistribution": {
+      "title": "Dataset distribution",
+      "subtitle": "Dataset class distribution",
+      "centerLabel": "images"
+    },
+    "uploadsByCountry": {
+      "title": "Upload volume by country",
+      "subtitle": "Global upload volume · {{count}} countries",
+      "choropleth": "Choropleth",
+      "bubbles": "Bubbles",
+      "min": "Lowest",
+      "max": "Highest",
+      "noSelection": "No country selected",
+      "top": "Top"
+    },
+    "uploadsByMonth": {
+      "title": "Uploads by month",
+      "subtitle": "Uploads over time · 12 months"
+    },
+    "recentProfile": {
+      "title": "Recent uploads profile",
+      "subtitle": "Recent uploads · normalized",
+      "confidence": "Confidence",
+      "volume": "Volume",
+      "score": "Score",
+      "metric": "Metric",
+      "tumorClass": "Tumor class"
+    },
+    "datasetSamples": {
+      "title": "Dataset samples",
+      "subtitle": "One sample per class"
+    }
+  },
+  "analyze": {
+    "title": "Analyze an MRI image",
+    "subtitle": "Upload · tag origin · classify — demo purposes only, not a medical diagnosis",
+    "step1": {
+      "label": "01 · Image",
+      "dropzoneTitle": "Drop an MRI image",
+      "dropzoneHint": "JPG or PNG · max. 8 MB · 512×512 px",
+      "selectFile": "Select file",
+      "orSample": "Or try a dataset sample:"
+    },
+    "step2": {
+      "label": "02 · Image origin",
+      "selectCountry": "Select a country…",
+      "orMap": "or pin it on the map",
+      "clearSelection": "Clear country selection"
+    },
+    "step3": {
+      "label": "03 · Result",
+      "emptyState": "Select an image and its country to run the classification.",
+      "model": "Model",
+      "preprocess": "Preprocess",
+      "origin": "Origin",
+      "classify": "Classify image",
+      "newImage": "New image",
+      "downloadReport": "Download report",
+      "confidenceLabel": "Confidence by class",
+      "resultBadge": "Classification",
+      "explanation": "Influence map",
+      "explanationHint": "Regions that weighed most in the prediction",
+      "explanationMethod": "Method",
+      "showOverlay": "Overlay",
+      "hideOverlay": "Hide"
+    }
+  },
+  "auth": {
+    "brandTitle": "Restricted area for inference model management.",
+    "brandSubtitle": "Restricted area · model registry, weights deployment and evaluation metrics.",
+    "title": "Sign in",
+    "subtitle": "Access restricted to authorized personnel.",
+    "username": "Username",
+    "password": "Password",
+    "submit": "Sign in",
+    "forgotPassword": "Forgot your password?",
+    "footer": "Prototype · BrainNeuroScan",
+    "invalidCredentials": "Incorrect username or password.",
+    "researchNotice": "Research prototype. Not a medical device; no active certifications."
+  },
+  "admin": {
+    "breadcrumb": "Restricted area / Admin",
+    "models": {
+      "title": "Model management",
+      "subtitle": "Model registry · deployed weights, metrics and versions.",
+      "uploadNew": "Upload new model",
+      "kpi": {
+        "production": "Model in production",
+        "activeSince": "Active since {{date}}",
+        "accuracyTest": "Accuracy (test)",
+        "latency": "Mean latency",
+        "storage": "Storage",
+        "archivedVersions": "{{count}} archived versions"
+      },
+      "filters": {
+        "allStatuses": "All statuses",
+        "last12Months": "Last 12 months"
+      },
+      "table": {
+        "model": "Model",
+        "architecture": "Architecture",
+        "accuracy": "Accuracy",
+        "f1": "F1",
+        "size": "Size",
+        "status": "Status",
+        "actions": "Actions",
+        "detail": "Details",
+        "retrain": "Retrain",
+        "restore": "Restore",
+        "deploy": "Deploy",
+        "compare": "Compare"
+      },
+      "status": {
+        "production": "Production",
+        "archived": "Archived",
+        "validation": "Validation",
+        "baseline": "Baseline"
+      },
+      "footer": "{{shown}} of {{total}} versions · {{archived}} archived",
+      "lastSync": "Last sync {{time}}"
+    },
+    "modelDetail": {
+      "back": "Back to model management",
+      "inProduction": "In production",
+      "downloadWeights": "Download weights",
+      "revertTo": "Revert to v{{version}}",
+      "revertConfirmTitle": "Revert to v{{version}}?",
+      "revertConfirmBody": "The current model will stop serving production traffic. This action is recorded in the deployment history.",
+      "metrics": {
+        "accuracy": "Accuracy",
+        "precision": "Macro precision",
+        "recall": "Macro recall",
+        "auc": "AUC"
+      },
+      "confusionMatrix": {
+        "title": "Confusion matrix",
+        "subtitle": "Confusion matrix · test set ({{count}} images)"
+      },
+      "uploadWeights": {
+        "title": "Upload new weights",
+        "subtitle": "Upload weights · .h5 · .onnx · .pt",
+        "dropzoneHint": "Drop the weights file",
+        "dropzoneSubHint": "max. 2 GB · .h5, .onnx or .pt",
+        "targetVersion": "Target version",
+        "draft": "(draft)",
+        "validationRequired": "Required before deploying"
+      },
+      "classPerformance": "Performance by class",
+      "deploymentHistory": "Deployment history",
+      "timeline": {
+        "deployedToProduction": "Deployed to production",
+        "validated": "Validated",
+        "trainingCompleted": "Training completed",
+        "archived": "Archived"
+      }
+    },
+    "history": {
+      "title": "Upload history",
+      "subtitle": "Upload history · images submitted by users, their prediction and review status.",
+      "exportCsv": "Export CSV",
+      "addToDataset": "Add to dataset",
+      "kpi": {
+        "totalUploads": "Total uploads",
+        "pendingReview": "Pending review",
+        "avgConfidence": "Average confidence",
+        "discarded": "Discarded",
+        "groundTruthCoverage": "Ground truth coverage",
+        "measuredAccuracy": "Measured real accuracy"
+      },
+      "filters": {
+        "all": "All"
+      },
+      "table": {
+        "mri": "MRI",
+        "identifier": "Identifier",
+        "date": "Date",
+        "origin": "Origin",
+        "prediction": "Prediction",
+        "confidence": "Confidence",
+        "status": "Status",
+        "groundTruth": "Confirmed diagnosis"
+      },
+      "status": {
+        "validated": "Validated",
+        "pending": "Pending",
+        "discarded": "Discarded"
+      },
+      "pageSize": "Rows",
+      "lastDays": "Last 30 days",
+      "showing": "Showing {{from}}–{{to}} of {{total}} uploads · {{pending}} pending review",
+      "previous": "Previous",
+      "next": "Next",
+      "groundTruth": {
+        "unconfirmed": "Unconfirmed",
+        "record": "Record diagnosis",
+        "dialogTitle": "Record confirmed diagnosis",
+        "dialogBody": "Record the diagnosis verified by a specialist. It is the only data that makes it possible to measure the model's real performance.",
+        "match": "Match",
+        "mismatch": "Mismatch"
+      }
+    }
+  },
+  "notFound": {
+    "title": "Page not found",
+    "subtitle": "This route does not exist on this platform.",
+    "backHome": "Back to dashboard"
+  }
+}
