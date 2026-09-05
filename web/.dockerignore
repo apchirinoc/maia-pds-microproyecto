@@ -1,0 +1,34 @@
+# Git & Docs
+.git
+.gitignore
+*.md
+
+# OS & IDEs
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Dependencies & Build artifacts (Crucial: evita sobreescribir node_modules del contenedor)
+node_modules/
+dist/
+build/
+.vite/
+.turbo/
+.cache/
+.eslintcache
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Docker files (no necesarios dentro de la imagen de build)
+Dockerfile
+docker-compose.yml

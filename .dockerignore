@@ -1,0 +1,82 @@
+# ==============================================================================
+# Git and metadata
+# ==============================================================================
+.git
+.gitignore
+.gitattributes
+README.md
+*.md
+
+# ==============================================================================
+# Operating System & IDEs
+# ==============================================================================
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+Thumbs.db
+Desktop.ini
+.vscode/
+.idea/
+
+# ==============================================================================
+# Environment variables and secrets
+# ==============================================================================
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# ==============================================================================
+# Node.js & React (web/)
+# ==============================================================================
+**/node_modules/
+node_modules/
+**/dist/
+dist/
+**/build/
+build/
+.npm/
+.eslintcache
+.vite/
+.turbo/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ==============================================================================
+# Python & FastAPI (api/)
+# ==============================================================================
+**/__pycache__/
+__pycache__/
+*.py[cod]
+*$py.class
+**/.venv/
+.venv/
+**/venv/
+venv/
+**/env/
+env/
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+*.sqlite
+*.sqlite3
+*.db
+*.log
+
+# ==============================================================================
+# Data Science & Large Data (Notebooks, DVC, local datasets)
+# ==============================================================================
+.dvc/
+.dvcignore
+.ipynb_checkpoints/
+data/
+notebooks/
+reports/
+prototype/
