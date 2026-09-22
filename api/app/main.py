@@ -85,6 +85,15 @@ def crear_app() -> FastAPI:
     async def manejar_validacion(request: Request, exc: RequestValidationError):
         return problema(422, "Solicitud inválida", str(exc.errors()), request)
 
+    @app.exception_handler(Exception)
+    async def manejar_error_inesperado(request: Request, exc: Exception):
+        return problema(
+            500,
+            "Error interno del servidor",
+            str(exc) if configuracion.debug else "Ocurrió un error inesperado en el servidor",
+            request,
+        )
+
     @app.get("/health", tags=["meta"], summary="Sonda de salud")
     def salud() -> dict[str, str]:
         """Sonda que el frontend usa para decidir si hay backend disponible.
