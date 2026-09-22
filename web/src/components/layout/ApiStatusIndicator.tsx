@@ -35,9 +35,15 @@ export function ApiStatusIndicator() {
           href={docsUrl}
           target="_blank"
           rel="noopener noreferrer"
+          onClick={(e) => {
+            if (docsUrl) {
+              window.open(docsUrl, '_blank', 'noopener,noreferrer')
+              e.preventDefault()
+            }
+          }}
           aria-label={`${etiquetaEstado}. ${t('common.backend.docs')}`}
           className={cn(
-            'group hidden items-center gap-1.5 rounded-md px-1.5 py-1 text-xs text-muted-foreground transition-colors sm:flex',
+            'group hidden cursor-pointer items-center gap-1.5 rounded-md px-1.5 py-1 text-xs text-muted-foreground transition-colors sm:flex',
             'outline-none hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring',
           )}
         >
