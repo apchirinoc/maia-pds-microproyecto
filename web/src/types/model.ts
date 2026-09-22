@@ -50,3 +50,19 @@ export interface ModelRegistrySummary {
   storageGb: number
   archivedVersions: number
 }
+
+/**
+ * Una versión disponible en el Model Registry de MLflow (respaldado por S3).
+ * Es lo que se selecciona para poner en producción, en lugar de subir un archivo.
+ */
+export interface RegistryModelVersion {
+  version: string
+  alias: string | null
+  arch: string
+  accuracy: number
+  f1: number
+  recall: number
+  createdAt: string
+  runId: string
+  artifactUri: string
+}

@@ -5,13 +5,19 @@ from __future__ import annotations
 from fastapi import APIRouter, HTTPException, status
 
 from app.api.v1.dependencias import SesionRequerida
+from app.ml.registry import ModeloNoVersionado, RegistroModelosDep
 from app.repositories.modelos import (
     ConflictoDePromocion,
     ModeloNoEncontrado,
     RepositorioModelosDep,
 )
 from app.schemas.common import EsquemaBase
-from app.schemas.model import DetalleModelo, ModeloDesplegado, ResumenRegistroModelos
+from app.schemas.model import (
+    DetalleModelo,
+    ModeloDesplegado,
+    ResumenRegistroModelos,
+    VersionRegistro,
+)
 
 router = APIRouter(prefix="/models", tags=["modelos"])
 
@@ -40,6 +46,39 @@ async def listar_modelos(
     sesion: SesionRequerida, repositorio: RepositorioModelosDep
 ) -> list[ModeloDesplegado]:
     return [ModeloDesplegado.model_validate(m) for m in await repositorio.listar_modelos()]
+
+
+# Rutas del registry: declaradas antes que `/{model_id}` para que el parámetro de
+# ruta no capture la palabra «registry».
+@router.get(
+    "/registry",
+    response_model=list[VersionRegistro],
+    summary="Versiones disponibles en el Model Registry (S3)",
+)
+async def listar_registry(
+    sesion: SesionRequerida, registro: RegistroModelosDep
+) -> list[VersionRegistro]:
+    """Lista las versiones ya versionadas en MLflow/S3, para seleccionarlas."""
+    return [VersionRegistro.model_validate(version) for version in registro.listar_versiones()]
+
+
+@router.post(
+    "/registry/{version}/activate",
+    response_model=VersionRegistro,
+    summary="Activar (champion) una versión versionada en S3",
+)
+async def activar_registry(
+    version: str, sesion: SesionRequerida, registro: RegistroModelosDep
+) -> VersionRegistro:
+    """Fija el alias `champion` sobre `version`: el motor de inferencia empezará a
+    servir esa versión desde S3 (`models:/<name>@champion`). Sustituye al antiguo
+    «subir un archivo de pesos»: aquí solo se selecciona lo ya versionado.
+    """
+    try:
+        activada = registro.activar(version)
+    except ModeloNoVersionado as error:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(error)) from error
+    return VersionRegistro.model_validate(activada)
 
 
 @router.get("/{model_id}", response_model=DetalleModelo, summary="Detalle de un modelo")

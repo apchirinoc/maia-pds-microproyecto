@@ -142,7 +142,7 @@
     "models": {
       "title": "Model management",
       "subtitle": "Model registry · deployed weights, metrics and versions.",
-      "uploadNew": "Upload new model",
+      "uploadNew": "Select from registry",
       "kpi": {
         "production": "Model in production",
         "activeSince": "Active since {{date}}",
@@ -195,14 +195,16 @@
         "title": "Confusion matrix",
         "subtitle": "Confusion matrix · test set ({{count}} images)"
       },
-      "uploadWeights": {
-        "title": "Upload new weights",
-        "subtitle": "Upload weights · .h5 · .onnx · .pt",
-        "dropzoneHint": "Drop the weights file",
-        "dropzoneSubHint": "max. 2 GB · .h5, .onnx or .pt",
-        "targetVersion": "Target version",
-        "draft": "(draft)",
-        "validationRequired": "Required before deploying"
+      "registryPicker": {
+        "title": "Select a model from the registry",
+        "subtitle": "Versions already versioned in MLflow/S3",
+        "version": "Version",
+        "arch": "Architecture",
+        "metrics": "F1 · Recall",
+        "champion": "In production",
+        "activate": "Activate",
+        "activating": "Activating…",
+        "empty": "No versions in the registry"
       },
       "classPerformance": "Performance by class",
       "deploymentHistory": "Deployment history",

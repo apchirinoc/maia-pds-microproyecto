@@ -15,7 +15,7 @@ import { AdminShell } from '@/components/layout/AdminShell'
 import { ConfusionMatrix } from '@/components/features/admin/model-detail/ConfusionMatrix'
 import { ClassPerformanceList } from '@/components/features/admin/model-detail/ClassPerformanceList'
 import { DeploymentTimeline } from '@/components/features/admin/model-detail/DeploymentTimeline'
-import { WeightsUploader } from '@/components/features/admin/model-detail/WeightsUploader'
+import { RegistryModelPicker } from '@/components/features/admin/model-detail/RegistryModelPicker'
 import { ModelStatusBadge } from '@/components/features/admin/models/ModelStatusBadge'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -134,7 +134,7 @@ export function ModelDetailPage() {
             <ModelStatusBadge status={model.status} />
           </CardHeader>
           <CardContent>
-            <WeightsUploader targetVersion={model.targetDraftVersion} />
+            <RegistryModelPicker />
           </CardContent>
         </Card>
       </div>
