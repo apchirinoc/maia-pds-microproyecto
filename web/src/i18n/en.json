@@ -20,6 +20,7 @@
       "sourceApi": "API",
       "sourceMock": "Simulated",
       "retry": "Retry connection",
+      "docs": "View API documentation (Swagger UI)",
       "lastCheck": "Last check: {{time}}"
     }
   },

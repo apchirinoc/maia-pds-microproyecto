@@ -1,19 +1,19 @@
-import { Loader2, PlugZap, Unplug } from 'lucide-react'
+import { ExternalLink, Loader2 } from 'lucide-react'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import { useBackendStatus } from '@/hooks/useBackendStatus'
 import { useI18n } from '@/i18n/I18nProvider'
+import { env } from '@/lib/env'
 import { cn } from '@/lib/utils'
 
 /**
- * Estado real de la conexión con el backend.
+ * Estado real de la conexión con el backend con hipervínculo a la documentación (/docs).
  *
- * Antes mostraba una latencia inventada por un temporizador. Ahora refleja la
- * sonda de salud: qué origen alimenta la pantalla y con qué latencia medida.
- * Permite pulsar para reintentar la conexión.
+ * Muestra la sonda de salud (versión y latencia) y enlaza directamente
+ * con la documentación interactiva Swagger UI de la API de FastAPI.
  */
 export function ApiStatusIndicator() {
   const { t, locale } = useI18n()
-  const { estado, latenciaMs, info, comprobadoEn, revalidar } = useBackendStatus()
+  const { estado, latenciaMs, info, comprobadoEn } = useBackendStatus()
 
   const enLinea = estado === 'online'
   const comprobando = estado === 'checking'
@@ -26,17 +26,19 @@ export function ApiStatusIndicator() {
 
   const origen = enLinea ? t('common.backend.sourceApi') : t('common.backend.sourceMock')
   const version = info?.apiVersion ?? 'v2.4'
+  const docsUrl = `${env.apiBaseUrl || ''}/docs`
 
   return (
     <Tooltip>
       <TooltipTrigger asChild>
-        <button
-          type="button"
-          onClick={revalidar}
-          aria-label={`${etiquetaEstado}. ${t('common.backend.retry')}`}
+        <a
+          href={docsUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label={`${etiquetaEstado}. ${t('common.backend.docs')}`}
           className={cn(
-            'hidden items-center gap-1.5 rounded-md px-1.5 py-1 text-xs text-muted-foreground transition-colors sm:flex',
-            'outline-none hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring',
+            'group hidden items-center gap-1.5 rounded-md px-1.5 py-1 text-xs text-muted-foreground transition-colors sm:flex',
+            'outline-none hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring',
           )}
         >
           {comprobando ? (
@@ -59,12 +61,8 @@ export function ApiStatusIndicator() {
           <span className={cn(!enLinea && 'text-warning-600')}>
             {enLinea && latenciaMs !== null ? `${latenciaMs} ms` : origen}
           </span>
-          {enLinea ? (
-            <PlugZap className="size-3" aria-hidden />
-          ) : (
-            <Unplug className="size-3" aria-hidden />
-          )}
-        </button>
+          <ExternalLink className="size-3 opacity-70 transition-transform group-hover:scale-110" aria-hidden />
+        </a>
       </TooltipTrigger>
       <TooltipContent className="max-w-64">
         <p className="font-medium">{etiquetaEstado}</p>
@@ -80,8 +78,12 @@ export function ApiStatusIndicator() {
             })}
           </p>
         )}
-        <p className="mt-1">{t('common.backend.retry')}</p>
+        <p className="mt-1 flex items-center gap-1 text-primary">
+          <ExternalLink className="size-3" aria-hidden />
+          <span>{t('common.backend.docs')}</span>
+        </p>
       </TooltipContent>
     </Tooltip>
   )
 }
+
