@@ -16,6 +16,7 @@ import { Button } from '@/components/ui/button'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { useI18n } from '@/i18n/I18nProvider'
 import { formatNumber, formatPercent } from '@/lib/format'
+import { useBackendStatus } from '@/hooks/useBackendStatus'
 import {
   useCountryUploadStats,
   useDashboardKpis,
@@ -29,6 +30,7 @@ const TOP_COUNTRIES_SHOWN = 3
 
 export function DashboardPage() {
   const { t, locale } = useI18n()
+  const { estado } = useBackendStatus()
   const [mapMode, setMapMode] = useState<'choropleth' | 'bubbles'>('choropleth')
 
   const kpisQuery = useDashboardKpis()
@@ -57,7 +59,9 @@ export function DashboardPage() {
           <p className="truncate text-sm text-muted-foreground">{t('dashboard.subtitle')}</p>
         </div>
         <div className="flex shrink-0 items-center gap-3">
-          <Badge variant="warning">{t('common.simulatedData')}</Badge>
+          {estado !== 'online' && (
+            <Badge variant="warning">{t('common.simulatedData')}</Badge>
+          )}
           <Button asChild size="sm">
             <Link to="/analyze">
               {t('dashboard.analyzeCta')} <ArrowRight />
