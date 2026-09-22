@@ -5,8 +5,10 @@ Learning Design Patterns*, cap. 6): el preprocesamiento viaja **dentro** del
 artefacto del modelo, de modo que entrenamiento e inferencia ejecutan
 exactamente el mismo código.
 
-> Estado: implementado el contrato de preprocesamiento y empaquetado (acción
-> P0 #1 de la §13.4 del plan). El entrenamiento real corresponde a la fase 18.
+> Estado: implementados el contrato de preprocesamiento, el empaquetado y el
+> **pipeline de entrenamiento** (`pipelines/training.py`, `pipelines/train.py`).
+> El entrenamiento se ejecuta en una máquina con datos y GPU (típicamente EC2)
+> siguiendo `docs/runbook-entrenamiento-ec2-mlflow-s3.md`.
 
 ## El problema que resuelve
 
@@ -72,6 +74,34 @@ Consumo desde el servicio:
 model = mlflow.pyfunc.load_model("models:/brain-tumor-classifier@champion")
 probabilidades = model.predict(pd.DataFrame({"image": [bytes_de_la_imagen]}))
 ```
+
+## Entrenamiento
+
+Instala las dependencias de entrenamiento (torch/torchvision/scikit-learn, aparte
+del runtime de servicio, que sigue siendo liviano):
+
+```bash
+python -m venv .venv && .venv/bin/pip install -r requirements-train.txt
+```
+
+Ejecuta el pipeline apuntando a un servidor MLflow (el existente o uno nuevo en EC2):
+
+```bash
+.venv/bin/python -m pipelines.train \
+    --data-dir ../data/brain-tumor-mri-scans \
+    --arch cnn_simple --arch resnet18 --epochs 5 \
+    --tracking-uri "$MLFLOW_TRACKING_URI" \
+    --experiment brain-tumor-mri-classification
+```
+
+Cada arquitectura (CNN simple + ResNet18) se entrena en su propio run reutilizando
+`preprocessing.py` (patrón «Transform») y la partición reproducible de
+`dataset.py`. Se registran `params` y `metrics` (accuracy, precision, **recall**,
+**F1 macro**), se empaqueta el ONNX con `log_classifier` y se elige **campeón** por
+F1 macro fijando el alias `champion` (y `challenger` al segundo). El servidor es
+parametrizable por `--tracking-uri` / `MLFLOW_TRACKING_URI`: el mismo comando sirve
+para el existente (`https://mlflow.alexchirino.online`) o para uno nuevo en EC2.
+Guía completa en [`docs/runbook-entrenamiento-ec2-mlflow-s3.md`](docs/runbook-entrenamiento-ec2-mlflow-s3.md).
 
 ## Pruebas
 

@@ -1,5 +1,15 @@
-import type { DeployedModel, ModelDetail, ModelRegistrySummary } from '@/types/model'
-import { DEPLOYED_MODELS, MODEL_DETAILS, MODEL_REGISTRY_SUMMARY } from '@/mocks/models.mock'
+import type {
+  DeployedModel,
+  ModelDetail,
+  ModelRegistrySummary,
+  RegistryModelVersion,
+} from '@/types/model'
+import {
+  DEPLOYED_MODELS,
+  MODEL_DETAILS,
+  MODEL_REGISTRY_SUMMARY,
+  REGISTRY_VERSIONS,
+} from '@/mocks/models.mock'
 import { apiFetch } from '@/lib/api/client'
 import { conOrigenDeDatos } from '@/lib/api/gateway'
 import { randomDelay } from './delay'
@@ -61,10 +71,27 @@ export async function revertModel(id: string, targetVersion: string): Promise<vo
   )
 }
 
-export async function uploadModel(file: File): Promise<void> {
-  void file
-  // La carga de pesos requiere el almacén de artefactos de MLflow (fase 14 del
-  // plan). Hasta entonces no se envía nada al servidor: fingir un envío sería
-  // anunciar una capacidad inexistente.
-  await randomDelay(700, 1200)
+export async function getRegistryVersions(): Promise<RegistryModelVersion[]> {
+  return conOrigenDeDatos(
+    () => apiFetch<RegistryModelVersion[]>('/api/v1/models/registry', { autenticada: true }),
+    async () => {
+      await randomDelay(300, 550)
+      return REGISTRY_VERSIONS
+    },
+  )
+}
+
+export async function activateRegistryVersion(version: string): Promise<RegistryModelVersion> {
+  return conOrigenDeDatos(
+    () =>
+      apiFetch<RegistryModelVersion>(
+        `/api/v1/models/registry/${encodeURIComponent(version)}/activate`,
+        { method: 'POST', autenticada: true },
+      ),
+    async () => {
+      await randomDelay(500, 900)
+      const elegida = REGISTRY_VERSIONS.find((item) => item.version === version) ?? REGISTRY_VERSIONS[0]
+      return { ...elegida, alias: 'champion' }
+    },
+  )
 }

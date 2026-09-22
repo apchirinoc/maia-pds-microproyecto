@@ -1,15 +1,15 @@
-import { useMemo, useRef, useState } from 'react'
-import { UploadCloud } from 'lucide-react'
+import { useMemo, useState } from 'react'
+import { Boxes } from 'lucide-react'
 import { AdminShell } from '@/components/layout/AdminShell'
 import { KpiCard } from '@/components/features/dashboard/KpiCard'
 import { ModelsTable } from '@/components/features/admin/models/ModelsTable'
+import { RegistryModelPicker } from '@/components/features/admin/model-detail/RegistryModelPicker'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import {
   Dialog,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -22,7 +22,6 @@ import {
   useModelRegistrySummary,
   useModels,
   useRevertModel,
-  useUploadModel,
 } from '@/hooks/useModels'
 import type { ModelStatus } from '@/types/model'
 
@@ -32,12 +31,9 @@ export function ModelManagementPage() {
   const modelsQuery = useModels()
   const deployMutation = useDeployModel()
   const revertMutation = useRevertModel()
-  const uploadMutation = useUploadModel()
 
   const [statusFilter, setStatusFilter] = useState<ModelStatus | 'all'>('all')
-  const [uploadOpen, setUploadOpen] = useState(false)
-  const [pendingFile, setPendingFile] = useState<File | null>(null)
-  const inputRef = useRef<HTMLInputElement>(null)
+  const [pickerOpen, setPickerOpen] = useState(false)
 
   const filteredModels = useMemo(() => {
     if (!modelsQuery.data) return []
@@ -47,13 +43,6 @@ export function ModelManagementPage() {
 
   const summary = summaryQuery.data
 
-  async function handleUploadSubmit() {
-    if (!pendingFile) return
-    await uploadMutation.mutateAsync(pendingFile)
-    setPendingFile(null)
-    setUploadOpen(false)
-  }
-
   return (
     <AdminShell>
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
@@ -62,41 +51,20 @@ export function ModelManagementPage() {
           <p className="mt-1 text-sm text-muted-foreground">{t('admin.models.subtitle')}</p>
         </div>
 
-        <Dialog open={uploadOpen} onOpenChange={setUploadOpen}>
+        <Dialog open={pickerOpen} onOpenChange={setPickerOpen}>
           <DialogTrigger asChild>
             <Button>
-              <UploadCloud /> {t('admin.models.uploadNew')}
+              <Boxes /> {t('admin.models.uploadNew')}
             </Button>
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
               <DialogTitle>{t('admin.models.uploadNew')}</DialogTitle>
-              <DialogDescription>{t('admin.modelDetail.uploadWeights.subtitle')}</DialogDescription>
+              <DialogDescription>
+                {t('admin.modelDetail.registryPicker.subtitle')}
+              </DialogDescription>
             </DialogHeader>
-            <button
-              type="button"
-              onClick={() => inputRef.current?.click()}
-              className="flex w-full flex-col items-center gap-2 rounded-lg border-2 border-dashed border-border p-6 text-center outline-none transition-colors hover:bg-accent focus-visible:ring-2 focus-visible:ring-ring"
-            >
-              <UploadCloud className="size-6 text-muted-foreground" />
-              <span className="text-sm font-medium">
-                {pendingFile ? pendingFile.name : t('admin.modelDetail.uploadWeights.dropzoneHint')}
-              </span>
-            </button>
-            <input
-              ref={inputRef}
-              type="file"
-              className="sr-only"
-              onChange={(event) => setPendingFile(event.target.files?.[0] ?? null)}
-            />
-            <DialogFooter>
-              <Button variant="outline" onClick={() => setUploadOpen(false)}>
-                {t('common.cancel')}
-              </Button>
-              <Button disabled={!pendingFile || uploadMutation.isPending} onClick={handleUploadSubmit}>
-                {uploadMutation.isPending ? t('common.loading') : t('common.confirm')}
-              </Button>
-            </DialogFooter>
+            <RegistryModelPicker onActivated={() => setPickerOpen(false)} />
           </DialogContent>
         </Dialog>
       </div>

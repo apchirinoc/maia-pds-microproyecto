@@ -1,0 +1,6 @@
+# Dependencias SOLO de entrenamiento (no entran en el runtime de servicio).
+# El serving/empaquetado usa requirements.txt (mlflow/onnx/onnxruntime/opencv).
+-r requirements.txt
+torch>=2.2
+torchvision>=0.17
+scikit-learn>=1.4

@@ -142,7 +142,7 @@
     "models": {
       "title": "Gestión de modelos",
       "subtitle": "Model registry · pesos desplegados, métricas y versiones.",
-      "uploadNew": "Cargar nuevo modelo",
+      "uploadNew": "Seleccionar del registro",
       "kpi": {
         "production": "Modelo en producción",
         "activeSince": "Activo desde {{date}}",
@@ -195,14 +195,16 @@
         "title": "Matriz de confusión",
         "subtitle": "Confusion matrix · set de prueba ({{count}} imágenes)"
       },
-      "uploadWeights": {
-        "title": "Cargar nuevos pesos",
-        "subtitle": "Upload weights · .h5 · .onnx · .pt",
-        "dropzoneHint": "Arrastra el archivo de pesos",
-        "dropzoneSubHint": "máx. 2 GB · .h5, .onnx o .pt",
-        "targetVersion": "Versión destino",
-        "draft": "(borrador)",
-        "validationRequired": "Requerida antes de desplegar"
+      "registryPicker": {
+        "title": "Seleccionar modelo del registro",
+        "subtitle": "Versiones ya versionadas en MLflow/S3",
+        "version": "Versión",
+        "arch": "Arquitectura",
+        "metrics": "F1 · Recall",
+        "champion": "En producción",
+        "activate": "Activar",
+        "activating": "Activando…",
+        "empty": "No hay versiones en el registro"
       },
       "classPerformance": "Rendimiento por clase",
       "deploymentHistory": "Historial de despliegues",

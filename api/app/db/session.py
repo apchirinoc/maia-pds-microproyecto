@@ -18,12 +18,17 @@ def get_engine() -> AsyncEngine:
     el fallo típico tras un reinicio de la base o un corte de red.
     """
     settings = get_settings()
+    connect_args = {}
+    if settings.needs_ssl:
+        connect_args["ssl"] = "require"
+
     return create_async_engine(
-        settings.database_url,
+        settings.async_database_url,
         echo=False,
         pool_pre_ping=True,
         pool_size=5,
         max_overflow=10,
+        connect_args=connect_args,
     )
 
 

@@ -1,2 +1,4 @@
--r requirements.txt
+# Incluye runtime + entrenamiento (torch/torchvision/scikit-learn) para poder
+# ejecutar toda la suite de pruebas, incluidos los tests de entrenamiento.
+-r requirements-train.txt
 pytest>=8.0

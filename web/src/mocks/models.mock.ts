@@ -1,4 +1,10 @@
-import type { ConfusionMatrix, DeployedModel, ModelDetail, ModelRegistrySummary } from '@/types/model'
+import type {
+  ConfusionMatrix,
+  DeployedModel,
+  ModelDetail,
+  ModelRegistrySummary,
+  RegistryModelVersion,
+} from '@/types/model'
 
 export const MODEL_REGISTRY_SUMMARY: ModelRegistrySummary = {
   productionModel: { name: 'EffNetB3-BT', version: 'v2.4' },
@@ -8,6 +14,44 @@ export const MODEL_REGISTRY_SUMMARY: ModelRegistrySummary = {
   storageGb: 6.2,
   archivedVersions: 2,
 }
+
+// Versiones de referencia del Model Registry (S3), para el modo simulado del
+// selector. Reflejan los modelos reportados en la Entrega 2.
+export const REGISTRY_VERSIONS: RegistryModelVersion[] = [
+  {
+    version: '3',
+    alias: 'champion',
+    arch: 'ResNet18_TransferLearning',
+    accuracy: 97.3,
+    f1: 0.9728,
+    recall: 0.973,
+    createdAt: '2026-09-18T15:20:00+00:00',
+    runId: 'seed-run-resnet18',
+    artifactUri: 's3://brainneuroscan-mlflow/artifacts/3/model',
+  },
+  {
+    version: '2',
+    alias: 'challenger',
+    arch: 'CNN_Simple_Dropout',
+    accuracy: 91.74,
+    f1: 0.9165,
+    recall: 0.9174,
+    createdAt: '2026-09-18T15:05:00+00:00',
+    runId: 'seed-run-cnn-dropout',
+    artifactUri: 's3://brainneuroscan-mlflow/artifacts/2/model',
+  },
+  {
+    version: '1',
+    alias: null,
+    arch: 'CNN_Simple',
+    accuracy: 88.1,
+    f1: 0.8742,
+    recall: 0.873,
+    createdAt: '2026-09-17T10:00:00+00:00',
+    runId: 'seed-run-cnn-base',
+    artifactUri: 's3://brainneuroscan-mlflow/artifacts/1/model',
+  },
+]
 
 export const DEPLOYED_MODELS: DeployedModel[] = [
   {

@@ -40,15 +40,20 @@ def crear_app() -> FastAPI:
         openapi_url="/openapi.json",
     )
 
-    app.add_middleware(
-        CORSMiddleware,
-        allow_origins=configuracion.origins,
-        allow_credentials=True,
-        allow_methods=["*"],
-        allow_headers=["*"],
-        # El frontend mide la latencia real con esta cabecera.
-        expose_headers=["X-Process-Time-Ms"],
-    )
+    cors_origins = configuracion.origins
+    cors_kwargs: dict = {
+        "allow_credentials": True,
+        "allow_methods": ["*"],
+        "allow_headers": ["*"],
+        "expose_headers": ["X-Process-Time-Ms"],
+    }
+    if "*" in cors_origins:
+        cors_kwargs["allow_origins"] = []
+        cors_kwargs["allow_origin_regex"] = ".*"
+    else:
+        cors_kwargs["allow_origins"] = cors_origins
+
+    app.add_middleware(CORSMiddleware, **cors_kwargs)
 
     @app.middleware("http")
     async def medir_latencia(request: Request, call_next):

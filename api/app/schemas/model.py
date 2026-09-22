@@ -59,3 +59,22 @@ class ResumenRegistroModelos(EsquemaBase):
     mean_latency_ms: int
     storage_gb: float
     archived_versions: int
+
+
+class VersionRegistro(EsquemaBase):
+    """Una versión del modelo en el Model Registry de MLflow (respaldado por S3).
+
+    Es lo que la interfaz muestra para *seleccionar* un modelo ya versionado, en
+    lugar de subir un archivo de pesos. `alias` indica si esa versión es la que
+    sirve tráfico (`champion`) o la candidata (`challenger`).
+    """
+
+    version: str
+    alias: str | None = None
+    arch: str = ""
+    accuracy: float = 0.0
+    f1: float = 0.0
+    recall: float = 0.0
+    created_at: str = ""
+    run_id: str = ""
+    artifact_uri: str = ""

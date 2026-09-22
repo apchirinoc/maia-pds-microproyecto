@@ -1,11 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
+  activateRegistryVersion,
   deployModel,
   getModelById,
   getModelRegistrySummary,
   getModels,
+  getRegistryVersions,
   revertModel,
-  uploadModel,
 } from '@/services/models.service'
 
 export function useModelRegistrySummary() {
@@ -45,10 +46,14 @@ export function useDeployModel() {
   })
 }
 
-export function useUploadModel() {
+export function useRegistryVersions() {
+  return useQuery({ queryKey: ['models', 'registry'], queryFn: getRegistryVersions })
+}
+
+export function useActivateRegistryVersion() {
   const queryClient = useQueryClient()
   return useMutation({
-    mutationFn: (file: File) => uploadModel(file),
+    mutationFn: (version: string) => activateRegistryVersion(version),
     onSuccess: () => {
       void queryClient.invalidateQueries({ queryKey: ['models'] })
     },

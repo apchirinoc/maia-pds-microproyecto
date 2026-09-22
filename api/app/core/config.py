@@ -10,8 +10,9 @@ from __future__ import annotations
 from functools import lru_cache
 from typing import Literal
 
-from pydantic import Field, field_validator
+from pydantic import Field, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
+from sqlalchemy.engine import make_url
 
 SECRETO_DE_EJEMPLO = "cambia-este-secreto-en-produccion"
 
@@ -40,12 +41,43 @@ class Settings(BaseSettings):
     data_source: Literal["seed", "postgres"] = "seed"
     database_url: str = ""
 
+    # Variables discretas alternativas para PostgreSQL
+    postgres_user: str = ""
+    postgres_password: str = ""
+    postgres_host: str = ""
+    postgres_port: int = 5432
+    postgres_db: str = ""
+    postgres_ssl: str = ""
+
     inference_engine: Literal["simulated", "onnx"] = "simulated"
+    # `mlflow_tracking_uri` selecciona el servidor (el existente o uno nuevo en
+    # EC2) sin cambios de código: vacío => registry en memoria (demo/pruebas).
     mlflow_tracking_uri: str = ""
     mlflow_model_name: str = "brain-tumor-classifier"
     mlflow_model_alias: str = "champion"
 
+    # Acceso a S3 (artifact store de MLflow). Las credenciales las resuelve la
+    # cadena por defecto de boto3 (rol IAM en EC2 o variables AWS_*); estas dos
+    # solo documentan la región y un endpoint S3 alternativo (p. ej. MinIO).
+    aws_region: str = ""
+    mlflow_s3_endpoint_url: str = ""
+
     api_version: str = Field(default="v2.4", description="Versión que muestra la interfaz")
+
+    @model_validator(mode="after")
+    def resolver_database_url(self) -> Settings:
+        if not self.database_url and self.postgres_host:
+            auth = ""
+            if self.postgres_user:
+                auth = (
+                    f"{self.postgres_user}:{self.postgres_password}@"
+                    if self.postgres_password
+                    else f"{self.postgres_user}@"
+                )
+            self.database_url = (
+                f"postgresql://{auth}{self.postgres_host}:{self.postgres_port}/{self.postgres_db}"
+            )
+        return self
 
     @property
     def origins(self) -> list[str]:
@@ -54,6 +86,35 @@ class Settings(BaseSettings):
     @property
     def simulated_inference(self) -> bool:
         return self.inference_engine == "simulated"
+
+    @property
+    def async_database_url(self) -> str:
+        url = self.database_url.strip()
+        if not url:
+            return ""
+
+        parsed = make_url(url)
+        query = dict(parsed.query)
+        query.pop("sslmode", None)
+        query.pop("ssl", None)
+
+        clean_url = parsed.set(drivername="postgresql+asyncpg", query=query)
+        return clean_url.render_as_string(hide_password=False)
+
+    @property
+    def needs_ssl(self) -> bool:
+        ssl_val = self.postgres_ssl.strip().lower()
+        if ssl_val in ("require", "required", "true", "1"):
+            return True
+        if ssl_val in ("disable", "false", "0"):
+            return False
+
+        url_lower = self.database_url.lower()
+        if "sslmode=require" in url_lower or "ssl=require" in url_lower:
+            return True
+        if "supabase.co" in url_lower:
+            return True
+        return False
 
     @field_validator("jwt_secret")
     @classmethod
@@ -70,3 +131,4 @@ class Settings(BaseSettings):
 @lru_cache
 def get_settings() -> Settings:
     return Settings()
+
