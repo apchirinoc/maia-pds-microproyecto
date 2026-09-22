@@ -18,7 +18,11 @@ def get_engine() -> AsyncEngine:
     el fallo típico tras un reinicio de la base o un corte de red.
     """
     settings = get_settings()
-    connect_args = {}
+    connect_args: dict[str, object] = {
+        # Necesario para Supabase / PgBouncer en modo transacción (puerto 6543)
+        # evita que asyncpg intente reutilizar prepared statements entre conexiones del pooler
+        "statement_cache_size": 0,
+    }
     if settings.needs_ssl:
         connect_args["ssl"] = "require"
 
