@@ -1,0 +1,13 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    environment:
+      # Dentro del contenedor el host es 0.0.0.0; el resto viene de .env
+      HOST: 0.0.0.0
+    restart: unless-stopped

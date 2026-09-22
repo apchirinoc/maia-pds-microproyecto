@@ -1,0 +1,33 @@
+# ---------------------------------------------------------------------------
+# Base de datos de BrainNeuroScan
+#
+#   docker compose up -d
+#   docker compose exec db psql -U brainneuroscan -d brainneuroscan
+#
+# Reinicio desde cero (vuelve a ejecutar los scripts de init):
+#   docker compose down -v && docker compose up -d
+# El `-v` es lo que borra el volumen; sin él, Postgres no reinicializa.
+# ---------------------------------------------------------------------------
+
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: brainneuroscan-db
+    env_file:
+      - .env
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - brainneuroscan_pgdata:/var/lib/postgresql/data
+      - ./scripts:/scripts:ro
+      - ./scripts/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    restart: unless-stopped
+
+volumes:
+  brainneuroscan_pgdata:
