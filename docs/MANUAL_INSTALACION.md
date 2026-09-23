@@ -12,6 +12,8 @@ Documentación de la API: https://maia-pds-microproyecto-api.up.railway.app/docs
 
 Experimentos y modelos: https://mlflow.alexchirino.online/
 
+Para actualizar los servicios existentes en la nube, siga [Despliegue en Railway](DESPLIEGUE_RAILWAY.md).
+
 ```xml
 <pendiente id="validacion-despliegue-final" />
 ```
@@ -55,12 +57,15 @@ La revisión utilizada debe incluir compose.yaml en la raíz y las carpetas api,
 
 ## Obtener e instalar el paquete del modelo
 
+El modelo es ResNet18. El artefacto descargable es `models:/m-994b5e15a2be4cd99280ca696ae54d8f`, del run `f89f4f1604cd4c02b66b4d19155e4d24`. Es PyTorch; siga [la guía de descarga y conversión](../ml_project/ENTREGA_RESNET18V1.md) para obtener el paquete que utiliza la API. Las versiones antiguas del registro ResNet18v1 apuntan a otros artefactos.
+
 ```xml
 <pendiente id="descarga-paquete-modelo" />
-<pendiente id="version-y-sha256-paquete" />
 ```
 
 Obtenga el paquete aprobado y compruebe su versión y SHA-256. Descomprima la carpeta completa como artifacts/classifier/. Debe existir artifacts/classifier/MLmodel junto con artifacts/, code/, requirements.txt y los archivos de entorno del paquete. No copie únicamente el archivo ONNX.
+
+El ZIP `BrainNeuroScan-ResNet18-994b5e15-ONNX.zip` comprobado tiene SHA-256 `b7fdb3720cddb3536a2b4b33038a8fb4e25209d40a4c53779eb2acd39880d8bd`. La guía del modelo permite regenerar el paquete desde los artefactos publicados en MLflow.
 
 ```powershell
 Test-Path artifacts/classifier/MLmodel
@@ -75,9 +80,7 @@ El notebook PdS_Training_Experiments.ipynb entrena ResNet18 con imágenes RGB, r
 
 Si se recibe el paquete PyTorch original, utilice ml_project/export_colab_model.py siguiendo ml_project/ENTREGA_MODELO.md. El exportador compara el preprocesamiento con torchvision y las probabilidades PyTorch/ONNX. Sólo debe distribuirse el paquete que supere esa comprobación; no requiere reentrenar.
 
-```xml
-<pendiente id="paridad-pesos-entrenados" />
-```
+La conversión se comprobó con los pesos descargados y cuatro muestras. La diferencia absoluta máxima entre probabilidades PyTorch y ONNX fue 5.960464477539062e-07. Esta prueba valida la conversión, no mide la exactitud del modelo en un nuevo conjunto de evaluación.
 
 ## Configurar la instalación local
 
@@ -105,7 +108,7 @@ Set-Content -Path .env -Value $configBns -Encoding ascii
 | --- | --- |
 | MODEL_DIRECTORY | ./artifacts, carpeta que Docker monta como /models. |
 | MLFLOW_MODEL_URI | /models/classifier, ubicación del paquete dentro del contenedor. |
-| MLFLOW_MODEL_NAME | Nombre aprobado para identificar el modelo. |
+| MLFLOW_MODEL_NAME | ResNet18v1, nombre del modelo elegido. |
 | MLFLOW_MODEL_VERSION | Versión numérica si se resuelve desde el registro remoto. El paquete local declara su versión en metadatos. |
 | EXPECTED_PREPROCESS_FINGERPRINT | Huella del preprocesamiento aprobado; permite rechazar un paquete distinto. |
 | API_PORT / WEB_PORT | 8000 / 8080. Cambie también las URL si cambia los puertos. |
@@ -113,9 +116,7 @@ Set-Content -Path .env -Value $configBns -Encoding ascii
 | WEB_ORIGIN | http://localhost:8080, origen exacto permitido por CORS. |
 | MLFLOW_TRACKING_URI | Vacío para servir el paquete local sin depender del servidor de MLflow. |
 
-```xml
-<pendiente id="identidad-y-huella-modelo-final" />
-```
+Para el paquete local, la versión declarada es m-994b5e15a2be4cd99280ca696ae54d8f y EXPECTED_PREPROCESS_FINGERPRINT debe ser 3550069770ff4bc4. Compruebe ambos datos en validation.json después de convertir los pesos; no confunda esta huella con el SHA-256 del archivo de pesos.
 
 Compose configura INFERENCE_ENGINE=onnx, DATA_SOURCE=postgres y VITE_FORCE_MOCKS=false. También conecta la API con db:5432. No use db ni api como dominio de PUBLIC_API_URL: esos nombres sólo se resuelven entre contenedores.
 
@@ -183,7 +184,7 @@ La salida debe incluir verified igual a true, la versión del modelo, dos identi
 
 ### Paquete local o registro remoto
 
-Con el paquete local descargado, la API puede iniciar y servir predicciones aunque MLflow esté apagado. Para resolver una versión desde el registro, deje MLFLOW_MODEL_URI vacío y configure MLFLOW_TRACKING_URI, MLFLOW_MODEL_NAME y MLFLOW_MODEL_VERSION. Use una versión aprobada y reproducible.
+Con el paquete local, la API puede funcionar aunque MLflow esté apagado. Para resolver una versión remota, deje MLFLOW_MODEL_URI vacío y configure MLFLOW_TRACKING_URI, MLFLOW_MODEL_NAME y MLFLOW_MODEL_VERSION. El registro debe contener el paquete pyfunc convertido, no el PyTorch original de ResNet18v1.
 
 El servidor de tracking y el almacén de artefactos deben ser accesibles durante ese arranque. Que aparezcan las métricas del entrenamiento no demuestra que el paquete pueda descargarse. Conserve MLmodel y toda su estructura.
 
