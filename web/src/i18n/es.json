@@ -15,7 +15,7 @@
     "simulatedInference": "Inferencia simulada",
     "backend": {
       "online": "Conectado al backend",
-      "offline": "Sin backend · datos simulados",
+      "offline": "Sin conexión con la API",
       "checking": "Comprobando conexión…",
       "sourceApi": "API",
       "sourceMock": "Simulados",
@@ -93,11 +93,11 @@
   },
   "analyze": {
     "title": "Analizar una imagen MRI",
-    "subtitle": "Upload · tag origin · classify — uso demostrativo, no es diagnóstico médico",
+    "subtitle": "Carga una imagen, indica su origen y solicita el análisis. Prototipo académico, no es diagnóstico médico.",
     "step1": {
       "label": "01 · Imagen",
       "dropzoneTitle": "Arrastra una imagen MRI",
-      "dropzoneHint": "JPG o PNG · máx. 8 MB · 512×512 px",
+      "dropzoneHint": "JPG o PNG · máx. 8 MiB y 16 megapíxeles",
       "selectFile": "Seleccionar archivo",
       "orSample": "O prueba con una muestra del dataset:"
     },

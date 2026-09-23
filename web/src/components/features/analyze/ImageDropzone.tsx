@@ -20,14 +20,19 @@ const ACCEPTED_TYPES = ['image/jpeg', 'image/png']
 const MAX_SIZE_BYTES = 8 * 1024 * 1024
 
 export function ImageDropzone({ selectedImage, onFileSelected, onClear }: ImageDropzoneProps) {
-  const { t } = useI18n()
+  const { t, locale } = useI18n()
   const inputRef = useRef<HTMLInputElement>(null)
   const [isDragging, setIsDragging] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
   function handleFiles(files: FileList | null) {
     const file = files?.[0]
     if (!file) return
-    if (!ACCEPTED_TYPES.includes(file.type) || file.size > MAX_SIZE_BYTES) return
+    if (!ACCEPTED_TYPES.includes(file.type) || file.size > MAX_SIZE_BYTES || file.size === 0) {
+      setError(locale === 'es' ? 'Seleccione un JPG o PNG válido, no vacío, de hasta 8 MiB.' : 'Choose a non-empty JPG or PNG up to 8 MiB.')
+      return
+    }
+    setError(null)
     onFileSelected(file)
   }
 
@@ -78,6 +83,7 @@ export function ImageDropzone({ selectedImage, onFileSelected, onClear }: ImageD
       )}
     >
       <UploadCloud className="size-8 text-muted-foreground" aria-hidden />
+      {error && <p role="alert" className="text-sm text-destructive">{error}</p>}
       <div>
         <p className="text-sm font-medium">{t('analyze.step1.dropzoneTitle')}</p>
         <p className="mt-1 text-xs text-muted-foreground">{t('analyze.step1.dropzoneHint')}</p>

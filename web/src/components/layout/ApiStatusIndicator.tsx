@@ -24,8 +24,8 @@ export function ApiStatusIndicator() {
       ? t('common.backend.online')
       : t('common.backend.offline')
 
-  const origen = enLinea ? t('common.backend.sourceApi') : t('common.backend.sourceMock')
-  const version = info?.apiVersion ?? 'v2.4'
+  const origen = env.forceMocks ? t('common.backend.sourceMock') : etiquetaEstado
+  const version = info?.apiVersion ?? ''
   const docsUrl = `${env.apiBaseUrl || ''}/docs`
 
   return (
@@ -43,7 +43,7 @@ export function ApiStatusIndicator() {
           }}
           aria-label={`${etiquetaEstado}. ${t('common.backend.docs')}`}
           className={cn(
-            'group hidden cursor-pointer items-center gap-1.5 rounded-md px-1.5 py-1 text-xs text-muted-foreground transition-colors sm:flex',
+            'group flex cursor-pointer items-center gap-1.5 rounded-md px-1.5 py-1 text-xs text-muted-foreground transition-colors',
             'outline-none hover:bg-accent hover:text-foreground focus-visible:ring-2 focus-visible:ring-ring',
           )}
         >
@@ -92,4 +92,3 @@ export function ApiStatusIndicator() {
     </Tooltip>
   )
 }
-

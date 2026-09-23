@@ -15,13 +15,13 @@ export function TopNav() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/75">
-      <div className="mx-auto flex h-14 max-w-7xl items-center gap-4 px-4 sm:px-6">
+      <div className="mx-auto flex min-h-14 max-w-7xl flex-wrap items-center gap-2 px-4 py-2 sm:px-6 lg:gap-4">
         <Link to="/" className="flex items-center gap-2 font-semibold">
           <Activity className="size-5 text-primary" aria-hidden />
           <span>{t('common.appName')}</span>
         </Link>
 
-        <nav className="flex items-center gap-1" aria-label="Primary">
+        <nav className="order-last flex w-full flex-wrap items-center gap-1 lg:order-none lg:w-auto" aria-label="Primary">
           <NavTab to="/" end>
             {t('nav.panel')}
           </NavTab>
@@ -34,7 +34,7 @@ export function TopNav() {
           )}
         </nav>
 
-        <div className="ml-auto flex items-center gap-2">
+        <div className="ml-auto flex max-w-full flex-wrap items-center justify-end gap-2">
           <LanguageSwitcher />
           <ApiStatusIndicator />
           <ThemeToggle />

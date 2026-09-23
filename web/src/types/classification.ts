@@ -12,6 +12,12 @@ export interface ActiveModelInfo {
   modelVersion: string
   preprocessLabel: string
   simulatedInference: boolean
+  modelName?: string
+  modelUri?: string
+  runId?: string
+  preprocessFingerprint?: string
+  supportsExplanation?: boolean
+  evaluationMetrics?: Record<string, number>
 }
 
 /**
@@ -46,6 +52,13 @@ export interface PredictionExplanation {
 }
 
 export interface ClassificationResult {
+  simulatedInference: boolean
+  persisted?: boolean
+  uploadId?: string | null
+  imageSha256?: string
+  modelUri?: string
+  runId?: string
+  preprocessFingerprint?: string
   predictedClass: TumorClass
   confidenceByClass: Record<TumorClass, number>
   description: string

@@ -1,4 +1,4 @@
-import type { ActiveModelInfo, ClassificationResult, TumorClass } from '@/types/classification'
+import type { ActiveModelInfo, ClassificationResult } from '@/types/classification'
 import { ACTIVE_MODEL_INFO, generateClassificationResult } from '@/mocks/classification.mock'
 import { apiFetch } from '@/lib/api/client'
 import { conOrigenDeDatos } from '@/lib/api/gateway'
@@ -6,7 +6,7 @@ import { randomDelay } from './delay'
 
 export interface ClassifyImageParams {
   countryCode: string
-  hint?: TumorClass
+  requestId: number
   /**
    * Pide también el mapa de influencia.
    *
@@ -15,14 +15,13 @@ export interface ClassifyImageParams {
    * de quien llama y no un efecto secundario de clasificar.
    */
   explain?: boolean
-  /** Imagen subida por el usuario; las muestras del dataset no la aportan. */
-  file?: File
+  /** Bytes de la misma imagen visible, tanto en cargas como en muestras. */
+  file: File
 }
 
 export async function classifyImage({
   countryCode,
-  hint,
-  explain = true,
+  explain = false,
   file,
 }: ClassifyImageParams): Promise<ClassificationResult> {
   return conOrigenDeDatos(
@@ -30,16 +29,16 @@ export async function classifyImage({
       const formulario = new FormData()
       formulario.append('countryCode', countryCode)
       formulario.append('explain', String(explain))
-      if (hint !== undefined) formulario.append('hint', hint)
-      if (file !== undefined) formulario.append('file', file)
+      formulario.append('file', file)
       return apiFetch<ClassificationResult>('/api/v1/classifications', {
         method: 'POST',
         body: formulario,
+        timeoutMs: 120000,
       })
     },
     async () => {
       await randomDelay(900, 1600)
-      return generateClassificationResult(countryCode, hint, explain)
+      return generateClassificationResult(countryCode, undefined, explain)
     },
   )
 }

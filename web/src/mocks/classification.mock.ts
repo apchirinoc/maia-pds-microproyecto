@@ -6,13 +6,6 @@ import type {
 } from '@/types/classification'
 import { TUMOR_CLASSES } from '@/types/classification'
 
-const CLASS_DESCRIPTIONS: Record<TumorClass, string> = {
-  glioma: 'Masa intraaxial con realce heterogéneo · corte sagital',
-  meningioma: 'Lesión extraaxial de base dural bien delimitada',
-  pituitary: 'Lesión selar con posible extensión supraselar',
-  healthy: 'Sin hallazgos compatibles con tumor · parénquima normal',
-}
-
 /**
  * Refleja lo que el artefacto de MLflow declara en sus metadatos
  * (`preprocess_label`, derivado de `PreprocessConfig.label`). Cuando exista
@@ -210,8 +203,10 @@ export function generateClassificationResult(
 
   return {
     predictedClass,
+    simulatedInference: true,
+    persisted: false,
     confidenceByClass: distributeConfidence(predictedClass),
-    description: CLASS_DESCRIPTIONS[predictedClass],
+    description: 'Demostración: esta respuesta no procede de un modelo.',
     modelVersion: ACTIVE_MODEL_INFO.modelVersion,
     preprocess: ACTIVE_MODEL_INFO.preprocessLabel,
     countryCode,

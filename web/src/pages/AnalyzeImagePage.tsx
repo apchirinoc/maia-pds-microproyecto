@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { PageContainer } from '@/components/layout/PageContainer'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
@@ -16,15 +16,32 @@ import { Button } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { COUNTRIES } from '@/mocks/countries.mock'
 import type { DatasetSample } from '@/mocks/dashboard.mock'
+import { SAMPLE_IMAGES_BY_CLASS } from '@/lib/mri-samples'
+import { backendGateway } from '@/lib/api/gateway'
 
 export function AnalyzeImagePage() {
-  const { t } = useI18n()
+  const { t, locale } = useI18n()
   const samplesQuery = useDatasetSamples()
   const modelInfoQuery = useActiveModelInfo()
   const classifyMutation = useClassifyImage()
 
   const [selectedImage, setSelectedImage] = useState<SelectedImage | null>(null)
   const [selectedCountryCode, setSelectedCountryCode] = useState<string | null>(null)
+  const revision = useRef(0)
+  const [preparing, setPreparing] = useState(false)
+  const [preparationError, setPreparationError] = useState<string | null>(null)
+  const [explain, setExplain] = useState(false)
+  const result = classifyMutation.variables?.requestId === revision.current ? classifyMutation.data : undefined
+  const requestError = classifyMutation.variables?.requestId === revision.current ? classifyMutation.error : null
+  const previewUrl = selectedImage?.kind === 'upload' ? selectedImage.previewUrl : null
+  useEffect(() => () => { if (previewUrl) URL.revokeObjectURL(previewUrl) }, [previewUrl])
+
+  function resetSelection() {
+    revision.current += 1
+    setPreparing(false)
+    setPreparationError(null)
+    classifyMutation.reset()
+  }
 
   const selectedCountry = useMemo(
     () => COUNTRIES.find((country) => country.code === selectedCountryCode) ?? null,
@@ -33,43 +50,62 @@ export function AnalyzeImagePage() {
 
   function handleFileSelected(file: File) {
     setSelectedImage({ kind: 'upload', file, previewUrl: URL.createObjectURL(file) })
-    classifyMutation.reset()
+    resetSelection()
   }
 
   function handleSampleSelected(sample: DatasetSample) {
-    setSelectedImage({ kind: 'sample', tumorClass: sample.tumorClass, fileName: sample.fileName })
-    classifyMutation.reset()
+    setSelectedImage({ kind: 'sample', tumorClass: sample.tumorClass, fileName: SAMPLE_IMAGES_BY_CLASS[sample.tumorClass].fileName })
+    resetSelection()
   }
 
   function handleClearImage() {
     setSelectedImage(null)
-    classifyMutation.reset()
+    resetSelection()
   }
 
   function handleSelectCountry(code: string | null) {
     setSelectedCountryCode(code)
-    classifyMutation.reset()
+    resetSelection()
   }
 
-  function handleClassify() {
-    if (!selectedCountryCode) return
-    classifyMutation.mutate({
-      countryCode: selectedCountryCode,
-      hint: selectedImage?.kind === 'sample' ? selectedImage.tumorClass : undefined,
-      // El mapa de influencia se pide de forma explícita: en la API real
-      // cuesta una inferencia por cada parche ocluido.
-      explain: true,
-    })
+  async function handleClassify() {
+    if (!selectedCountryCode || !selectedImage || preparing || classifyMutation.isPending) return
+    const requestId = revision.current
+    setPreparing(true)
+    setPreparationError(null)
+    try {
+      let file: File
+      if (selectedImage.kind === 'upload') {
+        file = selectedImage.file
+      } else {
+        const sample = SAMPLE_IMAGES_BY_CLASS[selectedImage.tumorClass]
+        const response = await fetch(sample.url, { signal: AbortSignal.timeout(15000) })
+        if (!response.ok) throw new Error(locale === 'es' ? 'No se pudo cargar la muestra.' : 'Could not load the sample.')
+        const blob = await response.blob()
+        file = new File([blob], sample.fileName, { type: blob.type })
+      }
+      if (requestId !== revision.current) return
+      classifyMutation.mutate({ countryCode: selectedCountryCode, file, requestId, explain: explain && modelInfoQuery.data?.supportsExplanation === true })
+    } catch {
+      if (requestId === revision.current) setPreparationError(locale === 'es'
+        ? 'No se pudo cargar la imagen seleccionada. Compruebe la conexión y vuelva a intentar.'
+        : 'Could not load the selected image. Check your connection and try again.')
+    } finally {
+      if (requestId === revision.current) setPreparing(false)
+    }
   }
 
   function handleDownloadReport() {
-    const result = classifyMutation.data
     if (!result) return
     const lines = [
-      `BrainNeuroScan · ${t('common.simulatedInference')}`,
+      `BrainNeuroScan · ${result.simulatedInference ? t('common.simulatedInference') : (locale === 'es' ? 'Predicción del modelo' : 'Model prediction')}`,
       `${t('analyze.step3.model')}: ${result.modelVersion}`,
       `${t('analyze.step3.preprocess')}: ${result.preprocess}`,
       `${t('analyze.step3.origin')}: ${selectedCountry?.name ?? ''}`,
+      `ID: ${result.uploadId ?? '—'}`,
+      `SHA-256: ${result.imageSha256 ?? '—'}`,
+      `Modelo: ${result.modelUri ?? result.modelVersion}`,
+      locale === 'es' ? 'Prototipo académico. No sustituye la interpretación clínica.' : 'Academic prototype. Does not replace clinical interpretation.',
       ...(result.explanation
         ? [`${t('analyze.step3.explanationMethod')}: ${result.explanation.methodLabel}`]
         : []),
@@ -88,9 +124,9 @@ export function AnalyzeImagePage() {
     URL.revokeObjectURL(url)
   }
 
-  const status: ClassificationStatus = classifyMutation.isPending
+  const status: ClassificationStatus = preparing || (classifyMutation.isPending && classifyMutation.variables?.requestId === revision.current)
     ? 'loading'
-    : classifyMutation.data
+    : result
       ? 'result'
       : selectedImage && selectedCountryCode
         ? 'ready'
@@ -221,11 +257,25 @@ export function AnalyzeImagePage() {
             <CardTitle>{t('analyze.step3.label')}</CardTitle>
           </CardHeader>
           <CardContent className="min-h-72">
+            {(preparationError || requestError || modelInfoQuery.isError) && (
+              <div role="alert" className="mb-4 space-y-2 rounded border border-destructive p-3 text-sm">
+                <p>{preparationError ?? requestError?.message ?? (locale === 'es' ? 'No se pudo consultar el modelo. Compruebe la conexión.' : 'Could not retrieve model information. Check the connection.')}</p>
+                <Button variant="outline" size="sm" onClick={() => { void backendGateway.revalidar(); void modelInfoQuery.refetch() }}>
+                  {locale === 'es' ? 'Comprobar conexión' : 'Check connection'}
+                </Button>
+              </div>
+            )}
+            {modelInfoQuery.data?.supportsExplanation && status === 'ready' && (
+              <label className="mb-4 flex items-start gap-2 text-sm">
+                <input type="checkbox" checked={explain} onChange={(event) => setExplain(event.target.checked)} />
+                {locale === 'es' ? 'Incluir mapa de influencia. El análisis puede tardar más.' : 'Include influence map. Analysis may take longer.'}
+              </label>
+            )}
             <ClassificationResultPanel
               status={status}
               countryName={selectedCountry?.name ?? null}
               modelInfo={modelInfoQuery.data ?? null}
-              result={classifyMutation.data ?? null}
+              result={result ?? null}
               selectedImage={selectedImage}
               onClassify={handleClassify}
               onNewImage={handleClearImage}

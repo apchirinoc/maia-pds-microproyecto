@@ -3,8 +3,11 @@ import type { TumorClass } from '@/types/classification'
 export interface DashboardKpis {
   trainingImages: number
   trainingImagesBreakdown: string
-  modelAccuracy: number
-  modelAccuracyDeltaPts: number
+  modelAccuracy: number | null
+  modelAccuracyDeltaPts: number | null
+  modelAccuracySource?: string
+  activitySource?: string
+  datasetSource?: string
   userPredictions: number
   userPredictionsThisMonth: number
   activeCountries: number

@@ -33,23 +33,14 @@ export function ModelDetailPage() {
 
   const model = modelQuery.data
 
-  function handleDownloadWeights() {
-    if (!model) return
-    const blob = new Blob([`Mock weights file for ${model.name} ${model.version}`], {
-      type: 'application/octet-stream',
-    })
-    const url = URL.createObjectURL(blob)
-    const anchor = document.createElement('a')
-    anchor.href = url
-    anchor.download = model.weightsFileName
-    anchor.click()
-    URL.revokeObjectURL(url)
-  }
-
   async function handleConfirmRevert() {
     if (!model?.previousVersion) return
     await revertMutation.mutateAsync({ id: model.id, targetVersion: model.previousVersion })
     navigate('/admin/models')
+  }
+
+  if (modelQuery.isError) {
+    return <AdminShell><p role="alert">No se pudo consultar el modelo.</p><Button onClick={() => modelQuery.refetch()}>Reintentar</Button></AdminShell>
   }
 
   if (modelQuery.isLoading || !model) {
@@ -71,22 +62,22 @@ export function ModelDetailPage() {
       </Link>
 
       <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-3">
-          <h1 className="text-2xl font-semibold">
+        <div className="flex min-w-0 flex-wrap items-center gap-3">
+          <h1 className="min-w-0 break-words text-2xl font-semibold">
             {model.name} {model.version}
           </h1>
-          {model.status === 'production' && (
+          {model.dataSource === 'artifact' && model.status === 'production' && (
             <Badge variant="success">{t('admin.modelDetail.inProduction')}</Badge>
           )}
         </div>
         <div className="flex gap-2">
-          <Button variant="outline" onClick={handleDownloadWeights}>
+          <Button variant="outline" disabled title="Obtenga el paquete desde el almacén de artefactos indicado en el manual de instalación.">
             <Download /> {t('admin.modelDetail.downloadWeights')}
           </Button>
           {model.previousVersion && (
             <AlertDialog>
               <AlertDialogTrigger asChild>
-                <Button variant="destructive">
+                <Button variant="destructive" disabled title="La versión se configura al desplegar la API.">
                   {t('admin.modelDetail.revertTo', { version: model.previousVersion.replace(/^v/, '') })}
                 </Button>
               </AlertDialogTrigger>
@@ -109,11 +100,12 @@ export function ModelDetailPage() {
         </div>
       </div>
 
+      <p className="mb-4 text-sm">{model.dataSource === 'artifact' ? 'Métricas registradas del modelo. — indica un dato no disponible.' : 'Este registro contiene información de referencia.'}</p>
       <div className="mb-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
-        <MetricTile label={t('admin.modelDetail.metrics.accuracy')} value={`${model.metrics.accuracy}%`} />
-        <MetricTile label={t('admin.modelDetail.metrics.precision')} value={model.metrics.precisionMacro.toFixed(3)} />
-        <MetricTile label={t('admin.modelDetail.metrics.recall')} value={model.metrics.recallMacro.toFixed(3)} />
-        <MetricTile label={t('admin.modelDetail.metrics.auc')} value={model.metrics.auc.toFixed(3)} />
+        <MetricTile label={t('admin.modelDetail.metrics.accuracy')} value={model.metrics.accuracy == null ? '—' : `${model.metrics.accuracy}%`} />
+        <MetricTile label={t('admin.modelDetail.metrics.precision')} value={model.metrics.precisionMacro?.toFixed(3) ?? '—'} />
+        <MetricTile label={t('admin.modelDetail.metrics.recall')} value={model.metrics.recallMacro?.toFixed(3) ?? '—'} />
+        <MetricTile label={t('admin.modelDetail.metrics.auc')} value={model.metrics.auc?.toFixed(3) ?? '—'} />
       </div>
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-3">
@@ -121,7 +113,7 @@ export function ModelDetailPage() {
           <CardHeader>
             <CardTitle>{t('admin.modelDetail.confusionMatrix.title')}</CardTitle>
             <p className="text-xs text-muted-foreground">
-              {t('admin.modelDetail.confusionMatrix.subtitle', { count: model.testImages })}
+              {model.testImages > 0 ? t('admin.modelDetail.confusionMatrix.subtitle', { count: model.testImages }) : 'Tamaño del conjunto de evaluación no disponible.'}
             </p>
           </CardHeader>
           <CardContent>

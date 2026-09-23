@@ -2,7 +2,8 @@ export function formatNumber(value: number, locale: string): string {
   return new Intl.NumberFormat(locale, { useGrouping: 'always' }).format(value)
 }
 
-export function formatPercent(value: number, locale: string, fractionDigits = 1): string {
+export function formatPercent(value: number | null | undefined, locale: string, fractionDigits = 1): string {
+  if (value == null || !Number.isFinite(value)) return '—'
   return new Intl.NumberFormat(locale, {
     style: 'percent',
     minimumFractionDigits: fractionDigits,
@@ -41,7 +42,8 @@ export function formatDateTime(value: string | Date, locale: string): string {
   }).format(date)
 }
 
-export function formatBytes(megabytes: number): string {
+export function formatBytes(megabytes: number | null): string {
+  if (megabytes === null) return '—'
   if (megabytes < 1024) return `${megabytes.toFixed(0)} MB`
   return `${(megabytes / 1024).toFixed(1)} GB`
 }

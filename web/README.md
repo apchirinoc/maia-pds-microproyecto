@@ -2,7 +2,7 @@
 
 Plataforma web de investigación para la clasificación asistida de tumores cerebrales a partir de imágenes de Resonancia Magnética (**MRI**), con soporte para cuatro clases diagnósticas: **Glioma**, **Meningioma**, **Pituitary** (Pituitario) y **Healthy** (Tejido Sano).
 
-Diseñada con una arquitectura desacoplada en **React 19**, **TypeScript estricto** y **Tailwind CSS v4**, la interfaz cuenta con un sistema de **Gateway Híbrido** capaz de operar de manera completamente autónoma mediante datos y modelos simulados (*offline-first* con latencia calibrada) o conectarse fluidamente a una API REST en producción.
+Diseñada con una arquitectura desacoplada en **React 19**, **TypeScript estricto** y **Tailwind CSS v4**, la interfaz cuenta con un sistema de **Gateway Híbrido** que consulta la API y propaga los errores de conexión. La simulación requiere `VITE_FORCE_MOCKS=true`. Consulte [INFERENCIA.md](INFERENCIA.md) para el flujo de imágenes y sus pruebas.
 
 > [!WARNING]
 > **Aviso de investigación:** Prototipo académico/demostrativo. No está certificado como dispositivo médico ni autorizado para diagnóstico clínico formal.
@@ -372,7 +372,7 @@ Para permitir tanto el desarrollo autónomo en local como la integración transp
    - El indicador visual (`ApiStatusIndicator`) muestra la latencia en milisegundos y un punto verde.
 
 2. **Diferenciación Estricta de Fallos:**
-   - **Fallo de Conectividad (Red caída, timeout, conexión rechazada):** El gateway conmuta automáticamente a los servicios simulados (`src/mocks/*`), advirtiendo al usuario mediante un badge amarillo (*"Sin backend · datos simulados"*).
+   - **Fallo de Conectividad (Red caída, timeout, conexión rechazada):** El gateway propaga el fallo a la pantalla. No sustituye la respuesta por una simulación.
    - **Error HTTP (401, 404, 500):** El error **no se enmascara**. Se propaga a la capa de presentación para que la aplicación muestre el error real o redirija a la autenticación, evitando falsas confirmaciones con datos simulados.
 
 3. **Inyección de Latencia Realista:**
@@ -422,7 +422,7 @@ cp .env.example .env.local
 
 | Variable | Valor por Defecto | Descripción |
 |---|---|---|
-| `VITE_API_BASE_URL` | `http://localhost:8000` | URL base del backend REST. Si está vacía o es inalcanzable, conmuta a modo simulado. |
+| `VITE_API_BASE_URL` | `http://localhost:8000` | URL pública del backend REST. Si no responde, se muestra un error de conexión. |
 | `VITE_API_TIMEOUT_MS` | `15000` | Tiempo límite en milisegundos para solicitudes a la API antes de abortar. |
 | `VITE_HEALTH_TIMEOUT_MS` | `3000` | Tiempo de espera máximo de la sonda de salud (`/health`). |
 | `VITE_HEALTH_POLL_MS` | `30000` | Intervalo de sondeo periódico de salud (`0` desactiva el sondeo automático). |

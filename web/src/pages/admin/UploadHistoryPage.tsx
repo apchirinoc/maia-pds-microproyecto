@@ -52,6 +52,7 @@ export function UploadHistoryPage() {
   }
 
   async function handleExportCsv() {
+    try {
     const blob = await exportMutation.mutateAsync()
     const url = URL.createObjectURL(blob)
     const anchor = document.createElement('a')
@@ -59,6 +60,9 @@ export function UploadHistoryPage() {
     anchor.download = 'brainneuroscan-upload-history.csv'
     anchor.click()
     URL.revokeObjectURL(url)
+    } catch {
+      // La mutación conserva el error para mostrarlo junto a las acciones.
+    }
   }
 
   function handleAddPendingToDataset() {
@@ -99,12 +103,14 @@ export function UploadHistoryPage() {
           <Button variant="outline" onClick={handleExportCsv} disabled={exportMutation.isPending}>
             <Download /> {t('admin.history.exportCsv')}
           </Button>
-          <Button onClick={handleAddPendingToDataset} disabled={addToDatasetMutation.isPending}>
+          <Button onClick={handleAddPendingToDataset} disabled title="El historial conserva resultados, no imágenes originales para entrenamiento.">
             <Database /> {t('admin.history.addToDataset')}
           </Button>
         </div>
       </div>
 
+      <p className="mb-4 text-sm">El historial conserva resultados y la identidad del modelo, no las imágenes originales. Las miniaturas son ilustrativas. Los registros simulados se identifican en cada fila.</p>
+      {(historyQuery.isError || summaryQuery.isError || exportMutation.isError) && <div role="alert" className="mb-4">No se pudo completar la consulta o descarga. <Button variant="outline" onClick={() => { exportMutation.reset(); void historyQuery.refetch(); void summaryQuery.refetch() }}>Reintentar consulta</Button></div>}
       <div className="mb-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <KpiCard
           isLoading={summaryQuery.isLoading}
@@ -166,7 +172,6 @@ export function UploadHistoryPage() {
             <ClassFilterTabs value={tumorClass} onValueChange={handleFilterChange} />
 
             <div className="flex items-center gap-3">
-              <span className="text-xs text-muted-foreground">{t('admin.history.lastDays')}</span>
               <div className="flex items-center gap-2">
                 <span className="text-xs text-muted-foreground">{t('admin.history.pageSize')}</span>
                 <Select
@@ -203,7 +208,7 @@ export function UploadHistoryPage() {
             <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <span className="text-xs text-muted-foreground">
                 {t('admin.history.showing', {
-                  from: (page - 1) * pageSize + 1,
+                  from: result.total === 0 ? 0 : (page - 1) * pageSize + 1,
                   to: Math.min(page * pageSize, result.total),
                   total: formatNumber(result.total, locale),
                   pending: summary ? formatNumber(summary.pendingReview, locale) : '',

@@ -52,7 +52,8 @@ export function ClassificationResultPanel({
 
   if (status === 'loading') {
     return (
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4" role="status" aria-live="polite">
+        <p className="text-sm">{locale === 'es' ? 'Analizando imagen…' : 'Analyzing image…'}</p>
         <Skeleton className="h-16 w-full rounded-lg" />
         <Skeleton className="h-4 w-full" />
         <Skeleton className="h-4 w-full" />
@@ -67,7 +68,7 @@ export function ClassificationResultPanel({
         <dl className="grid grid-cols-1 gap-3 text-sm">
           <div className="flex items-center justify-between">
             <dt className="text-muted-foreground">{t('analyze.step3.model')}</dt>
-            <dd className="font-medium">{modelInfo?.modelVersion ?? '—'}</dd>
+            <dd className="min-w-0 break-words text-right font-medium">{modelInfo?.modelVersion ?? '—'}</dd>
           </div>
           <div className="flex items-center justify-between">
             <dt className="text-muted-foreground">{t('analyze.step3.preprocess')}</dt>
@@ -103,6 +104,7 @@ export function ClassificationResultPanel({
       </div>
 
       <ConfidenceBarList confidenceByClass={result.confidenceByClass} />
+      <p className="break-words text-xs">{result.modelVersion} · {result.simulatedInference ? 'Simulado' : 'Inferencia del modelo'}<br />{result.persisted ? `Guardado en historial: ${result.uploadId}` : 'Sin persistencia en historial'}</p>
 
       {result.explanation && (
         <section className="flex flex-col gap-3">

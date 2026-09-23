@@ -11,6 +11,10 @@ export interface ConfusionMatrixProps {
 export function ConfusionMatrix({ matrix }: ConfusionMatrixProps) {
   const { t } = useI18n()
 
+  if (TUMOR_CLASSES.some((row) => TUMOR_CLASSES.some((col) => !Number.isFinite(matrix[row]?.[col])))) {
+    return <p className="text-sm">Matriz de confusión no disponible para este modelo.</p>
+  }
+
   const maxValue = Math.max(
     ...TUMOR_CLASSES.flatMap((row) => TUMOR_CLASSES.map((col) => matrix[row][col])),
   )

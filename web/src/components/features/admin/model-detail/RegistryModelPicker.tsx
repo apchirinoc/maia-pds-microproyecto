@@ -31,11 +31,13 @@ export function RegistryModelPicker({ onActivated }: RegistryModelPickerProps) {
         {t('admin.modelDetail.registryPicker.subtitle')}
       </p>
 
+      <p className="mb-3 text-xs">El alias del registro no cambia el motor en ejecución. La versión se fija al desplegar la API.</p>
+      {versionsQuery.isError && <p role="alert">No se pudo consultar MLflow. <button onClick={() => versionsQuery.refetch()} className="underline">Reintentar</button></p>}
       {versionsQuery.isLoading && <Skeleton className="h-24 w-full" />}
 
       {versionsQuery.data && versionsQuery.data.length === 0 && (
         <p className="text-sm text-muted-foreground">
-          {t('admin.modelDetail.registryPicker.empty')}
+          No hay versiones disponibles en esta conexión.
         </p>
       )}
 
@@ -60,14 +62,15 @@ export function RegistryModelPicker({ onActivated }: RegistryModelPickerProps) {
                   )}
                 </div>
                 <p className="mt-0.5 text-xs tabular-nums text-muted-foreground">
-                  {t('admin.modelDetail.registryPicker.metrics')}: {version.f1.toFixed(3)} ·{' '}
-                  {version.recall.toFixed(3)}
+                  {t('admin.modelDetail.registryPicker.metrics')}: {version.f1?.toFixed(3) ?? '—'} ·{' '}
+                  {version.recall?.toFixed(3) ?? '—'}
                 </p>
               </div>
               <Button
                 size="sm"
                 variant={isChampion ? 'outline' : 'default'}
-                disabled={isChampion || activateMutation.isPending}
+                disabled
+                title="La versión se configura al desplegar la API."
                 onClick={() => handleActivate(version.version)}
               >
                 {isActivating

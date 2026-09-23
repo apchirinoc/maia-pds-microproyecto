@@ -1,4 +1,4 @@
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import { QueryClientProvider } from '@tanstack/react-query'
 import { BrowserRouter } from 'react-router-dom'
 import { useState } from 'react'
 import { TopNav } from '@/components/layout/TopNav'
@@ -8,15 +8,11 @@ import { AuthProvider } from '@/hooks/useAuth'
 import { I18nProvider } from '@/i18n/I18nProvider'
 import { ThemeProvider } from '@/lib/theme/ThemeProvider'
 import { AppRoutes } from './router'
+import { createQueryClient } from './queryClient'
 
 export function App() {
   const [queryClient] = useState(
-    () =>
-      new QueryClient({
-        defaultOptions: {
-          queries: { staleTime: 60_000, retry: 1, refetchOnWindowFocus: false },
-        },
-      }),
+    createQueryClient,
   )
 
   return (
