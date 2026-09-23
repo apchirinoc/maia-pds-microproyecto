@@ -1,4 +1,8 @@
-# Manual de usuario de BrainNeuroScan
+# Manual de usuario del tablero
+
+BrainNeuroScan
+
+Versiones en [Word y PDF](https://github.com/apchirinoc/maia-pds-microproyecto/releases/tag/entrega3).
 
 ## Uso y alcance
 
@@ -10,10 +14,6 @@ Acceso al tablero: https://maia-pds-microproyecto-production.up.railway.app/
 
 Abra el enlace en un navegador actualizado. No necesita instalar programas ni descargar modelos para usar la versión publicada. Para revisar tablas y gráficos con comodidad, utilice una pantalla de computador.
 
-```xml
-<pendiente id="validacion-version-publicada" />
-```
-
 ### Navegación y estado de conexión
 
 Use Panel para volver a la página principal y Analizar imagen para abrir el formulario. ES y EN cambian el idioma; el botón de tema permite elegir Claro, Oscuro o Sistema. Estas preferencias se conservan en el navegador.
@@ -22,15 +22,13 @@ El indicador API y su punto verde señalan que el servicio responde. Si aparece 
 
 ## Explorar el panel
 
-```xml
-<pendiente id="captura-panel-final" />
-```
+![Panel publicado con distribución del dataset y actividad registrada.](assets/manuales/panel.png)
 
-Las tarjetas superiores resumen imágenes del dataset de referencia, evaluación del modelo cuando está disponible, consultas registradas y países de origen. No representan prevalencia de tumores ni una evaluación clínica. Un guion indica que no hay un dato disponible.
+Las tarjetas superiores resumen el dataset de referencia, las consultas registradas y sus países de origen. Precisión del modelo muestra la evaluación del modelo activo sólo cuando está disponible. El guion significa que ese dato no está disponible; no equivale a cero.
 
 Distribución del dataset muestra el número de imágenes por clase. La galería inferior presenta una muestra de cada categoría y el enlace Kaggle lleva a la fuente de datos. Para seleccionar una muestra para el análisis, utilice la pantalla Analizar imagen.
 
-En Volumen de cargas por país, alterne Coropleta y Burbujas para cambiar la representación. Pase el puntero sobre los países para consultar su información. Cargas por mes describe la actividad temporal; Perfil de cargas recientes permite comparar visualmente las categorías. Los mapas representan registros de uso, no estadísticas clínicas.
+En Volumen de cargas por país, alterne Coropleta y Burbujas y pase el puntero sobre los países. Cargas por mes muestra la actividad temporal y Perfil de cargas recientes compara categorías. Estos gráficos pueden incluir registros de demostración; no representan prevalencia de tumores ni resultados de una evaluación clínica.
 
 ## Preparar una imagen y solicitar el análisis
 
@@ -40,9 +38,7 @@ En Volumen de cargas por país, alterne Coropleta y Burbujas para cambiar la rep
 
 También puede pulsar una miniatura de Glioma, Meningioma, Pituitary o Healthy. La muestra seleccionada se envía como imagen a la API; su etiqueta no determina el resultado. Compruebe la vista previa antes de continuar.
 
-```xml
-<pendiente id="captura-carga-imagen-final" />
-```
+![Selección de una muestra y su país antes de ejecutar ResNet18v1.](assets/manuales/analizar.png)
 
 3. En Origen de la imagen, seleccione un país en la lista o pulse uno de los países habilitados del mapa. Verifique el nombre seleccionado. Deseleccionar país borra esa elección.
 
@@ -52,15 +48,15 @@ Para cambiar el archivo, pulse la X de la vista previa o elija otra muestra. Cam
 
 ## Leer y descargar el resultado
 
-```xml
-<pendiente id="captura-prediccion-modelo-entrenado" />
-```
+![Predicción real y mapa de influencia por oclusión.](assets/manuales/prediccion.png)
+
+![Predicción real y mapa de influencia por oclusión.](assets/manuales/mapa.png)
 
 La tarjeta destacada muestra la clase propuesta y su porcentaje. Las barras permiten comparar las cuatro categorías: Glioma, Meningioma, Pituitary y Healthy. Pituitary corresponde a la categoría de tumor pituitario; Healthy es la categoría sin tumor del conjunto de datos, no una certificación de salud.
 
-Los porcentajes corresponden a la salida del modelo para la imagen enviada. No son probabilidades clínicas validadas ni deben emplearse para tomar decisiones sobre un paciente. La identidad del modelo y la confirmación de guardado permiten relacionar el resultado con su registro en el histórico.
+Los porcentajes corresponden a la predicción de la imagen enviada, no a la precisión general del modelo ni a probabilidades clínicas validadas. Debajo aparece el modelo utilizado. Guarde el identificador que acompaña a Guardado en historial para localizar después esa consulta.
 
-Si solicitó un mapa de influencia y está disponible, pulse Ocultar para ver la imagen sin superposición y Superponer para mostrarlo de nuevo. El mapa representa sensibilidad de la predicción; no es una segmentación de la lesión ni una prueba de su ubicación.
+Si activó Incluir mapa de influencia, el resultado muestra un mapa calculado por oclusión. El método oculta pequeñas regiones y observa cómo cambia la predicción. Pulse Ocultar o Superponer para alternar la vista. No es una segmentación de la lesión ni confirma su ubicación.
 
 Descargar informe guarda un archivo TXT con la clase, porcentajes, país, versión del modelo, preprocesamiento, identificador del registro y huella de la imagen. Incluye el método del mapa cuando existe. Busque brainneuroscan-report en las descargas del navegador. No es un informe clínico.
 
@@ -72,37 +68,29 @@ Nueva imagen limpia la selección y el resultado para comenzar otro caso. El pa�
 
 2. Pulse Iniciar sesión en el formulario. Cuando el acceso sea correcto, aparecerá su nombre y se habilitarán Modelos e Histórico. El usuario de la plataforma publicada puede ser diferente de las cuentas de una instalación local.
 
-```xml
-<pendiente id="captura-acceso-sin-datos-personales" />
-```
-
 3. Al terminar, abra el menú de su nombre en la esquina superior derecha y pulse Salir. Cierre la sesión especialmente si utiliza un equipo compartido.
 
 Si aparece Usuario o contraseña incorrectos, revise la escritura y solicite al responsable que confirme su cuenta. El enlace ¿Olvidé mi contraseña? no ofrece recuperación automática en esta versión. Si la sesión expira o una operación administrativa deja de funcionar, salga y vuelva a ingresar.
 
 ## Consultar modelos
 
-Entre en Modelos. La cabecera identifica el modelo cargado por la API. La tabla presenta las versiones y sus métricas disponibles. Los registros de referencia se identifican y los datos ausentes aparecen como un guion; no se sustituyen por valores inventados.
+Entre en Modelos y busque ResNet18v1 en estado Producción. Su identificador debe coincidir con el que aparece al analizar una imagen. Las filas marcadas Referencia conservan datos de demostración; sus métricas no corresponden al modelo activo.
 
-```xml
-<pendiente id="captura-catalogo-modelo-final" />
-```
+![Modelo en producción y versiones identificadas como referencia.](assets/manuales/modelos.png)
 
 Use Todos los estados, Producción, Archivado o Validación para filtrar la tabla. Pulse Detalle en la fila que quiera consultar.
 
 ### Interpretar el detalle
 
-El detalle presenta las métricas disponibles del modelo. La matriz de confusión y el rendimiento por clase sólo se muestran cuando hay datos. En la matriz, las filas representan clases reales y las columnas clases predichas. La diagonal contiene los aciertos. Si no hay información, se indica expresamente.
+Pulse Detalle para consultar la información del modelo. En el paquete desplegado, las métricas de evaluación, la matriz de confusión y el rendimiento por clase no están incluidos. La pantalla los muestra como no disponibles; los porcentajes de una predicción individual no reemplazan esas métricas.
 
-```xml
-<pendiente id="captura-detalle-modelo-final" />
-```
+![Detalle de ResNet18v1; los datos ausentes se indican expresamente.](assets/manuales/detalle.png)
 
 Volver a gestión de modelos regresa al listado. Descargar pesos, Reentrenar y las acciones de cambio del motor no están habilitadas en este flujo. La instalación del modelo corresponde al administrador mediante el procedimiento del manual de instalación.
 
 ### Consultar el registro de modelos
 
-En Detalle, el apartado del registro permite consultar versiones y métricas cuando hay conexión con MLflow. Si no hay versiones disponibles o falla la consulta, la pantalla lo indica. La consulta del registro no cambia el modelo cargado por la API; Seleccionar del registro en el listado está deshabilitado.
+La sección del registro muestra las versiones que la conexión de la API puede consultar. El despliegue usa un paquete local y puede mostrar No hay versiones disponibles en esta conexión aunque el análisis funcione. Los experimentos se consultan por separado en https://mlflow.alexchirino.online/.
 
 Desplegar, Restaurar, Revertir y Activar no realizan cambios del motor desde el tablero. Para sustituir el modelo, el administrador instala el paquete aprobado y reinicia la API.
 
@@ -110,11 +98,9 @@ Desplegar, Restaurar, Revertir y Activar no realizan cambios del motor desde el 
 
 Entre en Histórico. Cada fila relaciona identificador, fecha, país, predicción, confianza, modelo utilizado, diagnóstico confirmado y estado de revisión. Los registros de demostración se identifican. Las miniaturas son ilustrativas; no son los archivos originales enviados.
 
-```xml
-<pendiente id="captura-historial-final" />
-```
+![Consulta del resultado guardado y sus metadatos en el histórico.](assets/manuales/historico.png)
 
-Pulse una clase para filtrar los registros o Todas para quitar el filtro. En Registros, elija 5, 10, 25 o 50 filas por página. Use Anterior, Siguiente o los números para avanzar. Al cambiar el filtro o el tamaño, la tabla vuelve a la primera página. Últimos 30 días es una etiqueta de la interfaz, no un control para elegir un intervalo.
+Pulse Glioma, Meningioma, Pituitary o Healthy para filtrar, o Todas para quitar el filtro. En Registros, elija 5, 10, 25 o 50 filas por página y use Anterior, Siguiente o los números. Si la tabla no cabe en la pantalla, desplácela horizontalmente para consultar las columnas de la derecha.
 
 Exportar CSV descarga brainneuroscan-upload-history.csv con el histórico completo, no sólo la página ni el filtro visible. Incluye la identidad del modelo y la procedencia de los resultados. Si la descarga falla, revise el mensaje y repita la operación después de recuperar la conexión.
 
@@ -124,13 +110,11 @@ Exportar CSV descarga brainneuroscan-upload-history.csv con el histórico comple
 
 2. Seleccione la clase confirmada y pulse Guardar. Use únicamente una verificación independiente autorizada; no copie la predicción como si fuera una confirmación. Cancelar cierra la ventana sin guardar.
 
-```xml
-<pendiente id="captura-confirmacion-diagnostico" />
-```
+![Formulario de confirmación independiente del diagnóstico.](assets/manuales/diagnostico.png)
 
 Coincide significa que predicción y confirmación tienen la misma clase; Discrepa indica que difieren. Sin confirmar significa que aún no existe esa verificación. Una corrección se realiza abriendo nuevamente Registrar diagnóstico. Si la ventana permanece abierta al guardar, revise la conexión antes de asumir que el cambio quedó registrado.
 
-Cobertura de verdad de campo es la proporción de cargas con confirmación. Precisión real medida es la proporción de coincidencias entre las confirmadas; no equivale a la confianza de las predicciones ni a una validación clínica. Sin confirmaciones, no hay una precisión medida que interpretar.
+Cobertura de verdad de campo indica qué proporción de cargas tiene una confirmación. Precisión real medida compara las predicciones con esas confirmaciones. El histórico puede incluir registros de demostración y evaluaciones de distintos modelos; ese resumen no debe presentarse como la precisión de test de ResNet18v1.
 
 ### Añadir registros al dataset
 
