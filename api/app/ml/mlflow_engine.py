@@ -14,6 +14,9 @@ declara.
 from __future__ import annotations
 
 import logging
+import hashlib
+import math
+from pathlib import Path
 from typing import Sequence
 
 import mlflow
@@ -25,6 +28,7 @@ from app.ml.engine import (
     InferenceEngine,
     InferenceResult,
     ModelInfo,
+    ModelContractError,
     PredictionExplanation,
 )
 
@@ -64,11 +68,41 @@ class MlflowInferenceEngine(InferenceEngine):
         model_name: str,
         *,
         alias: str = "champion",
+        version: str | None = None,
+        model_uri: str | None = None,
+        tracking_uri: str | None = None,
         expected_preprocess_fingerprint: str | None = None,
     ) -> None:
-        self._model_uri = f"models:/{model_name}@{alias}"
+        if tracking_uri:
+            mlflow.set_tracking_uri(tracking_uri)
+        resolved_version = version
+        source_run_id = ""
+        if not model_uri:
+            client = mlflow.tracking.MlflowClient(tracking_uri=tracking_uri)
+            registered = (
+                client.get_model_version(model_name, version)
+                if version else client.get_model_version_by_alias(model_name, alias)
+            )
+            resolved_version = str(registered.version)
+            source_run_id = registered.run_id or ""
+            model_uri = f"models:/{model_name}/{resolved_version}"
+        self._model_uri = model_uri
         self._model = mlflow.pyfunc.load_model(self._model_uri)
         metadata = dict(self._model.metadata.metadata or {})
+
+        classes = tuple(metadata.get("classes", ()))
+        if len(classes) != 4 or set(classes) != {"glioma", "meningioma", "pituitary", "healthy"}:
+            raise ModelContractError("El artefacto debe declarar las cuatro clases, en el orden de sus salidas")
+        if not metadata.get("preprocess_label") or not metadata.get("preprocess_fingerprint"):
+            raise ModelContractError("El artefacto debe declarar su preprocesamiento")
+        weights_sha256 = str(metadata.get("weights_sha256", ""))
+        run_id = source_run_id or self._model.metadata.run_id or str(metadata.get("source_run_id", ""))
+        resolved_version = resolved_version or str(metadata.get("model_version", ""))
+        if not resolved_version:
+            resolved_version = "local-" + hashlib.sha256(
+                Path(self._model_uri, "MLmodel").read_bytes()
+                if Path(self._model_uri).is_dir() else self._model_uri.encode()
+            ).hexdigest()[:12]
 
         fingerprint = str(metadata.get("preprocess_fingerprint", ""))
         if expected_preprocess_fingerprint and fingerprint != expected_preprocess_fingerprint:
@@ -78,10 +112,20 @@ class MlflowInferenceEngine(InferenceEngine):
             )
 
         self._info = ModelInfo(
-            model_version=str(metadata.get("model_version", self._model.metadata.run_id or "")),
+            model_version=resolved_version,
+            model_name=model_name,
+            model_uri=self._model_uri,
+            run_id=run_id,
+            weights_sha256=weights_sha256,
+            architecture=str(metadata.get("architecture", metadata.get("arch", "ONNX"))),
+            metric_averaging=str(metadata.get("metric_averaging", "unknown")),
+            evaluation_metrics={
+                key: float(value) for key, value in metadata.get("evaluation_metrics", {}).items()
+                if isinstance(value, (int, float)) and math.isfinite(value) and 0 <= value <= 1
+            },
             preprocess_label=str(metadata.get("preprocess_label", "")),
             preprocess_fingerprint=fingerprint,
-            classes=tuple(metadata.get("classes", ())),
+            classes=classes,
             simulated=False,
             explanation_method=str(metadata.get("explanation_method", "")),
             explanation_label=str(metadata.get("explanation_label", "")),
@@ -126,9 +170,13 @@ class MlflowInferenceEngine(InferenceEngine):
             else self._model.predict(frame)
         )
 
+        if not isinstance(predictions, pd.DataFrame):
+            raise ModelContractError("El modelo debe devolver un DataFrame con las probabilidades por clase")
         class_columns = [
             column for column in predictions.columns if column not in _EXPLANATION_COLUMNS
         ]
+        if tuple(class_columns) != self._info.classes or len(predictions) != len(images):
+            raise ModelContractError("Las filas o clases devueltas no coinciden con el contrato del artefacto")
 
         results: list[InferenceResult] = []
         for _, row in predictions.iterrows():
@@ -136,6 +184,10 @@ class MlflowInferenceEngine(InferenceEngine):
                 ClassScore(tumor_class=str(name), confidence=float(row[name]))
                 for name in class_columns
             )
+            if any(not math.isfinite(score.confidence) or not 0 <= score.confidence <= 1 for score in scores):
+                raise ModelContractError("El modelo devolvió probabilidades inválidas")
+            if not math.isclose(sum(score.confidence for score in scores), 1.0, abs_tol=1e-4):
+                raise ModelContractError("Las probabilidades del modelo no suman uno")
             best = max(scores, key=lambda score: score.confidence)
             results.append(
                 InferenceResult(
