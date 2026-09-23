@@ -6,6 +6,7 @@ Las credenciales PostgreSQL deben señalar exclusivamente una base desechable.
 import hashlib
 import io
 import os
+from dataclasses import replace
 
 import pytest
 import pytest_asyncio
@@ -100,6 +101,27 @@ async def test_catalog_describes_loaded_model_without_inventing_metrics(real_cli
         assert summary.status_code == 200
         assert (await client.get("/api/v1/models/registry", headers=headers)).json() == []
         assert (await client.post("/api/v1/models/registry/1/activate", headers=headers)).status_code == 409
+
+
+@pytest.mark.asyncio
+async def test_catalog_preserves_full_logged_model_identifier(real_client, origen):
+    if origen != "postgres":
+        pytest.skip("Requiere persistencia")
+    from app.db.session import get_sessionmaker
+    from app.services.model_catalog import serving_model
+    from sqlalchemy import text
+
+    _, app = real_client
+    version = "m-994b5e15a2be4cd99280ca696ae54d8f"
+    info = replace(app.state.inference_engine.describe(), model_version=version)
+    async with get_sessionmaker()() as session:
+        model = await serving_model(session, info)
+        assert model.version == version
+        summary_version = await session.scalar(text(
+            "SELECT production_model_version FROM vw_model_registry_summary"
+        ))
+        assert summary_version == version
+        await session.rollback()
 
 
 @pytest.mark.asyncio
