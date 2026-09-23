@@ -2,6 +2,8 @@
 
 La API consume un paquete MLflow `pyfunc` que recibe bytes de JPG o PNG y devuelve probabilidades. El paquete debe incluir los pesos, el código de preprocesamiento y sus dependencias. Un registro con métricas en MLflow no basta si sus artefactos no se pueden descargar.
 
+Para el modelo elegido por el equipo, siga [Entrega de ResNet18v1](ENTREGA_RESNET18V1.md). Esa guía identifica el artefacto descargable y documenta la conversión comprobada con los pesos del equipo.
+
 ## Contrato que debe conservarse
 
 | Elemento | Requisito |
@@ -22,10 +24,10 @@ Para los pesos del notebook `notebooks/PdS_Training_Experiments.ipynb`, incorpor
 Instale `requirements-train.txt` para la conversión. El notebook registra PyTorch 2.11.0 y Torchvision 0.26.0; use esas versiones al recuperar los pesos. Este ejemplo lee el logged model seleccionado y exporta el paquete, sin reentrenar:
 
 ```sh
-python export_colab_model.py --tracking-uri https://mlflow.alexchirino.online --model-uri models:/m-3ffa1794dfcc403e84d962aa00221599 --run-id 59d7f03737964b7e9d3fcb3bcf0f8e58 --version resnet18-1 --sample /ruta/glioma.jpg /ruta/healthy.jpg /ruta/meningioma.jpg /ruta/pituitary.jpg --output /ruta/entrega/classifier
+python export_colab_model.py --tracking-uri https://mlflow.alexchirino.online --model-uri models:/m-994b5e15a2be4cd99280ca696ae54d8f --run-id f89f4f1604cd4c02b66b4d19155e4d24 --version m-994b5e15a2be4cd99280ca696ae54d8f --architecture ResNet18 --sample /ruta/glioma.jpg /ruta/healthy.jpg /ruta/meningioma.jpg /ruta/pituitary.jpg --output /ruta/entrega/classifier
 ```
 
-El comando necesita acceso efectivo a los artefactos. También admite una carpeta MLflow local mediante `--model-uri`, omitiendo `--tracking-uri`. Verifica el tensor frente a las transformaciones del notebook y compara probabilidades PyTorch/ONNX antes de confirmar la exportación. Si falla la comparación, no utilice el paquete generado. Las métricas del notebook usan promedio `weighted`; no deben presentarse como métricas macro.
+El comando necesita acceso efectivo a los artefactos. También admite una carpeta MLflow local mediante `--model-uri`, omitiendo `--tracking-uri`. El run publicado no tiene métricas; no copie las del run anterior sin comprobar que corresponden a estos pesos. Verifica el tensor frente al notebook y compara probabilidades PyTorch/ONNX antes de crear el destino. Si falla la comparación, no deja un paquete distribuible. Las métricas del notebook usan promedio `weighted`; no deben presentarse como métricas macro.
 
 Para otros pesos ONNX cuyo preprocesamiento ya coincida con el pipeline del repositorio:
 
@@ -35,7 +37,7 @@ En un entorno Python 3.13, instale `pip install -r ml_project/requirements.txt`.
 python package_model.py --onnx /ruta/classifier.onnx --preprocess-config /ruta/preprocess_config.json --classes glioma meningioma pituitary healthy --sample /ruta/muestra.png --output /ruta/entrega/classifier --version 1 --run-id RUN_ID_REAL --architecture ARQUITECTURA_REAL
 ```
 
-Sustituya el orden del ejemplo por el orden comprobado. `--probabilities` indica que ONNX ya devuelve probabilidades; omítalo si devuelve logits. `--metrics` acepta un JSON con métricas entre 0 y 1, por ejemplo las claves `test_accuracy`, `test_precision`, `test_recall` y `test_f1_score` exportadas del run. La versión debe ser estable y caber en 20 caracteres para el catálogo de la API.
+Sustituya el orden del ejemplo por el orden comprobado. `--probabilities` indica que ONNX ya devuelve probabilidades; omítalo si devuelve logits. `--metrics` acepta un JSON con métricas entre 0 y 1, por ejemplo las claves `test_accuracy`, `test_precision`, `test_recall` y `test_f1_score` exportadas del run. La versión debe identificar de forma estable los pesos; el catálogo admite el ID completo de un logged model.
 
 El comando guarda el paquete completo en disco y valida una predicción. No reentrena ni escribe en el servidor de MLflow. Conserve toda la carpeta, incluyendo `MLmodel`, `artifacts/`, `code/`, `requirements.txt` y los archivos del entorno. Copiar sólo el `.onnx` pierde el contrato y el preprocesamiento.
 
