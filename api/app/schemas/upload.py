@@ -29,6 +29,12 @@ class RegistroCarga(EsquemaBase):
     confidence: float
     status: EstadoCarga
     ground_truth: DiagnosticoConfirmado | None = None
+    simulated_inference: bool = True
+    model_version: str = ""
+    model_uri: str = ""
+    preprocess: str = ""
+    preprocess_fingerprint: str = ""
+    image_sha256: str = ""
 
 
 class MetricasVerdadCampo(EsquemaBase):

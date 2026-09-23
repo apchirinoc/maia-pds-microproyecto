@@ -45,7 +45,7 @@ async def exportar_csv(
 async def anadir_al_dataset(
     ids: list[str], sesion: SesionRequerida, repositorio: RepositorioCargasDep
 ) -> dict[str, int]:
-    return {"accepted": await repositorio.anadir_al_dataset(ids)}
+    raise HTTPException(409, "El historial conserva resultados, no imágenes originales para entrenamiento.")
 
 
 @router.get("", response_model=ResultadoPaginado[RegistroCarga], summary="Histórico paginado")

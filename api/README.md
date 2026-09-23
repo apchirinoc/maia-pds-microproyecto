@@ -8,6 +8,10 @@ OpenAPI 3.1: Swagger en `/docs`, ReDoc en `/redoc` y el esquema en
 > certificaciones vigentes. Con `INFERENCE_ENGINE=simulated` la inferencia es
 > simulada y así lo declara `GET /api/v1/meta`.
 
+## Inferencia integrada
+
+Para ejecutar ONNX y conservar resultados, siga [INFERENCIA.md](INFERENCIA.md) y el [manual de instalación](../docs/MANUAL_INSTALACION.md). El Compose de la raíz conecta los tres servicios. El arranque de desarrollo siguiente conserva la demostración explícita configurada en `.env.example`.
+
 ## Arranque
 
 ```bash
@@ -31,7 +35,7 @@ Ver `.env.example`. Las que más importan:
 |---|---|
 | `ALLOWED_ORIGINS` | Orígenes CORS autorizados. Sin el origen del frontend, el navegador bloquea las respuestas |
 | `JWT_SECRET` | Firma de los tokens. En `ENVIRONMENT=production` el arranque **falla** si conserva el valor de ejemplo |
-| `DATA_SOURCE` | `seed` (memoria) o `postgres` (fases 9-15 del plan) |
+| `DATA_SOURCE` | `seed` (referencia en memoria) o `postgres` (persistencia) |
 | `INFERENCE_ENGINE` | `simulated` u `onnx` (artefacto de MLflow) |
 | `DEMO_USERNAME` / `DEMO_PASSWORD` | Cuenta del prototipo; deben coincidir con las del frontend |
 
@@ -58,15 +62,12 @@ El código Python conserva `snake_case`.
 | Clasificación | `POST /api/v1/classifications`, `GET /classifications/model-info` |
 
 `/health` es deliberadamente barato y sin autenticación: el frontend lo consulta
-al arrancar y de forma periódica para decidir si muestra datos reales o
-simulados.
+al arrancar y de forma periódica para mostrar el estado de conexión. Una desconexión se muestra como error, sin sustituir la respuesta por simulación.
 
 ## Origen de datos
 
 Con `DATA_SOURCE=seed` los datos viven en `app/seed/`. El generador de
 `app/seed/cargas.py` es una **réplica exacta** del de
 `web/src/mocks/uploads.mock.ts`: mismo generador congruencial, mismas
-semillas y mismo orden de consumo. Conectar o desconectar el backend no cambia
-los datos que se ven; sólo cambia su procedencia, que es justo lo que permite
-comprobar que la conmutación funciona.
+semillas y mismo orden de consumo. La demostración requiere configuración explícita. El modo normal consulta la API y propaga los errores.
 

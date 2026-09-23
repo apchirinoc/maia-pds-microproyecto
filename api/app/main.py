@@ -17,6 +17,7 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.api.v1.router import router as router_v1
 from app.core.config import get_settings
+from app.ml.runtime import lifespan
 
 DESCRIPCION = """
 API de **BrainNeuroScan**, plataforma de investigación para clasificación de
@@ -38,6 +39,7 @@ def crear_app() -> FastAPI:
         docs_url="/docs",
         redoc_url="/redoc",
         openapi_url="/openapi.json",
+        lifespan=lifespan,
     )
 
     cors_origins = configuracion.origins
@@ -104,6 +106,21 @@ def crear_app() -> FastAPI:
         return {"status": "ok", "service": configuracion.app_name}
 
     app.include_router(router_v1)
+
+    @app.get("/ready", tags=["meta"], summary="Disponibilidad del modelo y almacenamiento")
+    async def disponibilidad(request: Request):
+        if configuracion.inference_engine == "onnx" and getattr(request.app.state, "inference_engine", None) is None:
+            return JSONResponse({"status": "unavailable", "modelReady": False}, status_code=503)
+        if configuracion.data_source == "postgres":
+            from sqlalchemy import text
+            from app.db.session import get_sessionmaker
+            try:
+                async with get_sessionmaker()() as session:
+                    await session.execute(text("SELECT 1"))
+            except Exception:
+                return JSONResponse({"status": "unavailable", "storageReady": False}, status_code=503)
+        return {"status": "ok", "simulatedInference": configuracion.simulated_inference}
+
     return app
 
 

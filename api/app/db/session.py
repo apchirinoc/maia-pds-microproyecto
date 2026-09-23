@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from collections.abc import AsyncGenerator
 from functools import lru_cache
+from uuid import uuid4
 
 from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, async_sessionmaker, create_async_engine
 
@@ -22,6 +23,12 @@ def get_engine() -> AsyncEngine:
         # Necesario para Supabase / PgBouncer en modo transacción (puerto 6543)
         # evita que asyncpg intente reutilizar prepared statements entre conexiones del pooler
         "statement_cache_size": 0,
+        # SQLAlchemy mantiene una caché adicional sobre asyncpg. Debe desactivarse
+        # también para no reutilizar sentencias sin nombre ya sustituidas.
+        "prepared_statement_cache_size": 0,
+        # La introspección de enums puede reemplazar la sentencia sin nombre
+        # antes de abrir un cursor. Cada preparación necesita un nombre propio.
+        "prepared_statement_name_func": lambda: f"__bns_{uuid4().hex}__",
     }
     if settings.needs_ssl:
         connect_args["ssl"] = "require"

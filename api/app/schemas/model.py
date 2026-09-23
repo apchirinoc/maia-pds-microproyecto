@@ -14,18 +14,19 @@ class ModeloDesplegado(EsquemaBase):
     name: str
     version: str
     architecture: str
-    accuracy: float
-    f1: float
-    size_mb: float
+    accuracy: float | None
+    f1: float | None
+    size_mb: float | None
+    data_source: str = "reference"
     status: EstadoModelo
     weights_file_name: str
 
 
 class MetricasModelo(EsquemaBase):
-    accuracy: float
-    precision_macro: float
-    recall_macro: float
-    auc: float
+    accuracy: float | None
+    precision_macro: float | None
+    recall_macro: float | None
+    auc: float | None
 
 
 class EventoDespliegue(EsquemaBase):
@@ -55,9 +56,9 @@ class ModeloEnProduccion(EsquemaBase):
 class ResumenRegistroModelos(EsquemaBase):
     production_model: ModeloEnProduccion
     active_since: str
-    accuracy_test: float
-    mean_latency_ms: int
-    storage_gb: float
+    accuracy_test: float | None
+    mean_latency_ms: int | None
+    storage_gb: float | None
     archived_versions: int
 
 
@@ -72,9 +73,9 @@ class VersionRegistro(EsquemaBase):
     version: str
     alias: str | None = None
     arch: str = ""
-    accuracy: float = 0.0
-    f1: float = 0.0
-    recall: float = 0.0
+    accuracy: float | None = None
+    f1: float | None = None
+    recall: float | None = None
     created_at: str = ""
     run_id: str = ""
     artifact_uri: str = ""

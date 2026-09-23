@@ -8,8 +8,11 @@ from app.schemas.common import EsquemaBase
 class DashboardKpis(EsquemaBase):
     training_images: int
     training_images_breakdown: str
-    model_accuracy: float
-    model_accuracy_delta_pts: float
+    model_accuracy: float | None
+    model_accuracy_delta_pts: float | None
+    model_accuracy_source: str = "reference"
+    activity_source: str = "mixed"
+    dataset_source: str = "reference"
     user_predictions: int
     user_predictions_this_month: int
     active_countries: int

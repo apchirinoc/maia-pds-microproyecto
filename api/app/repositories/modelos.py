@@ -78,7 +78,7 @@ class ConflictoDePromocion(RuntimeError):
     """
 
 
-def _flotante(valor: Decimal | float | int | None, por_defecto: float = 0.0) -> float:
+def _flotante(valor: Decimal | float | int | None, por_defecto: float | None = None) -> float | None:
     """Postgres devuelve `Decimal`; los esquemas declaran `float`.
 
     La conversión vive aquí y no en el esquema para que Pydantic nunca reciba un
@@ -221,6 +221,7 @@ class ModelosPostgres(RepositorioModelos):
                 Model.size_mb,
                 Model.status,
                 Model.weights_file_name,
+                Model.mlflow_artifact_uri,
             )
             .where(Model.deleted_at.is_(None))
             .order_by(orden, Model.accuracy.desc())
@@ -236,6 +237,7 @@ class ModelosPostgres(RepositorioModelos):
                 "size_mb": _flotante(fila.size_mb),
                 "status": fila.status,
                 "weights_file_name": fila.weights_file_name,
+                "data_source": "artifact" if fila.mlflow_artifact_uri else "reference",
             }
             for fila in filas
         ]
@@ -279,7 +281,7 @@ class ModelosPostgres(RepositorioModelos):
             "mean_latency_ms": (
                 int(round(float(latencia)))
                 if latencia is not None
-                else int(RESUMEN_REGISTRO["mean_latency_ms"])
+                else None
             ),
             "storage_gb": _flotante(fila["storage_gb"]),
             "archived_versions": int(fila["archived_versions"]),
@@ -318,6 +320,7 @@ class ModelosPostgres(RepositorioModelos):
             "size_mb": _flotante(modelo.size_mb),
             "status": modelo.status,
             "weights_file_name": modelo.weights_file_name,
+            "data_source": "artifact" if modelo.mlflow_artifact_uri else "reference",
             "training_images": modelo.training_images or 0,
             "test_images": modelo.test_images or 0,
             "active_since": _fecha(modelo.active_since),

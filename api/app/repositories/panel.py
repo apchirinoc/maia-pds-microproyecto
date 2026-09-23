@@ -216,14 +216,14 @@ class PanelPostgres(RepositorioPanel):
             )
         ).first()
 
-        exactitud = float(fila_modelo.accuracy) if fila_modelo is not None else 0.0
+        exactitud = float(fila_modelo.accuracy) if fila_modelo is not None and fila_modelo.accuracy is not None else None
         exactitud_anterior = (
             fila_modelo.accuracy_anterior if fila_modelo is not None else None
         )
         delta = (
             round(exactitud - float(exactitud_anterior), 2)
-            if exactitud_anterior is not None
-            else 0.0
+            if exactitud_anterior is not None and exactitud is not None
+            else None
         )
 
         total_cargas = await self._sesion.scalar(
