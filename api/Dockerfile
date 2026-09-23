@@ -5,8 +5,11 @@ WORKDIR /app
 ENV PIP_DISABLE_PIP_VERSION_CHECK=1 PIP_NO_CACHE_DIR=1
 RUN python -m venv /opt/venv
 ENV PATH="/opt/venv/bin:$PATH"
-COPY requirements.txt ./
-RUN pip install -r requirements.txt
+# requirements-onnx.txt incluye requirements.txt y añade lo necesario para
+# ejecutar el artefacto de MLflow (onnxruntime, OpenCV): así la misma imagen
+# sirve en modo simulado y con INFERENCE_ENGINE=onnx.
+COPY requirements.txt requirements-onnx.txt ./
+RUN pip install -r requirements-onnx.txt
 
 FROM python:3.13-slim AS runtime
 ENV PATH="/opt/venv/bin:$PATH" \

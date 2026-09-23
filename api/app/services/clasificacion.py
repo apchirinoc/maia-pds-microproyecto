@@ -1,13 +1,12 @@
-"""Inferencia simulada del servidor.
+"""Clasificación del servidor: camino simulado y adaptación del motor real.
 
-Réplica del generador de `web/src/mocks/classification.mock.ts`:
+`clasificar` replica el generador de `web/src/mocks/classification.mock.ts`:
 mismas funciones hash y pseudoaleatorias, misma geometría de la lesión y mismo
-SVG de salida. Conectar el backend no cambia lo que se ve; sólo cambia de dónde
-viene.
+SVG de salida.
 
-Cuando `INFERENCE_ENGINE=onnx`, este módulo se sustituye por el adaptador de
-MLflow (`app/ml/mlflow_engine.py`), que además devuelve el mapa calculado por
-oclusión sobre el artefacto real.
+`clasificar_con_motor` se usa cuando `INFERENCE_ENGINE=onnx`: traduce lo que
+devuelve el motor de MLflow (`app/ml/mlflow_engine.py`) al mismo contrato, de
+modo que la interfaz no distingue de dónde viene el resultado.
 """
 
 from __future__ import annotations
@@ -17,6 +16,8 @@ import random as _random
 from collections.abc import Callable
 from typing import Any, Final
 from urllib.parse import quote
+
+from app.ml.engine import InferenceEngine
 
 CLASES_TUMOR: Final[tuple[str, ...]] = ("glioma", "meningioma", "pituitary", "healthy")
 
@@ -178,6 +179,37 @@ def _repartir_confianza(predicha: str) -> dict[str, float]:
     for clase, peso in zip(otras, pesos, strict=True):
         confianzas[clase] = math.floor(restante * (peso / suma) * 10 + 0.5) / 10
     return confianzas
+
+
+def clasificar_con_motor(
+    motor: InferenceEngine,
+    contenido: bytes,
+    codigo_pais: str,
+    *,
+    explicar: bool,
+) -> dict[str, Any]:
+    """Clasifica con el modelo real. Es síncrono y usa CPU: llamarlo en un hilo."""
+    info = motor.describe()
+    [resultado] = motor.classify([contenido], explain=explicar and info.supports_explanation)
+    explicacion = resultado.explanation
+    return {
+        "predicted_class": resultado.predicted_class,
+        # El motor entrega probabilidades en [0, 1]; el contrato usa porcentajes.
+        "confidence_by_class": {
+            puntaje.tumor_class: round(puntaje.confidence * 100, 1) for puntaje in resultado.scores
+        },
+        "description": DESCRIPCIONES[resultado.predicted_class],
+        "model_version": resultado.model_version,
+        "preprocess": resultado.preprocess_label,
+        "country_code": codigo_pais,
+        "explanation": {
+            "method": explicacion.method,
+            "method_label": explicacion.method_label,
+            "influence_map_data_uri": explicacion.data_uri,
+        }
+        if explicacion
+        else None,
+    }
 
 
 def clasificar(

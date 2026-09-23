@@ -13,6 +13,7 @@ import { useActiveModelInfo, useClassifyImage } from '@/hooks/useClassifyImage'
 import { useDatasetSamples } from '@/hooks/useDashboardData'
 import { X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { SAMPLE_IMAGES_BY_CLASS } from '@/lib/mri-samples'
 import { cn } from '@/lib/utils'
 import { COUNTRIES } from '@/mocks/countries.mock'
 import type { DatasetSample } from '@/mocks/dashboard.mock'
@@ -56,6 +57,12 @@ export function AnalyzeImagePage() {
     classifyMutation.mutate({
       countryCode: selectedCountryCode,
       hint: selectedImage?.kind === 'sample' ? selectedImage.tumorClass : undefined,
+      file: selectedImage?.kind === 'upload' ? selectedImage.file : undefined,
+      // Se envía la imagen que el usuario ve en pantalla (la miniatura por clase).
+      sampleImageUrl:
+        selectedImage?.kind === 'sample'
+          ? SAMPLE_IMAGES_BY_CLASS[selectedImage.tumorClass].url
+          : undefined,
       // El mapa de influencia se pide de forma explícita: en la API real
       // cuesta una inferencia por cada parche ocluido.
       explain: true,
@@ -66,7 +73,9 @@ export function AnalyzeImagePage() {
     const result = classifyMutation.data
     if (!result) return
     const lines = [
-      `BrainNeuroScan · ${t('common.simulatedInference')}`,
+      modelInfoQuery.data?.simulatedInference === false
+        ? 'BrainNeuroScan'
+        : `BrainNeuroScan · ${t('common.simulatedInference')}`,
       `${t('analyze.step3.model')}: ${result.modelVersion}`,
       `${t('analyze.step3.preprocess')}: ${result.preprocess}`,
       `${t('analyze.step3.origin')}: ${selectedCountry?.name ?? ''}`,

@@ -8,8 +8,11 @@ serializan en `camelCase` para encajar con sus tipos sin adaptadores.
 from __future__ import annotations
 
 import time
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, Request
+from fastapi.concurrency import run_in_threadpool
 from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -17,6 +20,16 @@ from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.api.v1.router import router as router_v1
 from app.core.config import get_settings
+from app.ml.proveedor import ProveedorMotor
+
+
+@asynccontextmanager
+async def ciclo_de_vida(app: FastAPI) -> AsyncIterator[None]:
+    # Con inferencia real el modelo se descarga al arrancar: un artefacto mal
+    # configurado impide levantar el servicio en lugar de fallar en la primera
+    # petición de un usuario.
+    await run_in_threadpool(app.state.proveedor_motor.obtener)
+    yield
 
 DESCRIPCION = """
 API de **BrainNeuroScan**, plataforma de investigación para clasificación de
@@ -38,7 +51,9 @@ def crear_app() -> FastAPI:
         docs_url="/docs",
         redoc_url="/redoc",
         openapi_url="/openapi.json",
+        lifespan=ciclo_de_vida,
     )
+    app.state.proveedor_motor = ProveedorMotor(configuracion)
 
     cors_origins = configuracion.origins
     cors_kwargs: dict = {

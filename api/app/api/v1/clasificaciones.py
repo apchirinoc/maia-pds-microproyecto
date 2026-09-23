@@ -5,13 +5,15 @@ from __future__ import annotations
 from typing import Annotated
 
 from fastapi import APIRouter, File, Form, HTTPException, UploadFile, status
+from fastapi.concurrency import run_in_threadpool
 
 from app.api.v1.dependencias import Configuracion
 from app.api.v1.meta import ETIQUETA_PREPROCESO
+from app.ml.proveedor import MotorInferenciaDep
 from app.repositories.cargas import RepositorioCargasDep
 from app.schemas.classification import InfoModeloActivo, ResultadoClasificacion
 from app.seed.catalogos import CLASES_TUMOR
-from app.services.clasificacion import clasificar
+from app.services.clasificacion import clasificar, clasificar_con_motor
 
 router = APIRouter(prefix="/classifications", tags=["clasificación"])
 
@@ -21,12 +23,19 @@ TIPOS_ACEPTADOS = {"image/jpeg", "image/png"}
 
 @router.get("/model-info", response_model=InfoModeloActivo, summary="Modelo que está sirviendo")
 async def info_modelo_activo(
-    configuracion: Configuracion, repositorio: RepositorioCargasDep
+    repositorio: RepositorioCargasDep, motor: MotorInferenciaDep
 ) -> InfoModeloActivo:
+    if motor is not None:
+        info = motor.describe()
+        return InfoModeloActivo(
+            model_version=info.model_version,
+            preprocess_label=info.preprocess_label,
+            simulated_inference=False,
+        )
     return InfoModeloActivo(
         model_version=await repositorio.version_modelo_produccion(),
         preprocess_label=ETIQUETA_PREPROCESO,
-        simulated_inference=configuracion.simulated_inference,
+        simulated_inference=True,
     )
 
 
@@ -35,6 +44,7 @@ async def clasificar_imagen(
     country_code: Annotated[str, Form(alias="countryCode")],
     configuracion: Configuracion,
     repositorio: RepositorioCargasDep,
+    motor: MotorInferenciaDep,
     file: Annotated[UploadFile | None, File()] = None,
     hint: Annotated[str | None, Form()] = None,
     explain: Annotated[bool, Form()] = True,
@@ -67,14 +77,24 @@ async def clasificar_imagen(
             detail=f"Clase no reconocida: {hint}",
         )
 
-    version_modelo = await repositorio.version_modelo_produccion()
-    resultado = clasificar(
-        country_code,
-        pista=hint,
-        explicar=explain,
-        version_modelo=version_modelo,
-        etiqueta_preproceso=ETIQUETA_PREPROCESO,
-    )
+    if motor is not None:
+        if contenido is None:
+            raise HTTPException(
+                status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+                detail="La inferencia real necesita el archivo de la imagen",
+            )
+        # `hint` solo sirve para forzar la clase en la simulación: aquí se ignora.
+        resultado = await run_in_threadpool(
+            clasificar_con_motor, motor, contenido, country_code, explicar=explain
+        )
+    else:
+        resultado = clasificar(
+            country_code,
+            pista=hint,
+            explicar=explain,
+            version_modelo=await repositorio.version_modelo_produccion(),
+            etiqueta_preproceso=ETIQUETA_PREPROCESO,
+        )
 
     # La inferencia la produce el servicio; el repositorio sólo la persiste.
     await repositorio.registrar_clasificacion(
@@ -83,7 +103,7 @@ async def clasificar_imagen(
         contenido=contenido,
         clase_predicha=resultado["predicted_class"],
         confianzas=resultado["confidence_by_class"],
-        etiqueta_preproceso=ETIQUETA_PREPROCESO,
+        etiqueta_preproceso=resultado["preprocess"],
         simulada=configuracion.simulated_inference,
     )
 

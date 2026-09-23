@@ -33,7 +33,19 @@ Ver `.env.example`. Las que más importan:
 | `JWT_SECRET` | Firma de los tokens. En `ENVIRONMENT=production` el arranque **falla** si conserva el valor de ejemplo |
 | `DATA_SOURCE` | `seed` (memoria) o `postgres` (fases 9-15 del plan) |
 | `INFERENCE_ENGINE` | `simulated` u `onnx` (artefacto de MLflow) |
+| `MLFLOW_TRACKING_URI` | Servidor MLflow. **Obligatoria** con `INFERENCE_ENGINE=onnx`: sin ella el arranque falla |
+| `MLFLOW_MODEL_NAME` / `MLFLOW_MODEL_ALIAS` | Modelo que se sirve (`brain-tumor-classifier@champion` por defecto) |
+| `AWS_ACCESS_KEY_ID` / `AWS_SECRET_ACCESS_KEY` / `AWS_REGION` | Lectura del artifact store en S3 cuando no hay rol IAM (p. ej. Railway) |
 | `DEMO_USERNAME` / `DEMO_PASSWORD` | Cuenta del prototipo; deben coincidir con las del frontend |
+
+### Inferencia real
+
+Con `INFERENCE_ENGINE=onnx` la API resuelve el alias en el registry, descarga
+el artefacto empaquetado con `log_classifier` (ONNX + preprocesamiento) al
+arrancar y lo usa en `POST /api/v1/classifications`, que entonces exige el
+archivo de la imagen. Activar otra versión desde el tablero
+(`POST /api/v1/models/registry/{version}/activate`) recarga el motor. La imagen
+Docker instala `requirements-onnx.txt`, así que sirve en ambos modos.
 
 ## Contrato
 

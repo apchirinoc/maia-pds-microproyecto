@@ -66,7 +66,11 @@ class MlflowInferenceEngine(InferenceEngine):
         alias: str = "champion",
         expected_preprocess_fingerprint: str | None = None,
     ) -> None:
-        self._model_uri = f"models:/{model_name}@{alias}"
+        # Se resuelve el alias a una versión concreta antes de cargar: así la
+        # etiqueta que se muestra corresponde exactamente a los pesos cargados,
+        # aunque alguien mueva el alias mientras tanto.
+        version = mlflow.MlflowClient().get_model_version_by_alias(model_name, alias).version
+        self._model_uri = f"models:/{model_name}/{version}"
         self._model = mlflow.pyfunc.load_model(self._model_uri)
         metadata = dict(self._model.metadata.metadata or {})
 
@@ -78,7 +82,7 @@ class MlflowInferenceEngine(InferenceEngine):
             )
 
         self._info = ModelInfo(
-            model_version=str(metadata.get("model_version", self._model.metadata.run_id or "")),
+            model_version=str(metadata.get("model_version") or f"{model_name} · v{version}"),
             preprocess_label=str(metadata.get("preprocess_label", "")),
             preprocess_fingerprint=fingerprint,
             classes=tuple(metadata.get("classes", ())),

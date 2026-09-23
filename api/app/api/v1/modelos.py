@@ -3,8 +3,10 @@
 from __future__ import annotations
 
 from fastapi import APIRouter, HTTPException, status
+from fastapi.concurrency import run_in_threadpool
 
 from app.api.v1.dependencias import SesionRequerida
+from app.ml.proveedor import ProveedorMotorDep
 from app.ml.registry import ModeloNoVersionado, RegistroModelosDep
 from app.repositories.modelos import (
     ConflictoDePromocion,
@@ -68,16 +70,20 @@ async def listar_registry(
     summary="Activar (champion) una versión versionada en S3",
 )
 async def activar_registry(
-    version: str, sesion: SesionRequerida, registro: RegistroModelosDep
+    version: str,
+    sesion: SesionRequerida,
+    registro: RegistroModelosDep,
+    proveedor: ProveedorMotorDep,
 ) -> VersionRegistro:
-    """Fija el alias `champion` sobre `version`: el motor de inferencia empezará a
-    servir esa versión desde S3 (`models:/<name>@champion`). Sustituye al antiguo
-    «subir un archivo de pesos»: aquí solo se selecciona lo ya versionado.
+    """Fija el alias `champion` sobre `version` y recarga el motor para que sirva
+    esa versión desde S3. Sustituye al antiguo «subir un archivo de pesos»: aquí
+    solo se selecciona lo ya versionado.
     """
     try:
         activada = registro.activar(version)
     except ModeloNoVersionado as error:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(error)) from error
+    await run_in_threadpool(proveedor.recargar)
     return VersionRegistro.model_validate(activada)
 
 

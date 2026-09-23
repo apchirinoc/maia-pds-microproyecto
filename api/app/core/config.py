@@ -79,6 +79,15 @@ class Settings(BaseSettings):
             )
         return self
 
+    @model_validator(mode="after")
+    def exigir_mlflow_para_inferencia_real(self) -> Settings:
+        if self.inference_engine == "onnx" and not self.mlflow_tracking_uri:
+            raise ValueError(
+                "INFERENCE_ENGINE=onnx requiere MLFLOW_TRACKING_URI para cargar el "
+                "modelo del registry."
+            )
+        return self
+
     @property
     def origins(self) -> list[str]:
         return [origen.strip() for origen in self.allowed_origins.split(",") if origen.strip()]
