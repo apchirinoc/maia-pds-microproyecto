@@ -19,6 +19,12 @@ class InfoModeloActivo(EsquemaBase):
     model_version: str
     preprocess_label: str
     simulated_inference: bool
+    model_name: str = ""
+    model_uri: str = ""
+    run_id: str = ""
+    preprocess_fingerprint: str = ""
+    supports_explanation: bool = False
+    evaluation_metrics: dict[str, float] = {}
 
 
 class ExplicacionPrediccion(EsquemaBase):
@@ -35,6 +41,13 @@ class ResultadoClasificacion(EsquemaBase):
     preprocess: str
     country_code: str
     explanation: ExplicacionPrediccion | None = None
+    simulated_inference: bool = False
+    model_uri: str = ""
+    run_id: str = ""
+    preprocess_fingerprint: str = ""
+    upload_id: str | None = None
+    image_sha256: str = ""
+    persisted: bool = False
 
 
 class InfoApi(EsquemaBase):
@@ -47,3 +60,5 @@ class InfoApi(EsquemaBase):
     simulated_inference: bool
     model_version: str
     preprocess_label: str
+    model_ready: bool = False
+    reference_data: bool = True

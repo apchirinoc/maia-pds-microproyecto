@@ -39,6 +39,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import joinedload, selectinload
 
 from app.db.session import get_session_opcional
+from app.ml.engine import ModelInfo
+from app.services.model_catalog import serving_model
 from app.models.entidades import (
     Country,
     DatasetImage,
@@ -54,7 +56,8 @@ from app.seed.modelos import RESUMEN_REGISTRO
 
 CABECERA_CSV = (
     "id,fileName,capturedAt,countryName,prediction,confidence,status,"
-    "groundTruth,groundTruthSource,confirmedBy,confirmedAt,isCorrect\n"
+    "groundTruth,groundTruthSource,confirmedBy,confirmedAt,isCorrect,"
+    "simulatedInference,modelVersion,modelUri,preprocessFingerprint,imageSha256\n"
 )
 
 # Filas por lectura del cursor de servidor en la exportación.
@@ -108,6 +111,11 @@ def _linea_csv(registro: dict[str, Any]) -> str:
                 verdad["confirmed_at"] if verdad else "",
                 # Vacío, no «false», cuando aún no hay diagnóstico confirmado.
                 str(verdad["diagnosis"] == registro["prediction"]).lower() if verdad else "",
+                str(registro.get("simulated_inference", True)).lower(),
+                registro.get("model_version", ""),
+                registro.get("model_uri", ""),
+                registro.get("preprocess_fingerprint", ""),
+                registro.get("image_sha256", ""),
             )
         )
         + "\n"
@@ -163,7 +171,9 @@ class RepositorioCargas(Protocol):
         confianzas: dict[str, float],
         etiqueta_preproceso: str,
         simulada: bool,
-    ) -> None: ...
+        modelo_info: ModelInfo | None = None,
+        latencia_ms: int | None = None,
+    ) -> str | None: ...
 
     async def codigos_pais(self) -> set[str]: ...
 
@@ -265,6 +275,13 @@ class CargasPostgres(RepositorioCargas):
                 Country.name.label("country_name"),
                 Prediction.predicted_class,
                 Prediction.confidence,
+                Prediction.is_simulated,
+                Prediction.preprocess_label,
+                Prediction.preprocess_fingerprint,
+                Model.name.label("model_name"),
+                Model.version.label("model_version"),
+                Model.mlflow_artifact_uri,
+                Upload.checksum_sha256,
                 Upload.status,
                 GroundTruthDiagnosis.diagnosis,
                 GroundTruthDiagnosis.source,
@@ -273,6 +290,7 @@ class CargasPostgres(RepositorioCargas):
             )
             .join(Country, Country.code == Upload.country_code)
             .join(Prediction, Prediction.upload_id == Upload.id)
+            .join(Model, Model.id == Prediction.model_id)
             .outerjoin(
                 GroundTruthDiagnosis,
                 and_(
@@ -304,6 +322,12 @@ class CargasPostgres(RepositorioCargas):
             "confidence": _flotante(fila.confidence),
             "status": fila.status,
             "ground_truth": verdad,
+            "simulated_inference": fila.is_simulated,
+            "model_version": f"{fila.model_name} · {fila.model_version}",
+            "model_uri": fila.mlflow_artifact_uri or "",
+            "preprocess": fila.preprocess_label,
+            "preprocess_fingerprint": fila.preprocess_fingerprint or "",
+            "image_sha256": fila.checksum_sha256,
         }
 
     async def listar_cargas(
@@ -369,10 +393,10 @@ class CargasPostgres(RepositorioCargas):
         El histórico no se materializa entero: se recorre en particiones y cada
         una se convierte en texto y se suelta.
         """
-        yield CABECERA_CSV
         resultado = await self._sesion.stream(
             self._consulta_historico().order_by(Upload.created_at.desc())
         )
+        yield CABECERA_CSV
         async for particion in resultado.partitions(TAMANO_LOTE_CSV):
             yield "".join(_linea_csv(self._fila_a_registro(fila)) for fila in particion)
 
@@ -513,17 +537,18 @@ class CargasPostgres(RepositorioCargas):
         confianzas: dict[str, float],
         etiqueta_preproceso: str,
         simulada: bool,
-    ) -> None:
+        modelo_info: ModelInfo | None = None,
+        latencia_ms: int | None = None,
+    ) -> str:
         """Persiste la carga, su predicción y las probabilidades por clase.
 
         La clase y las probabilidades las produce `app/services/clasificacion.py`;
         aquí sólo se guardan. Las tres filas comparten transacción, de modo que
         nunca queda una predicción sin sus barras de confianza.
         """
-        modelo = await self._modelo_produccion()
+        modelo = await serving_model(self._sesion, modelo_info) if modelo_info else await self._modelo_produccion()
         if modelo is None:
-            # Sin modelo en producción no hay predicción que atribuir.
-            return None
+            raise ValueError("No hay un modelo al que asociar la predicción")
 
         ahora = datetime.now(timezone.utc)
         identificador = uuid.uuid4()
@@ -538,7 +563,7 @@ class CargasPostgres(RepositorioCargas):
                 id=identificador,
                 public_id=public_id,
                 file_name=nombre_archivo,
-                storage_path=f"/uploads/{public_id}.jpg",
+                storage_path=None,
                 checksum_sha256=checksum,
                 country_code=codigo_pais,
                 status="pending",
@@ -556,6 +581,8 @@ class CargasPostgres(RepositorioCargas):
                 predicted_class=clase_predicha,
                 confidence=Decimal(str(confianzas[clase_predicha])),
                 preprocess_label=etiqueta_preproceso,
+                preprocess_fingerprint=modelo_info.preprocess_fingerprint if modelo_info else None,
+                latency_ms=latencia_ms,
                 is_simulated=simulada,
                 created_at=ahora,
             )
@@ -570,7 +597,9 @@ class CargasPostgres(RepositorioCargas):
             )
 
         await self._sesion.flush()
-        return None
+        # La respuesta sólo anuncia persisted después de confirmar la transacción.
+        await self._sesion.commit()
+        return public_id
 
     # -- Apoyo --------------------------------------------------------------
 

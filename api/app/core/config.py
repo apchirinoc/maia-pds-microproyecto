@@ -12,7 +12,7 @@ from typing import Literal
 
 from pydantic import Field, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from sqlalchemy.engine import make_url
+from sqlalchemy.engine import URL, make_url
 
 SECRETO_DE_EJEMPLO = "cambia-este-secreto-en-produccion"
 
@@ -55,6 +55,10 @@ class Settings(BaseSettings):
     mlflow_tracking_uri: str = ""
     mlflow_model_name: str = "brain-tumor-classifier"
     mlflow_model_alias: str = "champion"
+    mlflow_model_version: str = ""
+    mlflow_model_uri: str = ""
+    expected_preprocess_fingerprint: str = ""
+    inference_concurrency: int = Field(default=2, ge=1, le=16)
 
     # Acceso a S3 (artifact store de MLflow). Las credenciales las resuelve la
     # cadena por defecto de boto3 (rol IAM en EC2 o variables AWS_*); estas dos
@@ -67,16 +71,11 @@ class Settings(BaseSettings):
     @model_validator(mode="after")
     def resolver_database_url(self) -> Settings:
         if not self.database_url and self.postgres_host:
-            auth = ""
-            if self.postgres_user:
-                auth = (
-                    f"{self.postgres_user}:{self.postgres_password}@"
-                    if self.postgres_password
-                    else f"{self.postgres_user}@"
-                )
-            self.database_url = (
-                f"postgresql://{auth}{self.postgres_host}:{self.postgres_port}/{self.postgres_db}"
-            )
+            self.database_url = URL.create(
+                "postgresql", username=self.postgres_user or None,
+                password=self.postgres_password or None, host=self.postgres_host,
+                port=self.postgres_port, database=self.postgres_db,
+            ).render_as_string(hide_password=False)
         return self
 
     @property
@@ -120,7 +119,7 @@ class Settings(BaseSettings):
     @classmethod
     def rechazar_secreto_de_ejemplo(cls, valor: str, info) -> str:
         entorno = (info.data or {}).get("environment")
-        if entorno == "production" and valor == SECRETO_DE_EJEMPLO:
+        if entorno == "production" and (valor.startswith(SECRETO_DE_EJEMPLO) or len(valor) < 32):
             raise ValueError(
                 "JWT_SECRET conserva el valor de ejemplo. En producción debe "
                 "inyectarse un secreto propio."
@@ -131,4 +130,3 @@ class Settings(BaseSettings):
 @lru_cache
 def get_settings() -> Settings:
     return Settings()
-

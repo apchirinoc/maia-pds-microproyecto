@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from fastapi import APIRouter, HTTPException, status
+from app.core.config import get_settings
 
 from app.api.v1.dependencias import SesionRequerida
 from app.ml.registry import ModeloNoVersionado, RegistroModelosDep
@@ -20,6 +21,11 @@ from app.schemas.model import (
 )
 
 router = APIRouter(prefix="/models", tags=["modelos"])
+
+
+def require_demo_mutation() -> None:
+    if not get_settings().simulated_inference:
+        raise HTTPException(409, "La versión servida se fija al arrancar. Cambie la configuración y reinicie la API.")
 
 
 class RevertirEntrada(EsquemaBase):
@@ -59,7 +65,14 @@ async def listar_registry(
     sesion: SesionRequerida, registro: RegistroModelosDep
 ) -> list[VersionRegistro]:
     """Lista las versiones ya versionadas en MLflow/S3, para seleccionarlas."""
-    return [VersionRegistro.model_validate(version) for version in registro.listar_versiones()]
+    if not get_settings().simulated_inference and not get_settings().mlflow_tracking_uri:
+        return []
+    from starlette.concurrency import run_in_threadpool
+    try:
+        versions = await run_in_threadpool(registro.listar_versiones)
+    except Exception as error:
+        raise HTTPException(503, "No se pudo consultar el registro de MLflow") from error
+    return [VersionRegistro.model_validate(version) for version in versions]
 
 
 @router.post(
@@ -70,11 +83,9 @@ async def listar_registry(
 async def activar_registry(
     version: str, sesion: SesionRequerida, registro: RegistroModelosDep
 ) -> VersionRegistro:
-    """Fija el alias `champion` sobre `version`: el motor de inferencia empezará a
-    servir esa versión desde S3 (`models:/<name>@champion`). Sustituye al antiguo
-    «subir un archivo de pesos»: aquí solo se selecciona lo ya versionado.
-    """
+    """Acción de demostración; la inferencia real fija su versión al arrancar."""
     try:
+        require_demo_mutation()
         activada = registro.activar(version)
     except ModeloNoVersionado as error:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(error)) from error
@@ -102,6 +113,7 @@ async def desplegar(
     model_id: str, sesion: SesionRequerida, repositorio: RepositorioModelosDep
 ) -> None:
     try:
+        require_demo_mutation()
         await repositorio.desplegar(model_id, sesion)
     except ModeloNoEncontrado as error:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(error)) from error
@@ -123,6 +135,7 @@ async def revertir(
     repositorio: RepositorioModelosDep,
 ) -> None:
     try:
+        require_demo_mutation()
         await repositorio.revertir(model_id, entrada.target_version, sesion)
     except ModeloNoEncontrado as error:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=str(error)) from error

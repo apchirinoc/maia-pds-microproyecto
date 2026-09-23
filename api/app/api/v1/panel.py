@@ -7,7 +7,8 @@ la respuesta es idéntica en ambos modos; sólo cambian los valores.
 
 from __future__ import annotations
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Request
+from app.core.config import get_settings
 
 from app.repositories.panel import RepositorioPanelDep
 from app.schemas.dashboard import (
@@ -23,8 +24,17 @@ router = APIRouter(prefix="/dashboard", tags=["panel"])
 
 
 @router.get("/kpis", response_model=DashboardKpis, summary="Indicadores del panel")
-async def obtener_kpis(repositorio: RepositorioPanelDep) -> DashboardKpis:
-    return DashboardKpis.model_validate(await repositorio.obtener_kpis())
+async def obtener_kpis(repositorio: RepositorioPanelDep, request: Request) -> DashboardKpis:
+    values = await repositorio.obtener_kpis()
+    engine = getattr(request.app.state, "inference_engine", None)
+    if not get_settings().simulated_inference:
+        accuracy = engine.describe().evaluation_metrics.get("test_accuracy") if engine else None
+        values.update(
+            model_accuracy=accuracy * 100 if accuracy is not None else None,
+            model_accuracy_delta_pts=None,
+            model_accuracy_source="model" if accuracy is not None else "unavailable",
+        )
+    return DashboardKpis.model_validate(values)
 
 
 @router.get(

@@ -35,9 +35,9 @@ class VersionModelo:
     version: str
     alias: str | None
     arch: str
-    accuracy: float
-    f1: float
-    recall: float
+    accuracy: float | None
+    f1: float | None
+    recall: float | None
     created_at: str
     run_id: str
     artifact_uri: str
@@ -154,11 +154,11 @@ class RegistroMLflow(RegistroModelos):
         return {version: alias for alias, version in (registrado.aliases or {}).items()}
 
     @staticmethod
-    def _primera_metrica(metricas: dict[str, Any], claves: tuple[str, ...]) -> float:
+    def _primera_metrica(metricas: dict[str, Any], claves: tuple[str, ...]) -> float | None:
         for clave in claves:
             if clave in metricas:
                 return float(metricas[clave])
-        return 0.0
+        return None
 
     def listar_versiones(self) -> list[VersionModelo]:
         alias_por_version = self._version_a_alias()
@@ -178,9 +178,9 @@ class RegistroMLflow(RegistroModelos):
                     version=str(mv.version),
                     alias=alias_por_version.get(str(mv.version)),
                     arch=str(parametros.get("arch", "")),
-                    accuracy=float(metricas.get("test_accuracy", 0.0)),
+                    accuracy=self._primera_metrica(metricas, ("test_accuracy",)),
                     f1=self._primera_metrica(metricas, self._METRICAS_F1),
-                    recall=float(metricas.get("test_recall", 0.0)),
+                    recall=self._primera_metrica(metricas, ("test_recall",)),
                     created_at=(
                         datetime.fromtimestamp(
                             mv.creation_timestamp / 1000, tz=timezone.utc
