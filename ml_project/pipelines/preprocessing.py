@@ -12,6 +12,7 @@ preprocesamiento viaja con el modelo, nunca se reimplementa en el servicio.
 from __future__ import annotations
 
 import hashlib
+import io
 import json
 from collections.abc import Iterable
 from dataclasses import asdict, dataclass
@@ -19,6 +20,7 @@ from typing import Any, Final
 
 import cv2
 import numpy as np
+from PIL import Image, UnidentifiedImageError
 
 IMAGENET_MEAN: Final[tuple[float, float, float]] = (0.485, 0.456, 0.406)
 IMAGENET_STD: Final[tuple[float, float, float]] = (0.229, 0.224, 0.225)
@@ -49,8 +51,13 @@ class PreprocessConfig:
     mean: tuple[float, float, float] = IMAGENET_MEAN
     std: tuple[float, float, float] = IMAGENET_STD
     interpolation: str = "bilinear"
+    mode: str = "clahe"
 
     def __post_init__(self) -> None:
+        if self.mode not in ("clahe", "rgb_imagenet"):
+            raise ValueError("mode debe ser clahe o rgb_imagenet")
+        if self.mode == "rgb_imagenet" and self.interpolation != "bilinear":
+            raise ValueError("El contrato RGB de Colab requiere interpolación bilinear")
         if self.target_size <= 0:
             raise ValueError("target_size debe ser positivo")
         if self.clahe_clip_limit <= 0:
@@ -64,7 +71,11 @@ class PreprocessConfig:
             raise ValueError("std no puede contener ceros ni negativos")
 
     def to_dict(self) -> dict[str, Any]:
-        return asdict(self)
+        data = asdict(self)
+        # Mantener la huella de los paquetes CLAHE existentes.
+        if self.mode == "clahe":
+            data.pop("mode")
+        return data
 
     @classmethod
     def from_dict(cls, data: dict[str, Any]) -> PreprocessConfig:
@@ -75,6 +86,7 @@ class PreprocessConfig:
             mean=tuple(data["mean"]),  # type: ignore[arg-type]
             std=tuple(data["std"]),  # type: ignore[arg-type]
             interpolation=str(data["interpolation"]),
+            mode=str(data.get("mode", "clahe")),
         )
 
     def to_json(self) -> str:
@@ -101,7 +113,8 @@ class PreprocessConfig:
         La cadena «224x224 - CLAHE» deja de estar escrita a mano en el
         frontend: se deriva de la configuracion real del artefacto.
         """
-        return f"{self.target_size}×{self.target_size} · CLAHE"
+        transform = "RGB · ImageNet" if self.mode == "rgb_imagenet" else "CLAHE"
+        return f"{self.target_size}×{self.target_size} · {transform}"
 
 
 class MriPreprocessor:
@@ -162,6 +175,8 @@ class MriPreprocessor:
 
     def __call__(self, image: np.ndarray) -> np.ndarray:
         """Transforma una imagen decodificada en un tensor (3, S, S) float32."""
+        if self.config.mode == "rgb_imagenet":
+            raise ValueError("El contrato RGB debe decodificarse desde bytes con Pillow")
         gray = self.to_uint8_grayscale(image)
         size = self.config.target_size
         resized = cv2.resize(
@@ -173,6 +188,18 @@ class MriPreprocessor:
         return (stacked - self._mean) / self._std
 
     def from_bytes(self, raw: bytes) -> np.ndarray:
+        if self.config.mode == "rgb_imagenet":
+            try:
+                # Igual a ImageFolder + Resize(PIL) + ToTensor + Normalize.
+                with Image.open(io.BytesIO(raw)) as source:
+                    rgb = source.convert("RGB").resize(
+                        (self.config.target_size, self.config.target_size),
+                        resample=Image.Resampling.BILINEAR,
+                    )
+                    tensor = np.asarray(rgb, dtype=np.float32).transpose(2, 0, 1) / 255.0
+                return (tensor - self._mean) / self._std
+            except (UnidentifiedImageError, OSError, ValueError) as error:
+                raise InvalidImageError("No se pudo decodificar la imagen RGB") from error
         return self(self.decode(raw))
 
     def batch(self, images: Iterable[bytes]) -> np.ndarray:

@@ -9,6 +9,8 @@ pesos.
 from __future__ import annotations
 
 import json
+import hashlib
+from importlib.metadata import version
 import tempfile
 from pathlib import Path
 from typing import Any, Sequence
@@ -84,6 +86,7 @@ def log_classifier(
     name: str = "model",
     registered_model_name: str | None = None,
     extra_metadata: dict[str, Any] | None = None,
+    output_directory: str | Path | None = None,
 ) -> Any:
     """Registra el clasificador completo en el run activo de MLflow.
 
@@ -101,14 +104,15 @@ def log_classifier(
     config = preprocess_config or PreprocessConfig()
     explanation = explanation_config or DEFAULT_OCCLUSION_CONFIG
     metadata = {
+        **(extra_metadata or {}),
         "classes": list(classes),
+        "weights_sha256": hashlib.sha256(onnx_model_path.read_bytes()).hexdigest(),
         "output_is_probability": output_is_probability,
         "preprocess_fingerprint": config.fingerprint,
         "preprocess_label": config.label,
         "explanation_method": OCCLUSION_METHOD_ID,
         "explanation_label": explanation.label,
         EXPLANATION_META_KEY: explanation.to_dict(),
-        **(extra_metadata or {}),
     }
 
     with tempfile.TemporaryDirectory() as staging:
@@ -117,6 +121,27 @@ def log_classifier(
         config_file.write_text(config.to_json(), encoding="utf-8")
         meta_file = staging_dir / "classifier_meta.json"
         meta_file.write_text(json.dumps(metadata, sort_keys=True), encoding="utf-8")
+
+        kwargs = dict(
+            python_model=BrainTumorClassifier(),
+            artifacts={
+                ONNX_MODEL_ARTIFACT: str(onnx_model_path),
+                PREPROCESS_CONFIG_ARTIFACT: str(config_file),
+                CLASSIFIER_META_ARTIFACT: str(meta_file),
+            },
+            code_paths=[str(PACKAGE_DIR)],
+            signature=build_signature(classes, explanation_config=explanation),
+            input_example=build_input_example(sample_image),
+            metadata=metadata,
+            pip_requirements=[
+                f"{package}=={version(package)}" for package in
+                ("mlflow", "cloudpickle", "numpy", "pandas", "onnxruntime", "opencv-python-headless", "Pillow")
+            ],
+        )
+        if output_directory is not None:
+            # Paquete portable: no crea runs ni requiere un servidor encendido.
+            mlflow.pyfunc.save_model(path=str(output_directory), **kwargs)
+            return Path(output_directory)
 
         mlflow.log_params(
             {
@@ -132,17 +157,8 @@ def log_classifier(
 
         return mlflow.pyfunc.log_model(
             name=name,
-            python_model=BrainTumorClassifier(),
-            artifacts={
-                ONNX_MODEL_ARTIFACT: str(onnx_model_path),
-                PREPROCESS_CONFIG_ARTIFACT: str(config_file),
-                CLASSIFIER_META_ARTIFACT: str(meta_file),
-            },
-            code_paths=[str(PACKAGE_DIR)],
-            signature=build_signature(classes, explanation_config=explanation),
-            input_example=build_input_example(sample_image),
-            metadata=metadata,
             registered_model_name=registered_model_name,
+            **kwargs,
         )
 
 

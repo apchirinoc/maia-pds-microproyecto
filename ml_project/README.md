@@ -10,6 +10,10 @@ exactamente el mismo código.
 > El entrenamiento se ejecuta en una máquina con datos y GPU (típicamente EC2)
 > siguiendo `docs/runbook-entrenamiento-ec2-mlflow-s3.md`.
 
+## Entregar pesos ya entrenados
+
+Consulte [ENTREGA_MODELO.md](ENTREGA_MODELO.md) para crear un paquete portable sin reentrenar ni depender del servidor de MLflow durante el servicio. El contrato debe coincidir con el preprocesamiento y el orden de clases utilizados al entrenar los pesos seleccionados.
+
 ## El problema que resuelve
 
 Antes, el preprocesamiento `224×224 · CLAHE` existía en tres sitios distintos:

@@ -14,7 +14,7 @@ mismo modo que no hay ni una linea de CLAHE.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing import Protocol, Sequence
 
 INFLUENCE_MAP_MEDIA_TYPE = "image/png"
@@ -76,6 +76,13 @@ class ModelInfo:
     preprocess_fingerprint: str
     classes: tuple[str, ...]
     simulated: bool
+    model_name: str = ""
+    model_uri: str = ""
+    run_id: str = ""
+    weights_sha256: str = ""
+    architecture: str = ""
+    evaluation_metrics: dict[str, float] = field(default_factory=dict)
+    metric_averaging: str = "unknown"
     explanation_method: str = ""
     explanation_label: str = ""
     supports_explanation: bool = False
@@ -84,6 +91,10 @@ class ModelInfo:
 
 class ExplanationNotSupportedError(RuntimeError):
     """Se pidio una explicacion a un artefacto que no la sabe producir."""
+
+
+class ModelContractError(RuntimeError):
+    """El artefacto o sus salidas no cumplen el contrato de clasificación."""
 
 
 class InferenceEngine(Protocol):

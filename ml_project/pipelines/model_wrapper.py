@@ -13,6 +13,7 @@ Sin ese parametro la salida es la de siempre: el DataFrame de probabilidades.
 from __future__ import annotations
 
 import json
+import hashlib
 from pathlib import Path
 from typing import Any
 
@@ -97,6 +98,11 @@ class BrainTumorClassifier(mlflow.pyfunc.PythonModel):
 
         meta_path = Path(context.artifacts[CLASSIFIER_META_ARTIFACT])
         meta = json.loads(meta_path.read_text(encoding="utf-8"))
+        if meta.get("preprocess_fingerprint") != self._config.fingerprint:
+            raise ValueError("La configuración no coincide con la huella declarada")
+        expected_hash = meta.get("weights_sha256")
+        if expected_hash and hashlib.sha256(Path(context.artifacts[ONNX_MODEL_ARTIFACT]).read_bytes()).hexdigest() != expected_hash:
+            raise ValueError("Los pesos no coinciden con el checksum del paquete")
         self._classes: list[str] = list(meta["classes"])
         self._output_is_probability: bool = bool(meta["output_is_probability"])
         self._explanation_config = _read_occlusion_config(meta)
@@ -187,6 +193,8 @@ class BrainTumorClassifier(mlflow.pyfunc.PythonModel):
         batch = self._preprocessor.batch(images)
         outputs = self._session.run(None, {self._input_name: batch})[0]
         scores = np.asarray(outputs, dtype=np.float32)
+        if scores.ndim != 2 or scores.shape[0] != len(images):
+            raise ValueError("El modelo debe devolver una fila por imagen y una columna por clase")
 
         if not self._output_is_probability:
             scores = _softmax(scores)
