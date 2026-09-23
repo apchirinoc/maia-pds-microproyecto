@@ -56,12 +56,12 @@ export function ModelsTable({ models, onDeploy, onRestore }: ModelsTableProps) {
               </TableCell>
               <TableCell className="text-muted-foreground">{model.architecture}</TableCell>
               <TableCell className="tabular-nums">{formatPercent(model.accuracy, locale, 1)}</TableCell>
-              <TableCell className="tabular-nums">{model.f1.toFixed(3)}</TableCell>
+              <TableCell className="tabular-nums">{model.f1?.toFixed(3) ?? '—'}</TableCell>
               <TableCell className="text-muted-foreground">
-                {model.sizeMb >= 1024 ? `${(model.sizeMb / 1024).toFixed(1)} GB` : `${model.sizeMb} MB`}
+                {model.sizeMb == null ? '—' : model.sizeMb >= 1024 ? `${(model.sizeMb / 1024).toFixed(1)} GB` : `${model.sizeMb} MB`}
               </TableCell>
               <TableCell>
-                <ModelStatusBadge status={model.status} />
+                {model.dataSource === 'artifact' ? <ModelStatusBadge status={model.status} /> : 'Referencia'}
               </TableCell>
               <TableCell className="text-right">
                 <div className="flex justify-end gap-2">
@@ -70,6 +70,8 @@ export function ModelsTable({ models, onDeploy, onRestore }: ModelsTableProps) {
                   </Button>
                   {secondaryAction && (
                     <Button
+                      disabled
+                      title="La versión se configura al desplegar la API."
                       size="sm"
                       variant={secondaryAction === 'deploy' ? 'default' : 'outline'}
                       onClick={() => {

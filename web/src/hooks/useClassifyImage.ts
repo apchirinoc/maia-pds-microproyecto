@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import {
   classifyImage,
   getActiveModelInfo,
@@ -6,8 +6,14 @@ import {
 } from '@/services/classification.service'
 
 export function useClassifyImage() {
+  const queryClient = useQueryClient()
   return useMutation({
     mutationFn: (params: ClassifyImageParams) => classifyImage(params),
+    onSuccess: () => {
+      for (const key of ['dashboard', 'uploads', 'models']) {
+        void queryClient.invalidateQueries({ queryKey: [key] })
+      }
+    },
   })
 }
 

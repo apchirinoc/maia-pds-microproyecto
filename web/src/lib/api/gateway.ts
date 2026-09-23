@@ -1,16 +1,4 @@
-/**
- * Estado de la conexión con el backend, y decisión de qué origen de datos usar.
- *
- * Regla del sistema:
- *   · Sin conexión con el backend  → datos simulados (`mocks/`).
- *   · Con conexión                 → datos reales de la API.
- *
- * Distinción deliberada: sólo se cae a datos simulados ante un fallo de
- * **conectividad** (red caída, tiempo agotado, servidor no levantado). Si el
- * backend responde con un error HTTP, ese error se propaga. Enmascarar un 500
- * con datos simulados ocultaría una avería real y mostraría cifras falsas como
- * si fueran del servidor.
- */
+/** La API es el origen normal. La simulación requiere VITE_FORCE_MOCKS=true. */
 
 import { env } from '@/lib/env'
 
@@ -33,7 +21,7 @@ export interface InstantaneaBackend {
   comprobadoEn: number | null
 }
 
-/** Error de conectividad: es el único que dispara la caída a datos simulados. */
+/** Error de conectividad que se propaga a la pantalla. */
 export class ErrorDeConexion extends Error {
   constructor(causa?: unknown) {
     super('No hay conexión con el backend')
@@ -161,25 +149,18 @@ export const backendGateway = {
   },
 }
 
-/**
- * Resuelve un dato desde la API si hay conexión, y desde los datos simulados si
- * no la hay. Es el único punto donde se decide el origen.
- */
+/** Selecciona la demostración explícita o la API, sin sustitución ante errores. */
 export async function conOrigenDeDatos<T>(
   remoto: () => Promise<T>,
   simulado: () => Promise<T>,
 ): Promise<T> {
   if (env.forceMocks) return simulado()
 
-  const { estado } = await backendGateway.asegurarSondeo()
-  if (estado !== 'online') return simulado()
-
   try {
     return await remoto()
   } catch (error) {
     if (error instanceof ErrorDeConexion) {
       backendGateway.marcarCaido()
-      return simulado()
     }
     throw error
   }

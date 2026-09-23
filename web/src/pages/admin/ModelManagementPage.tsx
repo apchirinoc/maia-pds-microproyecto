@@ -16,7 +16,8 @@ import {
 } from '@/components/ui/dialog'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { useI18n } from '@/i18n/I18nProvider'
-import { formatDate, formatNumber, formatPercent } from '@/lib/format'
+import { formatNumber, formatPercent } from '@/lib/format'
+import { useActiveModelInfo } from '@/hooks/useClassifyImage'
 import {
   useDeployModel,
   useModelRegistrySummary,
@@ -29,6 +30,7 @@ export function ModelManagementPage() {
   const { t, locale } = useI18n()
   const summaryQuery = useModelRegistrySummary()
   const modelsQuery = useModels()
+  const activeQuery = useActiveModelInfo()
   const deployMutation = useDeployModel()
   const revertMutation = useRevertModel()
 
@@ -53,7 +55,7 @@ export function ModelManagementPage() {
 
         <Dialog open={pickerOpen} onOpenChange={setPickerOpen}>
           <DialogTrigger asChild>
-            <Button>
+            <Button disabled title="La versión se configura al desplegar la API.">
               <Boxes /> {t('admin.models.uploadNew')}
             </Button>
           </DialogTrigger>
@@ -69,28 +71,30 @@ export function ModelManagementPage() {
         </Dialog>
       </div>
 
+      <p className="mb-4 text-sm">El motor activo se consulta en la API. Los registros de referencia se identifican en la tabla; — indica un dato no disponible.</p>
+      {(modelsQuery.isError || summaryQuery.isError || activeQuery.isError) && (
+        <div role="alert" className="mb-4">No se pudo consultar toda la información. <Button variant="outline" onClick={() => { void modelsQuery.refetch(); void summaryQuery.refetch(); void activeQuery.refetch() }}>Reintentar</Button></div>
+      )}
       <div className="mb-4 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <KpiCard
           isLoading={summaryQuery.isLoading}
           label={t('admin.models.kpi.production')}
-          value={summary ? `${summary.productionModel.name} ${summary.productionModel.version}` : ''}
-          hint={summary ? t('admin.models.kpi.activeSince', { date: formatDate(summary.activeSince, locale) }) : undefined}
+          value={activeQuery.data?.modelVersion || '—'}
         />
         <KpiCard
           isLoading={summaryQuery.isLoading}
           label={t('admin.models.kpi.accuracyTest')}
-          value={summary ? formatPercent(summary.accuracyTest, locale) : ''}
+          value={formatPercent(activeQuery.data?.evaluationMetrics?.test_accuracy == null ? null : activeQuery.data.evaluationMetrics.test_accuracy * 100, locale)}
         />
         <KpiCard
           isLoading={summaryQuery.isLoading}
           label={t('admin.models.kpi.latency')}
-          value={summary ? `${summary.meanLatencyMs} ms` : ''}
-          hint="GPU T4 · batch 1"
+          value={summary?.meanLatencyMs == null ? '—' : `${summary.meanLatencyMs} ms`}
         />
         <KpiCard
           isLoading={summaryQuery.isLoading}
           label={t('admin.models.kpi.storage')}
-          value={summary ? `${summary.storageGb.toFixed(1)} GB` : ''}
+          value={summary?.storageGb == null ? '—' : `${summary.storageGb.toFixed(1)} GB`}
           hint={summary ? t('admin.models.kpi.archivedVersions', { count: summary.archivedVersions }) : undefined}
         />
       </div>
@@ -108,7 +112,6 @@ export function ModelManagementPage() {
               <ToggleGroupItem value="archived">{t('admin.models.status.archived')}</ToggleGroupItem>
               <ToggleGroupItem value="validation">{t('admin.models.status.validation')}</ToggleGroupItem>
             </ToggleGroup>
-            <span className="text-xs text-muted-foreground">{t('admin.models.filters.last12Months')}</span>
           </div>
 
           <ModelsTable
@@ -129,7 +132,7 @@ export function ModelManagementPage() {
                   ),
                 })}
               </span>
-              <span>{t('admin.models.lastSync', { time: '08:41' })}</span>
+              <span>{t('admin.models.lastSync', { time: new Date(modelsQuery.dataUpdatedAt).toLocaleTimeString(locale) })}</span>
             </div>
           )}
         </CardContent>

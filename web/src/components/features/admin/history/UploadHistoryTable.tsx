@@ -52,6 +52,7 @@ export function UploadHistoryTable({
           </TableRow>
         </TableHeader>
         <TableBody>
+          {records.length === 0 && <TableRow><TableCell colSpan={8}>No hay registros con este filtro.</TableCell></TableRow>}
           {records.map((record) => {
             const groundTruthState = resolveGroundTruthState(record.prediction, record.groundTruth)
 
@@ -74,6 +75,7 @@ export function UploadHistoryTable({
                 <TableCell>
                   <div className="font-medium">{record.id}</div>
                   <div className="text-xs text-muted-foreground">{record.fileName}</div>
+                  <div className="text-xs">{record.simulatedInference !== false ? 'Simulado' : 'Inferencia del modelo'} · {record.modelVersion || 'Versión no disponible'}</div>
                 </TableCell>
                 <TableCell className="text-muted-foreground">
                   {formatDateTime(record.capturedAt, locale)}

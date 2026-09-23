@@ -10,6 +10,8 @@ export interface ClassPerformanceListProps {
 export function ClassPerformanceList({ performance }: ClassPerformanceListProps) {
   const { t } = useI18n()
 
+  if (Object.keys(performance).length === 0) return <p className="text-sm">Métricas por clase no disponibles.</p>
+
   return (
     <ul className="flex flex-col gap-3">
       {(Object.entries(performance) as [TumorClass, number][]).map(([tumorClass, value]) => (

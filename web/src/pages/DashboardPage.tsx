@@ -16,7 +16,7 @@ import { Button } from '@/components/ui/button'
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group'
 import { useI18n } from '@/i18n/I18nProvider'
 import { formatNumber, formatPercent } from '@/lib/format'
-import { useBackendStatus } from '@/hooks/useBackendStatus'
+import { env } from '@/lib/env'
 import {
   useCountryUploadStats,
   useDashboardKpis,
@@ -30,7 +30,6 @@ const TOP_COUNTRIES_SHOWN = 3
 
 export function DashboardPage() {
   const { t, locale } = useI18n()
-  const { estado } = useBackendStatus()
   const [mapMode, setMapMode] = useState<'choropleth' | 'bubbles'>('choropleth')
 
   const kpisQuery = useDashboardKpis()
@@ -59,7 +58,7 @@ export function DashboardPage() {
           <p className="truncate text-sm text-muted-foreground">{t('dashboard.subtitle')}</p>
         </div>
         <div className="flex shrink-0 items-center gap-3">
-          {estado !== 'online' && (
+          {env.forceMocks && (
             <Badge variant="warning">{t('common.simulatedData')}</Badge>
           )}
           <Button asChild size="sm">
@@ -69,6 +68,20 @@ export function DashboardPage() {
           </Button>
         </div>
       </div>
+
+      <p className="text-xs">
+        {locale === 'es'
+          ? 'Dataset de referencia. La actividad puede incluir registros de demostración. La exactitud del modelo se muestra sólo si está disponible.'
+          : 'Reference dataset. Activity may include demonstration records. Model accuracy is shown only when available.'}
+      </p>
+      {(kpisQuery.isError || distributionQuery.isError || monthlyQuery.isError || profileQuery.isError || countryStatsQuery.isError || samplesQuery.isError) && (
+        <div role="alert" className="flex flex-wrap items-center gap-2 text-sm text-destructive">
+          {locale === 'es' ? 'No se pudieron consultar todos los datos.' : 'Some data could not be retrieved.'}
+          <Button variant="outline" size="sm" onClick={() => {
+            for (const query of [kpisQuery, distributionQuery, monthlyQuery, profileQuery, countryStatsQuery, samplesQuery]) void query.refetch()
+          }}>{locale === 'es' ? 'Reintentar' : 'Retry'}</Button>
+        </div>
+      )}
 
       <div className="grid shrink-0 grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4">
         <KpiCard
@@ -84,8 +97,8 @@ export function DashboardPage() {
           label={t('dashboard.kpi.modelAccuracy')}
           value={kpis ? formatPercent(kpis.modelAccuracy, locale) : ''}
           trend={
-            kpis
-              ? { direction: 'up', label: `${kpis.modelAccuracyDeltaPts} pts vs. v2.3` }
+            kpis?.modelAccuracyDeltaPts != null
+              ? { direction: 'up', label: `${kpis.modelAccuracyDeltaPts} pts` }
               : undefined
           }
         />

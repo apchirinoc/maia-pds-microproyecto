@@ -1,10 +1,4 @@
-/**
- * Cliente HTTP de la API.
- *
- * Distingue de forma explícita dos familias de fallo, porque tienen
- * consecuencias distintas: un fallo de red permite caer a datos simulados,
- * mientras que un error del servidor debe llegar al usuario.
- */
+/** Cliente HTTP: propaga errores de red y del servidor a la interfaz. */
 
 import { env } from '@/lib/env'
 import { ErrorDeApi, ErrorDeConexion } from './gateway'
@@ -105,8 +99,7 @@ export async function apiFetch<T>(ruta: string, opciones: OpcionesPeticion = {})
 
   // Un 200 que no es JSON no viene de la API: lo típico es un proxy o un
   // servidor de estáticos devolviendo el index.html de la SPA. Se trata como
-  // falta de conexión para que el llamador caiga a los datos simulados en vez
-  // de dejar la pantalla en blanco con un error de análisis.
+  // fallo de conexión y se muestra el error al usuario.
   const tipo = respuesta.headers.get('Content-Type') ?? ''
   if (!tipo.includes('json')) {
     throw new ErrorDeConexion(`La API respondió ${tipo || 'sin tipo'} en lugar de JSON`)

@@ -32,6 +32,10 @@ export interface GroundTruthDiagnosis {
 }
 
 export interface UploadRecord {
+  simulatedInference?: boolean
+  modelVersion?: string
+  modelUri?: string
+  imageSha256?: string
   id: string
   fileName: string
   capturedAt: string

@@ -7,18 +7,19 @@ export interface DeployedModel {
   name: string
   version: string
   architecture: string
-  accuracy: number
-  f1: number
-  sizeMb: number
+  accuracy: number | null
+  f1: number | null
+  sizeMb: number | null
+  dataSource?: 'reference' | 'artifact'
   status: ModelStatus
   weightsFileName: string
 }
 
 export interface ModelMetrics {
-  accuracy: number
-  precisionMacro: number
-  recallMacro: number
-  auc: number
+  accuracy: number | null
+  precisionMacro: number | null
+  recallMacro: number | null
+  auc: number | null
 }
 
 export type ConfusionMatrix = Record<TumorClass, Record<TumorClass, number>>
@@ -45,9 +46,9 @@ export interface ModelDetail extends DeployedModel {
 export interface ModelRegistrySummary {
   productionModel: Pick<DeployedModel, 'name' | 'version'>
   activeSince: string
-  accuracyTest: number
-  meanLatencyMs: number
-  storageGb: number
+  accuracyTest: number | null
+  meanLatencyMs: number | null
+  storageGb: number | null
   archivedVersions: number
 }
 
@@ -59,9 +60,9 @@ export interface RegistryModelVersion {
   version: string
   alias: string | null
   arch: string
-  accuracy: number
-  f1: number
-  recall: number
+  accuracy: number | null
+  f1: number | null
+  recall: number | null
   createdAt: string
   runId: string
   artifactUri: string
