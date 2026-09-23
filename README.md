@@ -1,4 +1,19 @@
-# MaIA Microproyecto
+# BrainNeuroScan
+
+Prototipo académico para clasificar imágenes MRI desde un tablero conectado a una API y un modelo empaquetado. No sustituye la interpretación clínica.
+
+## Ejecutar el tablero, la API y el modelo
+
+Consulte el [manual de instalación](docs/MANUAL_INSTALACION.md). Obtenga el paquete completo del modelo, colóquelo en `artifacts/classifier/`, complete `.env` a partir de `.env.example` y ejecute `docker compose up -d --build` desde la raíz. Compruebe `/ready` y la versión del motor antes de analizar imágenes.
+
+- [Manual de usuario](docs/MANUAL_USUARIO.md)
+- [Entrega del paquete del modelo](ml_project/ENTREGA_MODELO.md)
+- [Contrato de inferencia](api/INFERENCIA.md)
+- [Prueba del recorrido completo](docs/PRUEBA_INTEGRACION.md)
+
+La API carga ONNX mediante MLflow pyfunc. Un paquete local permite servir predicciones aunque el servidor de tracking esté apagado. El modo de simulación requiere configuración explícita; una caída de la API no activa simulaciones en el tablero.
+
+Las instrucciones siguientes permiten obtener el dataset para investigación. No son necesarias para instalar una solución que ya dispone de un modelo empaquetado.
 
 ## Descargar los datos
 
@@ -50,11 +65,6 @@ El repositorio está organizado de la siguiente manera:
 - `scripts/`: scripts auxiliares para procesamiento y ejecución.
 - `tests/`: pruebas del proyecto.
 
-## Flujo general de ejecución
+## Investigación y entrenamiento
 
-1. Descargar los datos mediante DVC.
-2. Instalar las dependencias del proyecto.
-3. Ejecutar los notebooks de exploración y preparación de datos.
-4. Ejecutar o entrenar el modelo desde los componentes definidos en `prototype/`.
-5. Revisar los resultados y reportes generados.
-6. Ejecutar las pruebas disponibles en `tests/`.
+Los notebooks y `ml_project/` contienen los procesos de experimentación. Conserve el preprocesamiento y el orden de clases al empaquetar un modelo. No es necesario reentrenar para ejecutar un paquete aprobado.

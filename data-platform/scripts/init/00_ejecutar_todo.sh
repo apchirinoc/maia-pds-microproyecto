@@ -21,6 +21,13 @@ echo "[model] Aplicando DDL…"
 for archivo in /scripts/ddl/*.sql; do ejecutar "$archivo"; done
 
 echo "[model] Cargando datos semilla…"
-for archivo in /scripts/dml/*.sql; do ejecutar "$archivo"; done
+for archivo in /scripts/dml/*.sql; do
+    case "$(basename "$archivo")" in
+        03_modelos.sql|05_cargas.sql)
+            if [ "${SEED_DEMO_DATA:-true}" != "true" ]; then continue; fi
+            ;;
+    esac
+    ejecutar "$archivo"
+done
 
 echo "[model] Esquema listo."

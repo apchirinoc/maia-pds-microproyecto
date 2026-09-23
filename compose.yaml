@@ -1,0 +1,75 @@
+name: brainneuroscan
+
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: brainneuroscan
+      POSTGRES_DB: brainneuroscan
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Configure POSTGRES_PASSWORD en .env}
+      SEED_DEMO_DATA: "false"
+    volumes:
+      - database:/var/lib/postgresql/data
+      - ./data-platform/scripts:/scripts:ro
+      - ./data-platform/scripts/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U brainneuroscan -d brainneuroscan"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  api:
+    build: ./api
+    environment:
+      ENVIRONMENT: production
+      DEBUG: "false"
+      DATA_SOURCE: postgres
+      POSTGRES_USER: brainneuroscan
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Configure POSTGRES_PASSWORD en .env}
+      POSTGRES_HOST: db
+      POSTGRES_DB: brainneuroscan
+      POSTGRES_SSL: disable
+      JWT_SECRET: ${JWT_SECRET:?Configure JWT_SECRET en .env}
+      ALLOWED_ORIGINS: ${WEB_ORIGIN:-http://localhost:8080}
+      INFERENCE_ENGINE: onnx
+      MLFLOW_MODEL_URI: ${MLFLOW_MODEL_URI-/models/classifier}
+      MLFLOW_TRACKING_URI: ${MLFLOW_TRACKING_URI:-}
+      MLFLOW_MODEL_NAME: ${MLFLOW_MODEL_NAME:-brain-tumor-classifier}
+      MLFLOW_MODEL_VERSION: ${MLFLOW_MODEL_VERSION:-}
+      EXPECTED_PREPROCESS_FINGERPRINT: ${EXPECTED_PREPROCESS_FINGERPRINT:-}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:-}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:-}
+      AWS_SESSION_TOKEN: ${AWS_SESSION_TOKEN:-}
+      AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION:-}
+      MLFLOW_S3_ENDPOINT_URL: ${MLFLOW_S3_ENDPOINT_URL:-}
+    volumes:
+      - ${MODEL_DIRECTORY:-./artifacts}:/models:ro
+    ports:
+      - "${API_PORT:-8000}:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/ready', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 120s
+    restart: unless-stopped
+
+  web:
+    build: ./web
+    environment:
+      VITE_API_BASE_URL: ${PUBLIC_API_URL:-http://localhost:8000}
+      VITE_FORCE_MOCKS: "false"
+      VITE_API_TIMEOUT_MS: "120000"
+    ports:
+      - "${WEB_PORT:-8080}:80"
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  database:
